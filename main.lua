@@ -1,6 +1,13 @@
+-- FIXME: Add author block
+
+local Node = require("src.node")
+
 -- DAY 1 SKELETON CODE
 
+
+
 function love.load()
+    
     -- This runs once when the game opens.
     -- We will put our "Node" setup here later.
     print("Game Loaded!") -- Look at the black console window to see this!
