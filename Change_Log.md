@@ -12,3 +12,7 @@ Day 3 (12/2/2025):
 - Added nodes for map (still incomplete)
 
 Day 4 (12/3/2025):
+- Fixed node names
+- Load node into main.lua
+- Navigation through nodes via entering the node ID number via main.lua
+- 
