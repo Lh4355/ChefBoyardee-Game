@@ -15,7 +15,7 @@ return {
     -- FIXME: Should falling off the shelf be an event?
     [1] = {
         id = 1,
-        name = "Shelf",
+        name = "shelf",
         description =
         "The cold metal of the shelf seeps into the aluminum of your can. A shopper picks you up and gazes at you longingly before setting you down. You are filled with a sense of determination.",
         imagePath = nil, -- You can add "sprites/pantry.png" here later
@@ -39,12 +39,13 @@ return {
     -- NODE 3: Outside Front of Grocery Store
     [3] = {
         id = 3,
+        name = "outside_store",
         description = "The air blinds you as you exit the grocery store. The noise of the people and passing cars overwhelms your senses.",
         imagePath = nil,
         paths = {
             road_1 = 4,
             aisle_floor = 2,
-            -- behind_store = 2 -- FIXME: Update with actual node # for behind the store
+            behind_store = 34
         }
     },
 
@@ -52,10 +53,11 @@ return {
         -- FIXME: maybe add a sewer grate
     [4] = {
         id = 4,
+        name = "road_1",
         description = "Road 1 (Outside Grocery Store)",
         imagePath = nil,
         paths = {
-            intersection = 5,
+            intersection_1 = 5,
             outside_store = 3,
         }
     },
@@ -64,6 +66,7 @@ return {
     -- NODE 5: Main Intersection
     [5] = {
         id = 5,
+        name = "intersection_1",
         description = "Intersection 1 (main one)",
         imagePath = nil,
         paths = {
@@ -78,6 +81,7 @@ return {
     -- NODE 7: Road 2
     [6] = {
         id = 6,
+        name = "road_2",
         description = "Road 2 (goes to shops)",
         imagePath = nil,
         paths = {
@@ -90,6 +94,7 @@ return {
     -- NODE 7: Road 3
     [7] = {
         id = 7,
+        name = "road_3",
         description = "Road 3 (goes to cannery and gravel path)",
         imagePath = nil,
         paths = {
@@ -105,6 +110,7 @@ return {
     -- NODE 8: Scary Highway
     [8] = {
         id = 8,
+        name = "scary_highway",
         description = "Scary, busy highway (goes to sketchy alley or steep downhill)",
         imagePath = nil,
         paths = {
@@ -119,6 +125,7 @@ return {
     -- FIXME: add event to take health away if the can takes the gravel path
     [9] = {
         id = 9,
+        name = "gravel_path",
         description = "Gravel Path (from Road 2-> Neighborhood street)",
         imagePath = nil,
         paths = {
@@ -131,6 +138,7 @@ return {
     -- NODE 10: Neighborhood Street
     [10] = {
         id = 10,
+        name = "neighborhood_street",
         description = "Neighborhood Street",
         imagePath = nil,
         paths = {
@@ -145,6 +153,7 @@ return {
     -- NODE 11: Steep Hill
     [11] = {
         id = 11,
+        name = "steep_hill",
         description = "Steep Hill (connects scary_highway to neighborhood_street)",
         imagePath = nil,
         paths = {
@@ -159,6 +168,7 @@ return {
             -- FIXME: maybe a sewer shortcut
     [12] = {
         id = 12,
+        name = "sketchy_alley",
         description = "Sketchy Alley",
         imagePath = nil,
         paths = {
@@ -171,6 +181,7 @@ return {
     -- NODE 13: Road 4
     [13] = {
         id = 13,
+        name = "road_4",
         description = "Road 4",
         imagePath = nil,
         paths = {
@@ -182,6 +193,7 @@ return {
     -- NODE 14: Road 5
     [14] = {
         id = 14,
+        name = "road_5",
         description = "Road 5",
         imagePath = nil,
         paths = {
@@ -195,6 +207,7 @@ return {
     -- NODE 15: Intersection 2
     [15] = {
         id = 15,
+        name = "intersection_2",
         description = "Intersection 2",
         imagePath = nil,
         paths = {
@@ -208,6 +221,7 @@ return {
                 -- FIXME: potentially add more shops
     [16] = {
         id = 16,
+        name = "shops",
         description = "Various Shops",
         imagePath = nil,
         paths = {
@@ -221,6 +235,7 @@ return {
     -- FIXME: player gets gold can skin for helping (does it fix any dents?)
     [17] = {
         id = 17,
+        name = "jewelry_store",
         description = "Jewelry Store",
         imagePath = nil,
         paths = {
@@ -229,9 +244,10 @@ return {
     },
 
     -- NODE 18: Cannery
-        -- FIXME: isiting Cannery increases health/new label?
+        -- FIXME: visiting Cannery increases health/new label?
     [18] = {
         id = 18,
+        name = "cannery",
         description = "Cannery",
         imagePath = nil,
         paths = {
@@ -243,6 +259,7 @@ return {
     -- NODE 19: Dump
     [19] = {
         id = 19,
+        name = "dump",
         description = "Dump",
         imagePath = nil,
         paths = {
@@ -255,6 +272,7 @@ return {
     -- NODE 20: Recycling Truck
     [20] = {
         id = 20,
+        name = "recycling_truck",
         description = "Recycling truck",
         imagePath = nil,
         paths = {
@@ -266,6 +284,7 @@ return {
     -- NODE 21: Outside of House
     [21] = {
         id = 21,
+        name = "outside_house",
         description = "Outside of House",
         imagePath = nil,
         paths = {
@@ -281,6 +300,7 @@ return {
         -- FIXME: Maybe add wooded area with Trees
     [22] = {
         id = 22,
+        name = "park",
         description = "Park",
         imagePath = nil,
         paths = {
@@ -295,6 +315,7 @@ return {
         -- FIXME: Make it so that if the player has a key (FIXME: idk from where yet) and a pogo stick (accquired from movers_house) they can get in
     [23] = {
         id = 23,
+        name = "front_porch",
         description = "Front Porch",
         imagePath = nil,
         paths = {
@@ -308,6 +329,7 @@ return {
         -- FIXME: backyard will have a hose to polish your can? (but if pond hurts can then would hose?)
     [24] = {
         id = 24,
+        name = "backyard";
         description = "Backyard",
         imagePath = nil,
         paths = {
@@ -319,6 +341,7 @@ return {
     -- NODE 25: Kitchen
     [25] = {
         id = 25,
+        name = "kitchen",
         description = "Kitchen",
         imagePath = nil,
         paths = {
@@ -331,6 +354,7 @@ return {
     -- NODE 26: Living Room
     [26] = {
         id = 26,
+        name = "living_room",
         description = "Living Room",
         imagePath = nil,
         paths = {
@@ -345,6 +369,7 @@ return {
         -- FIXME: This has no paths, should i make it lead to itself or nothing?
     [27] = {
         id = 27,
+        name = "victory_bowl",
         description = "Victory Bowl. You Win!",
         imagePath = nil,
         paths = {
@@ -357,6 +382,7 @@ return {
         -- FIXME: Add event of children kicking the can if the can enters here, also maybe add an incentive to come here?
     [28] = {
         id = 28,
+        name = "playground",
         description = "Playground",
         imagePath = nil,
         paths = {
@@ -371,6 +397,7 @@ return {
         -- FIXME: Add harry potter sword to the bottom of the pond?
     [29] = {
         id = 29,
+        name = "pond",
         description = "Pond (underwater)",
         imagePath = nil,
         paths = {
@@ -383,6 +410,7 @@ return {
     -- NODE 30: House Bathroom 
     [30] = {
         id = 30,
+        name = "house_bathroom",
         description = "House Bathroom. Can emerges from the toilet",
         imagePath = nil,
         paths = {
@@ -395,6 +423,7 @@ return {
         -- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher
     [31] = {
         id = 31,
+        name = "dumpster_fire",
         description = "Dumpster fire",
         imagePath = nil,
         paths = {
@@ -407,6 +436,7 @@ return {
         -- FIXME: add a pogo stick item here for player to collect
     [32] = {
         id = 32,
+        name = "movers_house",
         description = "House with movers out front",
         imagePath = nil,
         paths = {
@@ -419,6 +449,7 @@ return {
         -- FIXME: make this place more existential
     [33] = {
         id = 33,
+        name = "recycling_house",
         description = "House with recycling bin full of empty cans. Their labels peeled off.",
         imagePath = nil,
         paths = {
