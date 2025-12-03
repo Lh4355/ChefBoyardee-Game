@@ -6,7 +6,8 @@
 -- FIXME: Add accurate descriptions
 -- FIXME: Map nodes on paper to make sure they connect correctly
 -- FIXME: Add names to the rest of the nodes
--- FIXME: Did i do the 
+-- FIXME: Did i link them all correctly
+-- FIXME: Is the node.lua file set up correctly ?
 
 return {
     -- NODE 1: The Starting Area/Shelf
