@@ -1,6 +1,7 @@
 -- main.lua
 local Node = require("src.node")
 local Item = require("src.item")
+local Player = require("src.player")
 local map_nodes_data = require("src.data.map_nodes")
 
 -- Define these at the top with "local" so they are seen by the whole file
@@ -48,21 +49,13 @@ function love.load()
     print("NODES LOADED SUCCESSFULLY")
 
     -- PLAYER SETUP
-    player = {
-        name = "Chef Can",
-        health = 100,
-        x = 400,
-        y = 300,
-        inventory = {},
-    }
+    player = Player.new("Chef Can", 400, 300)
 
     -- STARTING STATE
-    -- NOTE: Changed default to 'menu' so we can test the transition
     currentNode = nodes[1]
     gamestate = "menu" 
 
     -- TEST ITEM SETUP (Day 3)
-    -- We give the item X/Y coordinates so it appears in the scene
     local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
     testItem.x = 400 
     testItem.y = 400
@@ -81,25 +74,9 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          y2 < y1+h1
 end
 
--- HELPER: Check if player has a specific item (Day 2 Requirement)
-function HasItem(itemId)
-    for _, item in ipairs(player.inventory) do
-        if item.id == itemId then
-            return true
-        end
-    end
-    return false
-end
-
--- INVENTORY LOGIC
+-- INVENTORY LOGIC (Refactored to use Player class)
 function PickUp(itemId)
-    -- 1. Check if inventory is full (Max 8 slots)
-    if #player.inventory >= 8 then
-        print("Inventory is full! Cannot pick up " .. itemId)
-        return
-    end
-
-    -- 2. Find the item in the current node
+    -- 1. Find the item in the current node
     local itemIndex = nil
     local itemObj = nil
 
@@ -111,13 +88,20 @@ function PickUp(itemId)
         end
     end
 
-    -- 3. If found, transfer it
+    -- 2. If found, try to give it to the player
     if itemObj then
-        table.remove(currentNode.items, itemIndex)
-        table.insert(player.inventory, itemObj)
-        print("Picked up: " .. itemObj.name)
+        -- We call the function on the player object now
+        local success = player:addItem(itemObj)
+
+        if success then
+            -- Only remove from the world if the player actually took it
+            table.remove(currentNode.items, itemIndex)
+            print("Picked up: " .. itemObj.name)
+        else
+            print("Inventory is full! Cannot pick up " .. itemObj.name)
+        end
     else
-        print("Item " .. itemId .. " is not here.")
+        print("Item " .. itemId .. " is not here (Logic Error?)")
     end
 end
 
@@ -162,7 +146,7 @@ end
 function love.keypressed(key)
     
     if gamestate == "menu" then
-        -- MENU TRANSITION (Day 1 Requirement)
+        -- MENU TRANSITION
         if key == "return" or key == "space" then
             gamestate = "explore"
             print("Game Started!")
@@ -182,13 +166,18 @@ function love.keypressed(key)
             end
         end
         
-        -- DEBUG: Test HasItem
+        -- DEBUG: Test HasItem (Refactored to use player:hasItem)
         if key == "h" then
-            if HasItem("rusty_key") then
+            if player:hasItem("rusty_key") then
                 print("DEBUG: Yes, you have the rusty key.")
             else
                 print("DEBUG: No, you do not have the rusty key.")
             end
+        end
+        
+        -- DEBUG: Test Damage (New!)
+        if key == "d" then
+            player:takeDamage(10)
         end
     end
 end
@@ -286,6 +275,9 @@ function love.draw()
                 love.graphics.setColor(1, 1, 1)
             end
         end
+        
+        -- Draw Health (Debug view for now)
+        love.graphics.print("Health: " .. player.health, 50, 20)
 
     elseif gamestate == "menu" then
         love.graphics.setColor(1, 1, 1)

@@ -29,7 +29,8 @@ Day 5 (12/4/2025):
 - Added more images and another image folder
 - Added Has_Item function
 - Started Main menu screen
-
+- Created separate player class and moved logic over from main
+- Added health and damage logic
 
 
 
