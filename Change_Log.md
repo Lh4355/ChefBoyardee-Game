@@ -16,4 +16,5 @@ Day 4 (12/3/2025):
 - Load node into main.lua
 - Navigation through nodes via entering the node ID number via main.lua
 - Set up an image (should work when i add image paths to all nodes), still needs pixelated
--
+- Added inventory and item logic
+- 
