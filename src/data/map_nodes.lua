@@ -28,7 +28,7 @@ return {
         id = 2,
         name = "aisle_floor",
         description = "You leap off the shelf. The tiles are cold.", --FIXME: add better description
-        imagePath = nil,
+        imagePath = "src/data/images/locations/aisle_floor.png",
         paths = {
             outside_store = 3
         }
@@ -168,7 +168,7 @@ return {
         id = 12,
         name = "sketchy_alley",
         description = "Sketchy Alley",
-        imagePath = nil,
+        imagePath = "src/data/images/locations/sketchy_alley.png",
         paths = {
             scary_highway = 8,
             dumpster_fire = 31,
@@ -382,7 +382,7 @@ return {
         id = 28,
         name = "playground",
         description = "Playground",
-        imagePath = nil,
+        imagePath = "src/data/images/locations/playground.png",
         paths = {
             park = 22,
         }
@@ -417,13 +417,13 @@ return {
     },
 
 
-    -- NODE 3: Dumpster Fire
+    -- NODE 31: Dumpster Fire
         -- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher
     [31] = {
         id = 31,
         name = "dumpster_fire",
         description = "Dumpster fire",
-        imagePath = nil,
+        imagePath = "src/data/images/locations/dumpster_fire.png",
         paths = {
             sketchy_alley = 12
         }
@@ -464,6 +464,18 @@ return {
         imagePath = nil,
         paths = {
             outside_house = 21, -- sewer grate here goes straight to the house, 
+        }
+    },
+
+        -- NODE 35: Dumpster
+        -- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher and get a reward
+    [35] = {
+        id = 35,
+        name = "dumpster",
+        description = "Dumpster fire",
+        imagePath = "src/data/images/locations/dumpster.png",
+        paths = {
+            sketchy_alley = 12
         }
     },
 }

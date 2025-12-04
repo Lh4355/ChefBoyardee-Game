@@ -17,4 +17,11 @@ Day 4 (12/3/2025):
 - Navigation through nodes via entering the node ID number via main.lua
 - Set up an image (should work when i add image paths to all nodes), still needs pixelated
 - Added inventory and item logic
-- 
+- Made test clickable item
+- Nodes are now navigated by clicking on the node name
+- Inventory can be navigated by pressing keys 1-8 (I want to change this so that it is clickable)
+
+Day 5 (12/4/2025):
+- Added more images and another image folder
+- Added Has_Item function
+- Main menu screen
