@@ -5,11 +5,14 @@ Day 1 (11/30/2025):
 - created conf.lua file to configure game settings for title bar and game window size
 - put test code in main.lua (allows you to press d to move a square to the side)
 
+
 Day 2 (12/1/2025):
 - No work
 
+
 Day 3 (12/2/2025):
 - Added nodes for map (still incomplete)
+
 
 Day 4 (12/3/2025):
 - Fixed node names
@@ -21,7 +24,14 @@ Day 4 (12/3/2025):
 - Nodes are now navigated by clicking on the node name
 - Inventory can be navigated by pressing keys 1-8 (I want to change this so that it is clickable)
 
+
 Day 5 (12/4/2025):
 - Added more images and another image folder
 - Added Has_Item function
-- Main menu screen
+- Started Main menu screen
+
+
+
+
+
+Day 6 (12/5/2025):
