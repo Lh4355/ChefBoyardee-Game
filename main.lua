@@ -1,5 +1,6 @@
 -- main.lua
 local Node = require("src.node")
+local Item = require("src.item")
 local map_nodes_data = require("src.data.map_nodes")
 
 -- Define these at the top with "local" so they are seen by the whole file,
@@ -49,8 +50,12 @@ function love.load()
 		health = 100,
 		x = 400,
 		y = 300,
+		inventory = {},
 	}
 
+	local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
+	table.insert(nodes[1].items, testItem)
+	print("DEBUG: Added Rusty Key to Node 1")
 	-- ------------------------------------
 	-- STEP 1: Set Starting Node
 	currentNode = nodes[1]
@@ -59,6 +64,79 @@ function love.load()
 	gamestate = "explore" -- Options: "menu", "explore", "map"
 
 	-- --------------------------
+end
+
+-- ---------------------------------------------------------
+-- INVENTORY LOGIC (Day 2 Backend)
+-- ---------------------------------------------------------
+
+-- Check if the player has a specific item by ID
+-- usage: if HasItem("bus_pass") then ... end
+function HasItem(itemId)
+	for i, item in ipairs(player.inventory) do
+		if item.id == itemId then
+			return true
+		end
+	end
+	return false
+end
+
+-- Move an item from the Current Node into the Player's Inventory
+function PickUp(itemId)
+	-- 1. Check if inventory is full (Max 8 slots)
+	if #player.inventory >= 8 then
+		print("Inventory is full! Cannot pick up " .. itemId)
+		return
+	end
+
+	-- 2. Find the item in the current node
+	local itemIndex = nil
+	local itemObj = nil
+
+	for i, item in ipairs(currentNode.items) do
+		if item.id == itemId then
+			itemIndex = i
+			itemObj = item
+			break
+		end
+	end
+
+	-- 3. If found, transfer it
+	if itemObj then
+		-- Remove from Node
+		table.remove(currentNode.items, itemIndex)
+		-- Add to Player Inventory
+		table.insert(player.inventory, itemObj)
+		print("Picked up: " .. itemObj.name)
+	else
+		print("Item " .. itemId .. " is not here.")
+	end
+end
+
+-- Move an item from Inventory back to the Current Node
+function Drop(itemId)
+	local itemIndex = nil
+	local itemObj = nil
+
+	-- 1. Find the item in inventory
+	for i, item in ipairs(player.inventory) do
+		if item.id == itemId then
+			itemIndex = i
+			itemObj = item
+			break
+		end
+	end
+
+	-- 2. If found, transfer it
+	if itemObj then
+		-- Remove from Inventory
+		table.remove(player.inventory, itemIndex)
+		-- Add to Current Node
+		table.insert(currentNode.items, itemObj)
+		print("Dropped: " .. itemObj.name)
+	else
+		print("You don't have " .. itemId)
+	end
 end
 
 function love.update(dt)
@@ -70,6 +148,22 @@ end
 
 -- STEP 3: Move Logic
 function love.keypressed(key)
+
+    -- [Test logic for item] --------------------------------------------
+    -- Temporary Inventory Testing
+    if key == "p" then
+        PickUp("rusty_key")
+    end
+
+    if key == "i" then
+        -- Print current inventory to console
+        print("--- INVENTORY ---")
+        for _, item in ipairs(player.inventory) do
+            print("- " .. item.name)
+        end
+    end
+    -- [END - test logic] ----------------------------------------------
+
 	if gamestate == "explore" then
 		-- We need to map the user's key press (1, 2, 3) to the available paths
 		local pathIndex = 1
@@ -83,6 +177,7 @@ function love.keypressed(key)
 					print("Error: Node " .. targetId .. " does not exist.")
 				end
 			end
+            
 			pathIndex = pathIndex + 1
 		end
 	end
