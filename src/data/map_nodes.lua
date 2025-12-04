@@ -2,13 +2,10 @@
 -- This file returns a list of raw data tables.
 -- We use this data in main.lua to build our actual Node objects.
 
--- local node_images = require("src.data.images")
 
 -- FIXME: Add accurate descriptions
 -- FIXME: Map nodes on paper to make sure they connect correctly
--- FIXME: Add names to the rest of the nodes
 -- FIXME: Did i link them all correctly
--- FIXME: Is the node.lua file set up correctly ?
 
 return {
     -- NODE 1: The Starting Area/Shelf
@@ -19,7 +16,6 @@ return {
         name = "shelf",
         description =
         "The cold metal of the shelf seeps into the aluminum of your can. A shopper picks you up and gazes at you longingly before setting you down. You are filled with a sense of determination.",
-        -- imagePath = "images/shelf.png",
         imagePath = "src/data/images/locations/shelf.png",
         paths = {
             aisle_floor = 2
