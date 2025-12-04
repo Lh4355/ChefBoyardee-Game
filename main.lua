@@ -57,8 +57,9 @@ function love.load()
     }
 
     -- STARTING STATE
+    -- NOTE: Changed default to 'menu' so we can test the transition
     currentNode = nodes[1]
-    gamestate = "explore"
+    gamestate = "menu" 
 
     -- TEST ITEM SETUP (Day 3)
     -- We give the item X/Y coordinates so it appears in the scene
@@ -78,6 +79,16 @@ function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
          x2 < x1+w1 and
          y1 < y2+h2 and
          y2 < y1+h1
+end
+
+-- HELPER: Check if player has a specific item (Day 2 Requirement)
+function HasItem(itemId)
+    for _, item in ipairs(player.inventory) do
+        if item.id == itemId then
+            return true
+        end
+    end
+    return false
 end
 
 -- INVENTORY LOGIC
@@ -116,26 +127,33 @@ end
 
 -- MOUSE CLICK LOGIC (Day 3)
 function love.mousepressed(x, y, button)
-    if button == 1 then -- Left Click
-        -- Iterate through all active zones (items, paths) to see what was clicked
-        for _, zone in ipairs(clickZones) do
-            if CheckCollision(x, y, 1, 1, zone.x, zone.y, zone.w, zone.h) then
-                
-                if zone.type == "item" then
-                    -- CLICKED AN ITEM
-                    PickUp(zone.id)
-                
-                elseif zone.type == "path" then
-                    -- CLICKED A PATH OPTION
-                    if nodes[zone.targetId] then
-                        currentNode = nodes[zone.targetId]
-                        print("Moved to: " .. currentNode.name)
+    if gamestate == "explore" then
+        if button == 1 then -- Left Click
+            -- Iterate through all active zones (items, paths) to see what was clicked
+            for _, zone in ipairs(clickZones) do
+                if CheckCollision(x, y, 1, 1, zone.x, zone.y, zone.w, zone.h) then
+                    
+                    if zone.type == "item" then
+                        -- CLICKED AN ITEM
+                        PickUp(zone.id)
+                    
+                    elseif zone.type == "path" then
+                        -- CLICKED A PATH OPTION
+                        if nodes[zone.targetId] then
+                            currentNode = nodes[zone.targetId]
+                            print("Moved to: " .. currentNode.name)
+                        end
                     end
+                    
+                    -- Stop checking after finding one valid click
+                    return
                 end
-                
-                -- Stop checking after finding one valid click
-                return
             end
+        end
+    elseif gamestate == "menu" then
+        -- Optional: Allow clicking anywhere to start
+        if button == 1 then
+            gamestate = "explore"
         end
     end
 end
@@ -143,16 +161,34 @@ end
 -- KEYBOARD LOGIC (Day 3)
 function love.keypressed(key)
     
-    -- INVENTORY HOTKEYS (1-8)
-    local n = tonumber(key)
-    if n and n >= 1 and n <= 8 then
-        local item = player.inventory[n]
-        if item then
-            print("--- INSPECT SLOT " .. n .. " ---")
-            print("Name: " .. item.name)
-            print("Desc: " .. item.description)
-        else
-            print("Slot " .. n .. " is empty.")
+    if gamestate == "menu" then
+        -- MENU TRANSITION (Day 1 Requirement)
+        if key == "return" or key == "space" then
+            gamestate = "explore"
+            print("Game Started!")
+        end
+
+    elseif gamestate == "explore" then
+        -- INVENTORY HOTKEYS (1-8)
+        local n = tonumber(key)
+        if n and n >= 1 and n <= 8 then
+            local item = player.inventory[n]
+            if item then
+                print("--- INSPECT SLOT " .. n .. " ---")
+                print("Name: " .. item.name)
+                print("Desc: " .. item.description)
+            else
+                print("Slot " .. n .. " is empty.")
+            end
+        end
+        
+        -- DEBUG: Test HasItem
+        if key == "h" then
+            if HasItem("rusty_key") then
+                print("DEBUG: Yes, you have the rusty key.")
+            else
+                print("DEBUG: No, you do not have the rusty key.")
+            end
         end
     end
 end
@@ -252,6 +288,7 @@ function love.draw()
         end
 
     elseif gamestate == "menu" then
+        love.graphics.setColor(1, 1, 1)
         love.graphics.print("MAIN MENU (Press Enter to Start)", 300, 300)
     end
     
