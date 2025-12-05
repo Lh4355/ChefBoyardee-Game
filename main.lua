@@ -56,7 +56,7 @@ function love.update(dt)
         local signal = currentState.update(dt)
         -- specific signals to switch states
         if signal == "explore" then SwitchState(Explore) end
-        -- if signal == "gameover" then SwitchState(GameOver) end
+        if signal == "gameover" then SwitchState(GameOver) end
     end
 end
 

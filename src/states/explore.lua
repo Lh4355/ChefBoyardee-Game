@@ -10,6 +10,7 @@ local Explore = {}
 local player, nodes, currentNode
 local clickZones = {}
 local eventMessage = ""
+local selectedSlot = nil -- NEW: Tracks the currently selected inventory slot
 local gameFlags = { jewelry_robbery_done = false, has_gold_skin = false }
 
 function Explore.enter(pPlayer, pNodes, pStartNode)
@@ -17,11 +18,12 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	nodes = pNodes
 	currentNode = pStartNode
 	eventMessage = ""
+	selectedSlot = nil -- Reset selection when entering exploration
 end
 
 function Explore.update(dt)
 	if player.health <= 0 then
-		return "gameover" -- Signal to switch state
+		return "gameover"
 	end
 end
 
@@ -35,7 +37,6 @@ function Explore.draw()
 		local imageWidth = currentNode.image:getWidth()
 		local imageHeight = currentNode.image:getHeight()
 
-		-- Calculate scale factors to fit the window exactly
 		local scaleX = windowWidth / imageWidth
 		local scaleY = windowHeight / imageHeight
 
@@ -57,7 +58,6 @@ function Explore.draw()
 		local ix, iy = item.x or (100 + i * 60), item.y or 400
 		local iw, ih = item.w or Constants.GUI.item_scene_size, item.h or Constants.GUI.item_scene_size
 
-		-- Color code: NPCs (Attendant) are Green, Items are Blue
 		if item.id == "attendant" then
 			love.graphics.setColor(0, 1, 0)
 		else
@@ -94,13 +94,55 @@ function Explore.draw()
 	love.graphics.print("Health: " .. player.health .. "%", 260, 12)
 	love.graphics.print("Skin: " .. player.skin, 400, 12)
 
-	love.graphics.print("INVENTORY", Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 25)
+	-- NEW: Draw Description ABOVE inventory if selected, otherwise show title
+	if selectedSlot and player.inventory[selectedSlot] then
+		local item = player.inventory[selectedSlot]
+		love.graphics.setColor(1, 1, 0) -- Yellow text for description
+		-- Print description slightly higher than the title was
+		love.graphics.printf(item.description, Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 45, 700, "left")
+	else
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.print("INVENTORY", Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 25)
+	end
+
 	for i = 1, 8 do
 		local bx = Constants.GUI.inv_start_x + (i - 1) * (Constants.GUI.inv_slot_size + Constants.GUI.inv_padding)
-		love.graphics.rectangle("line", bx, Constants.GUI.inv_start_y, Constants.GUI.inv_slot_size, Constants.GUI.inv_slot_size)
-		if player.inventory[i] then
-			love.graphics.printf(player.inventory[i].name, bx, Constants.GUI.inv_start_y + 15, Constants.GUI.inv_slot_size, "center")
+
+		-- Highlight the box if it is the selected slot
+		if i == selectedSlot then
+			love.graphics.setColor(1, 1, 0) -- Yellow border
+		else
+			love.graphics.setColor(1, 1, 1) -- White border
 		end
+
+		love.graphics.rectangle(
+			"line",
+			bx,
+			Constants.GUI.inv_start_y,
+			Constants.GUI.inv_slot_size,
+			Constants.GUI.inv_slot_size
+		)
+
+		if player.inventory[i] then
+			love.graphics.setColor(1, 1, 1) -- Reset to white for text
+			love.graphics.printf(
+				player.inventory[i].name,
+				bx,
+				Constants.GUI.inv_start_y + 15,
+				Constants.GUI.inv_slot_size,
+				"center"
+			)
+		end
+
+		-- NEW: Add inventory slot to clickZones so mousepressed can see it
+		table.insert(clickZones, {
+			x = bx,
+			y = Constants.GUI.inv_start_y,
+			w = Constants.GUI.inv_slot_size,
+			h = Constants.GUI.inv_slot_size,
+			type = "inventory",
+			slotIndex = i,
+		})
 	end
 end
 
@@ -112,44 +154,44 @@ function Explore.mousepressed(x, y, button)
 					Explore.pickUp(zone.id)
 				elseif zone.type == "path" then
 					Explore.enterNode(zone.targetId)
+				-- NEW: Handle Inventory Clicks
+				elseif zone.type == "inventory" then
+					if player.inventory[zone.slotIndex] then
+						selectedSlot = zone.slotIndex
+					else
+						selectedSlot = nil -- Deselect if clicking empty slot
+					end
 				end
 				return
 			end
 		end
+        
+		-- If the loop finishes without hitting any buttons/items:
+		-- selectedSlot = nil
 	end
 end
 
--- Define EnterNode and PickUp internally here (copy from main.lua)
 function Explore.enterNode(targetId)
-	-- 1. Get the actual Node object first (This contains the .items table!)
 	local targetNode = nodes[targetId]
-
-	-- 2. Check Events / Locks (Pass targetNode, NOT just targetId)
 	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags)
 
-	-- 3. Handle Result
 	if not allowed then
-		-- If blocked, stay here and show the "Locked" message
 		eventMessage = msg or ""
 		return
 	end
 
-	-- 4. Move Player
 	currentNode = targetNode
-
-	-- 5. Set Message (if the event returned one, like "Robber crashes!")
 	eventMessage = msg or ""
+	selectedSlot = nil -- Optional: Deselect item when moving to a new room?
 end
 
 function Explore.pickUp(itemId)
-	-- 1. Check Custom Interactions (Attendant, etc.)
 	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags)
 	if handled then
 		eventMessage = msg or ""
 		return
 	end
 
-	-- 2. Standard Pickup Logic
 	local itemIndex, itemObj
 	for i, item in ipairs(currentNode.items) do
 		if item.id == itemId then
@@ -162,7 +204,7 @@ function Explore.pickUp(itemId)
 	if itemObj then
 		if player:addItem(itemObj) then
 			table.remove(currentNode.items, itemIndex)
-			print("Picked up: " .. itemObj.name)
+			eventMessage = "Picked up: " .. itemObj.name -- Show confirmation on screen
 		else
 			eventMessage = "Inventory Full!"
 		end
