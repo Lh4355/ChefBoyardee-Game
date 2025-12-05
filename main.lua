@@ -96,7 +96,7 @@ function EnterNode(targetId)
     -- 3. Handle Result
     if not allowed then
         -- If blocked, stay here and show the "Locked" message
-        eventMessage = msg
+        eventMessage = msg or ""
         return
     end
 
@@ -104,7 +104,7 @@ function EnterNode(targetId)
     currentNode = targetNode
 
     -- 5. Set Message (if the event returned one, like "Robber crashes!")
-    eventMessage = msg
+    eventMessage = msg or ""
 end
 
 -- INVENTORY LOGIC: PickUp delegates to src/interactions.lua

@@ -232,11 +232,12 @@ return {
     -- NODE 17: Jewelry Store
     -- FIXME: when player goes here, a robbery will be happening, if can enters store the robber will trip on them and dent the can
     -- FIXME: player gets gold can skin for helping (does it fix any dents?)
+    -- FIXME: change jewelry store image to change before during and after event
     [17] = {
         id = 17,
         name = "jewelry_store",
         description = "Jewelry Store",
-        imagePath = nil,
+        imagePath = "src/data/images/locations/jewelry_store_robbery.png",
         paths = {
             shops = 16,
         }

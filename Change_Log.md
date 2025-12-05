@@ -32,7 +32,7 @@ Day 5 (12/4/2025):
 - Created separate player class and moved logic over from main
 - Added health and damage logic
 
-
-
-
 Day 6 (12/5/2025):
+- Added event and interaction logic
+- Health bar added to screen
+- Gameover screen when you hit 0 health
