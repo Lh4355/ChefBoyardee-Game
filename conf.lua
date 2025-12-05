@@ -1,11 +1,13 @@
+local Constants = require("src.constants")
+
 function love.conf(t)
     -- Identity
     t.identity = "ravioli_adventure" -- Unique name for save folder
     t.title = "The Rolling Can"      -- The text in the window title bar
     
     -- Window Settings
-    t.window.width = 800             -- Window width in pixels
-    t.window.height = 600            -- Window height in pixels
+    t.window.width = Constants.SCREEN_WIDTH
+    t.window.height = Constants.SCREEN_HEIGHT
     t.window.resizable = false       -- Can the player resize the window?
     t.window.vsync = true            -- Vertical sync (stops screen tearing)
     
