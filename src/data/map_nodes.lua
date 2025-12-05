@@ -144,6 +144,7 @@ return {
             steep_hill = 11,
             recycling_house = 33,
             movers_house = 32, 
+            outside_house = 21,
         }
     },
 

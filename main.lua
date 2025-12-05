@@ -1,6 +1,8 @@
 -- main.lua
 local Node = require("src.node")
 local Item = require("src.item")
+local Player = require("src.player")
+local Menu = require("src.menu")
 local map_nodes_data = require("src.data.map_nodes")
 
 -- Define these at the top with "local" so they are seen by the whole file
@@ -11,11 +13,11 @@ local player
 
 -- GUI CONFIGURATION (Day 3)
 local GUI = {
-    inv_slot_size = 50, -- Size of the inventory boxes
-    inv_padding = 10,   -- Space between boxes
-    inv_start_x = 50,   -- Starting X position
-    inv_start_y = 500,  -- Starting Y position (Bottom of a 600px screen)
-    item_scene_size = 40 -- Size of the "item" squares in the world
+	inv_slot_size = 50, -- Size of the inventory boxes
+	inv_padding = 10, -- Space between boxes
+	inv_start_x = 50, -- Starting X position
+	inv_start_y = 500, -- Starting Y position (Bottom of a 600px screen)
+	item_scene_size = 40, -- Size of the "item" squares in the world
 }
 
 -- MOUSE INTERACTION STORAGE
@@ -23,275 +25,274 @@ local GUI = {
 local clickZones = {}
 
 function love.load()
-    io.stdout:setvbuf("no")
-    print("------------------------------------------------")
-    print("LOADING NODES...")
+	io.stdout:setvbuf("no")
+	print("------------------------------------------------")
+	print("LOADING NODES...")
 
-    -- Iterate through the raw data and create Node objects
-    for id, data in ipairs(map_nodes_data) do
-        local name = data.name or "Unnamed"
-        local newNode = Node.new(data.id, name, data.description, data.imagePath)
-        
-        -- Store the node
-        nodes[id] = newNode
+	-- Iterate through the raw data and create Node objects
+	for id, data in ipairs(map_nodes_data) do
+		local name = data.name or "Unnamed"
+		local newNode = Node.new(data.id, name, data.description, data.imagePath)
 
-        if data.imagePath then
-             -- Safety wrapper for image loading
-             local status, err = pcall(function() newNode.image = love.graphics.newImage(data.imagePath) end)
-             if not status then print("Error loading image for node " .. id .. ": " .. err) end
-        end
+		-- Store the node
+		nodes[id] = newNode
 
-        newNode.paths = data.paths
-        print(newNode.id .. ". " .. newNode.name)
-    end
-    print("------------------------------------------------")
-    print("NODES LOADED SUCCESSFULLY")
+		if data.imagePath then
+			-- Safety wrapper for image loading
+			local status, err = pcall(function()
+				newNode.image = love.graphics.newImage(data.imagePath)
+			end)
+			if not status then
+				print("Error loading image for node " .. id .. ": " .. err)
+			end
+		end
 
-    -- PLAYER SETUP
-    player = {
-        name = "Chef Can",
-        health = 100,
-        x = 400,
-        y = 300,
-        inventory = {},
-    }
+		newNode.paths = data.paths
+		print(newNode.id .. ". " .. newNode.name)
+	end
+	print("------------------------------------------------")
+	print("NODES LOADED SUCCESSFULLY")
 
-    -- STARTING STATE
-    -- NOTE: Changed default to 'menu' so we can test the transition
-    currentNode = nodes[1]
-    gamestate = "menu" 
+	-- PLAYER SETUP
+	player = Player.new("Chef Can", 400, 300)
 
-    -- TEST ITEM SETUP (Day 3)
-    -- We give the item X/Y coordinates so it appears in the scene
-    local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
-    testItem.x = 400 
-    testItem.y = 400
-    testItem.w = GUI.item_scene_size
-    testItem.h = GUI.item_scene_size
-    
-    table.insert(nodes[1].items, testItem)
-    print("DEBUG: Added Rusty Key to Node 1 at (400, 400)")
+	-- STARTING STATE
+	currentNode = nodes[1]
+	gamestate = "menu"
+
+	-- TEST ITEM SETUP (Day 3)
+	local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
+	testItem.x = 400
+	testItem.y = 400
+	testItem.w = GUI.item_scene_size
+	testItem.h = GUI.item_scene_size
+
+	table.insert(nodes[1].items, testItem)
+	print("DEBUG: Added Rusty Key to Node 1 at (400, 400)")
 end
 
 -- HELPER: Simple AABB Collision Detection
-function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-  return x1 < x2+w2 and
-         x2 < x1+w1 and
-         y1 < y2+h2 and
-         y2 < y1+h1
+function CheckCollision(x1, y1, w1, h1, x2, y2, w2, h2)
+	return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
 end
 
--- HELPER: Check if player has a specific item (Day 2 Requirement)
-function HasItem(itemId)
-    for _, item in ipairs(player.inventory) do
-        if item.id == itemId then
-            return true
-        end
-    end
-    return false
-end
-
--- INVENTORY LOGIC
+-- INVENTORY LOGIC (Refactored to use Player class)
 function PickUp(itemId)
-    -- 1. Check if inventory is full (Max 8 slots)
-    if #player.inventory >= 8 then
-        print("Inventory is full! Cannot pick up " .. itemId)
-        return
-    end
+	-- 1. Find the item in the current node
+	local itemIndex = nil
+	local itemObj = nil
 
-    -- 2. Find the item in the current node
-    local itemIndex = nil
-    local itemObj = nil
+	for i, item in ipairs(currentNode.items) do
+		if item.id == itemId then
+			itemIndex = i
+			itemObj = item
+			break
+		end
+	end
 
-    for i, item in ipairs(currentNode.items) do
-        if item.id == itemId then
-            itemIndex = i
-            itemObj = item
-            break
-        end
-    end
+	-- 2. If found, try to give it to the player
+	if itemObj then
+		-- We call the function on the player object now
+		local success = player:addItem(itemObj)
 
-    -- 3. If found, transfer it
-    if itemObj then
-        table.remove(currentNode.items, itemIndex)
-        table.insert(player.inventory, itemObj)
-        print("Picked up: " .. itemObj.name)
-    else
-        print("Item " .. itemId .. " is not here.")
-    end
+		if success then
+			-- Only remove from the world if the player actually took it
+			table.remove(currentNode.items, itemIndex)
+			print("Picked up: " .. itemObj.name)
+		else
+			print("Inventory is full! Cannot pick up " .. itemObj.name)
+		end
+	else
+		print("Item " .. itemId .. " is not here (Logic Error?)")
+	end
 end
 
 function love.update(dt)
-    -- Update logic here if needed
+	if gamestate == "menu" then
+		Menu.update(dt)
+	end
 end
 
 -- MOUSE CLICK LOGIC (Day 3)
 function love.mousepressed(x, y, button)
-    if gamestate == "explore" then
-        if button == 1 then -- Left Click
-            -- Iterate through all active zones (items, paths) to see what was clicked
-            for _, zone in ipairs(clickZones) do
-                if CheckCollision(x, y, 1, 1, zone.x, zone.y, zone.w, zone.h) then
-                    
-                    if zone.type == "item" then
-                        -- CLICKED AN ITEM
-                        PickUp(zone.id)
-                    
-                    elseif zone.type == "path" then
-                        -- CLICKED A PATH OPTION
-                        if nodes[zone.targetId] then
-                            currentNode = nodes[zone.targetId]
-                            print("Moved to: " .. currentNode.name)
-                        end
-                    end
-                    
-                    -- Stop checking after finding one valid click
-                    return
-                end
-            end
-        end
-    elseif gamestate == "menu" then
-        -- Optional: Allow clicking anywhere to start
-        if button == 1 then
-            gamestate = "explore"
-        end
-    end
+	if gamestate == "explore" then
+		if button == 1 then -- Left Click
+			-- Iterate through all active zones (items, paths) to see what was clicked
+			for _, zone in ipairs(clickZones) do
+				if CheckCollision(x, y, 1, 1, zone.x, zone.y, zone.w, zone.h) then
+					if zone.type == "item" then
+						-- CLICKED AN ITEM
+						PickUp(zone.id)
+					elseif zone.type == "path" then
+						-- CLICKED A PATH OPTION
+						if nodes[zone.targetId] then
+							currentNode = nodes[zone.targetId]
+							print("Moved to: " .. currentNode.name)
+						end
+					end
+
+					-- Stop checking after finding one valid click
+					return
+				end
+			end
+		end
+	elseif gamestate == "menu" then
+		-- Ask the Menu if the click meant anything
+		local action = Menu.mousepressed(x, y, button)
+
+		if action == "explore" then
+			gamestate = "explore"
+			print("Game Started!")
+		end
+	end
 end
 
 -- KEYBOARD LOGIC (Day 3)
 function love.keypressed(key)
-    
-    if gamestate == "menu" then
-        -- MENU TRANSITION (Day 1 Requirement)
-        if key == "return" or key == "space" then
-            gamestate = "explore"
-            print("Game Started!")
-        end
+	if gamestate == "menu" then
+		-- Ask the Menu if the key meant anything
+		local action = Menu.keypressed(key)
 
-    elseif gamestate == "explore" then
-        -- INVENTORY HOTKEYS (1-8)
-        local n = tonumber(key)
-        if n and n >= 1 and n <= 8 then
-            local item = player.inventory[n]
-            if item then
-                print("--- INSPECT SLOT " .. n .. " ---")
-                print("Name: " .. item.name)
-                print("Desc: " .. item.description)
-            else
-                print("Slot " .. n .. " is empty.")
-            end
-        end
-        
-        -- DEBUG: Test HasItem
-        if key == "h" then
-            if HasItem("rusty_key") then
-                print("DEBUG: Yes, you have the rusty key.")
-            else
-                print("DEBUG: No, you do not have the rusty key.")
-            end
-        end
-    end
+		if action == "explore" then
+			gamestate = "explore"
+			print("Game Started!")
+		end
+	elseif gamestate == "explore" then
+		-- INVENTORY HOTKEYS (1-8)
+		local n = tonumber(key)
+		if n and n >= 1 and n <= 8 then
+			local item = player.inventory[n]
+			if item then
+				print("--- INSPECT SLOT " .. n .. " ---")
+				print("Name: " .. item.name)
+				print("Desc: " .. item.description)
+			else
+				print("Slot " .. n .. " is empty.")
+			end
+		end
+
+		-- DEBUG: Test HasItem (Refactored to use player:hasItem)
+		if key == "h" then
+			if player:hasItem("rusty_key") then
+				print("DEBUG: Yes, you have the rusty key.")
+			else
+				print("DEBUG: No, you do not have the rusty key.")
+			end
+		end
+
+		-- DEBUG: Test Damage (New!)
+		if key == "d" then
+			player:takeDamage(10)
+		end
+	end
 end
 
 function love.draw()
-    -- Clear click zones for this frame (we rebuild them based on what is drawn)
-    clickZones = {}
+	-- Clear click zones for this frame (we rebuild them based on what is drawn)
+	clickZones = {}
 
-    if gamestate == "explore" then
-        -- 1. Draw Background
-        if currentNode.image then
-             local windowWidth = love.graphics.getWidth()
-             local windowHeight = love.graphics.getHeight()
-             local imageWidth = currentNode.image:getWidth()
-             local imageHeight = currentNode.image:getHeight()
-             local scaleX = windowWidth / imageWidth
-             local scaleY = windowHeight / imageHeight
-             love.graphics.draw(currentNode.image, 0, 0, 0, scaleX, scaleY)
-        end
+	if gamestate == "explore" then
+		-- 1. Draw Background
+		if currentNode.image then
+			local windowWidth = love.graphics.getWidth()
+			local windowHeight = love.graphics.getHeight()
+			local imageWidth = currentNode.image:getWidth()
+			local imageHeight = currentNode.image:getHeight()
+			local scaleX = windowWidth / imageWidth
+			local scaleY = windowHeight / imageHeight
+			love.graphics.draw(currentNode.image, 0, 0, 0, scaleX, scaleY)
+		end
 
-        -- 2. Draw Description
-        love.graphics.setColor(1, 1, 1) -- White
-        love.graphics.printf(currentNode.description, 50, 50, 700, "left")
+		-- 2. Draw Description
+		love.graphics.setColor(1, 1, 1) -- White
+		love.graphics.printf(currentNode.description, 50, 50, 700, "left")
 
-        -- 3. Draw Scene Items (Day 3: Clickable Squares)
-        for i, item in ipairs(currentNode.items) do
-            -- Use item's pos or default
-            local ix = item.x or (100 + (i * 60))
-            local iy = item.y or 400
-            local iw = item.w or GUI.item_scene_size
-            local ih = item.h or GUI.item_scene_size
-            
-            -- Draw Red Square (Placeholder Art)
-            love.graphics.setColor(1, 0, 0) 
-            love.graphics.rectangle("fill", ix, iy, iw, ih)
-            
-            -- Draw Label
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.print(item.name, ix, iy - 20)
+		-- 3. Draw Scene Items (Day 3: Clickable Squares)
+		for i, item in ipairs(currentNode.items) do
+			-- Use item's pos or default
+			local ix = item.x or (100 + (i * 60))
+			local iy = item.y or 400
+			local iw = item.w or GUI.item_scene_size
+			local ih = item.h or GUI.item_scene_size
 
-            -- Register this area as clickable
-            table.insert(clickZones, {
-                x = ix, y = iy, w = iw, h = ih,
-                type = "item",
-                id = item.id
-            })
-        end
+			-- Draw Red Square (Placeholder Art)
+			love.graphics.setColor(1, 0, 0)
+			love.graphics.rectangle("fill", ix, iy, iw, ih)
 
-        -- 4. Draw Path Options (Day 3: Clickable Text)
-        local y = 200
-        local index = 1
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print("Where do you want to roll?", 50, 170)
+			-- Draw Label
+			love.graphics.setColor(1, 1, 1)
+			love.graphics.print(item.name, ix, iy - 20)
 
-        for pathName, targetId in pairs(currentNode.paths) do
-            local optionText = index .. ". Go to " .. pathName
-            love.graphics.print(optionText, 50, y)
-            
-            -- Calculate text size for collision box
-            local font = love.graphics.getFont()
-            local textW = font:getWidth(optionText)
-            local textH = font:getHeight()
+			-- Register this area as clickable
+			table.insert(clickZones, {
+				x = ix,
+				y = iy,
+				w = iw,
+				h = ih,
+				type = "item",
+				id = item.id,
+			})
+		end
 
-            -- Register this area as clickable
-            table.insert(clickZones, {
-                x = 50, y = y, w = textW, h = textH,
-                type = "path",
-                targetId = targetId
-            })
+		-- 4. Draw Path Options (Day 3: Clickable Text)
+		local y = 200
+		local index = 1
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.print("Where do you want to roll?", 50, 170)
 
-            y = y + 30
-            index = index + 1
-        end
+		for pathName, targetId in pairs(currentNode.paths) do
+			local optionText = index .. ". Go to " .. pathName
+			love.graphics.print(optionText, 50, y)
 
-        -- 5. Draw HUD / Inventory (Day 3)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print("INVENTORY (Press 1-8)", GUI.inv_start_x, GUI.inv_start_y - 25)
-        
-        for i = 1, 8 do
-            local bx = GUI.inv_start_x + (i-1) * (GUI.inv_slot_size + GUI.inv_padding)
-            local by = GUI.inv_start_y
-            
-            -- Draw Box Outline
-            love.graphics.rectangle("line", bx, by, GUI.inv_slot_size, GUI.inv_slot_size)
-            
-            -- Check content
-            local item = player.inventory[i]
-            if item then
-                -- Draw Item Name (Small) inside box
-                love.graphics.printf(item.name, bx, by + 15, GUI.inv_slot_size, "center")
-            else
-                -- Draw Slot Number (Greyed out)
-                love.graphics.setColor(0.5, 0.5, 0.5)
-                love.graphics.print(i, bx + 5, by + 5)
-                love.graphics.setColor(1, 1, 1)
-            end
-        end
+			-- Calculate text size for collision box
+			local font = love.graphics.getFont()
+			local textW = font:getWidth(optionText)
+			local textH = font:getHeight()
 
-    elseif gamestate == "menu" then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print("MAIN MENU (Press Enter to Start)", 300, 300)
-    end
-    
-    -- Reset color
-    love.graphics.setColor(1, 1, 1)
+			-- Register this area as clickable
+			table.insert(clickZones, {
+				x = 50,
+				y = y,
+				w = textW,
+				h = textH,
+				type = "path",
+				targetId = targetId,
+			})
+
+			y = y + 30
+			index = index + 1
+		end
+
+		-- 5. Draw HUD / Inventory (Day 3)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.print("INVENTORY (Press 1-8)", GUI.inv_start_x, GUI.inv_start_y - 25)
+
+		for i = 1, 8 do
+			local bx = GUI.inv_start_x + (i - 1) * (GUI.inv_slot_size + GUI.inv_padding)
+			local by = GUI.inv_start_y
+
+			-- Draw Box Outline
+			love.graphics.rectangle("line", bx, by, GUI.inv_slot_size, GUI.inv_slot_size)
+
+			-- Check content
+			local item = player.inventory[i]
+			if item then
+				-- Draw Item Name (Small) inside box
+				love.graphics.printf(item.name, bx, by + 15, GUI.inv_slot_size, "center")
+			else
+				-- Draw Slot Number (Greyed out)
+				love.graphics.setColor(0.5, 0.5, 0.5)
+				love.graphics.print(i, bx + 5, by + 5)
+				love.graphics.setColor(1, 1, 1)
+			end
+		end
+
+		-- Draw Health (Debug view for now)
+		love.graphics.print("Health: " .. player.health, 50, 20)
+	elseif gamestate == "menu" then
+		Menu.draw() -- Let the menu file handle the drawing
+	end
+
+	-- Reset color
+	love.graphics.setColor(1, 1, 1)
 end
