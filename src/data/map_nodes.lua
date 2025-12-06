@@ -20,10 +20,10 @@ return {
 
 		-- Data-Driven Minigame Config
 		minigame = {
-            -- Minigame Type
+			-- Minigame Type
 			type = "click_filler",
 
-            -- Sprite Image
+			-- Sprite Image
 			imagePath = "src/data/images/sprites/angled_can.png",
 
 			-- Sprite Config
@@ -31,21 +31,36 @@ return {
 			y = 283,
 			scale = 0.345,
 
-			-- Gameplay Config
-			decay = 30,
+			-- Gameplay
+			decay = 25,
 			add = 15,
 			max = 100,
 			winNode = 2,
-			winMsg = "You wobble off the shelf and land on the aisle floor!",
+			winMsg = "You wobble off!",
 
-			-- UI / Bar Configuration
-			prompt = "CLICK TO WOBBLE!",
-			barX = 400, -- X Position of the bar
-			barY = 380, -- Y Position of the bar
-			barWidth = 100, -- Make the bar wider
-			barHeight = 10, -- Make the bar taller
-			barColor = { 0, 1, 0, 1 }, -- Green bar {r, g, b, alpha}
-			textColor = { 1, 1, 0, 1 }, -- Yellow text {r, g, b, alpha}
+			-- New Visual Customization --
+			prompt = "WOBBLE!",
+
+			-- 1. Bar Dimensions & Position
+			barWidth = 100,
+			barHeight = 15,
+			barX = 398,
+			barY = 380,
+
+			-- 2. Colors (R, G, B, A)
+			barColor = { 1, 0.84, 0, 1 }, -- Gold fill
+			barBgColor = { 0.2, 0.2, 0.2, 0.8 }, -- Dark Grey background
+			borderColor = { 1, 1, 1, 1 }, -- White border
+			borderWidth = 2,
+			textColor = { 1, 1, 1, 1 }, -- White text
+
+			-- 3. Font Customization
+			fontPath = "", -- src/data/fonts/RINGM___.TTF
+			fontSize = 20,
+
+			-- 4. Feel (Shake)
+			shakeIntensity = 0.2, -- Higher number = more violent shake
+			shakeSpeed = 30, -- Higher number = faster vibration
 		},
 	},
 
