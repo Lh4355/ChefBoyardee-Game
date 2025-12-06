@@ -40,3 +40,4 @@ Day 6 (12/5/2025):
 - Added music
 
 Day 7 (12/6/2025):
+- De-uglied the inventory bar

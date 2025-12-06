@@ -5,8 +5,8 @@ return {
     GUI = {
         inv_slot_size = 50,
         inv_padding = 10,
-        inv_start_x = 50,
-        inv_start_y = 500,
+        inv_start_x = 5,
+        inv_start_y = 545,
         item_scene_size = 40
     }
 }

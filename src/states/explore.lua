@@ -87,21 +87,22 @@ function Explore.draw()
 
 	-- 5. Draw HUD (Health & Inventory)
 	love.graphics.setColor(0.3, 0.3, 0.3)
-	love.graphics.rectangle("fill", 50, 10, 200, 20)
+	love.graphics.rectangle("fill", 10, 10, 200, 20)
 	love.graphics.setColor(1, 0, 0)
-	love.graphics.rectangle("fill", 50, 10, player.health * 2, 20)
+	love.graphics.rectangle("fill", 10, 10, player.health * 2, 20)
+	-- love.graphics.setColor(1, 1, 1)
+	love.graphics.print("Health: " .. player.health .. "%", 215, 12)
 	love.graphics.setColor(1, 1, 1)
-	love.graphics.print("Health: " .. player.health .. "%", 260, 12)
-	love.graphics.print("Skin: " .. player.skin, 400, 12)
+	love.graphics.print("Skin: " .. player.skin, 700, 12)
 
-	-- NEW: Draw Description ABOVE inventory if selected, otherwise show title
+	-- Draw Description ABOVE inventory if selected, otherwise show title
 	if selectedSlot and player.inventory[selectedSlot] then
 		local item = player.inventory[selectedSlot]
-		love.graphics.setColor(1, 1, 0) -- Yellow text for description
+		love.graphics.setColor(0.96, 0.73, 0.12)  -- Yellow text for description
 		-- Print description slightly higher than the title was
 		love.graphics.printf(item.description, Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 45, 700, "left")
 	else
-		love.graphics.setColor(1, 1, 1)
+		love.graphics.setColor(1, 1, 1) -- (0.02, 0.63, 0.29) -- Green text for inventory title
 		love.graphics.print("INVENTORY", Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 25)
 	end
 
@@ -110,17 +111,18 @@ function Explore.draw()
 
 		-- Highlight the box if it is the selected slot
 		if i == selectedSlot then
-			love.graphics.setColor(1, 1, 0) -- Yellow border
+			love.graphics.setColor(0.96, 0.73, 0.12) -- Yellow border
 		else
-			love.graphics.setColor(1, 1, 1) -- White border
+			love.graphics.setColor(0.02, 0.63, 0.29) -- Green border
 		end
 
 		love.graphics.rectangle(
-			"line",
+			"line", -- change to "fill" for the full boxes 
 			bx,
 			Constants.GUI.inv_start_y,
 			Constants.GUI.inv_slot_size,
-			Constants.GUI.inv_slot_size
+			Constants.GUI.inv_slot_size,
+			5, 5 -- Rounded corners
 		)
 
 		if player.inventory[i] then
@@ -144,6 +146,7 @@ function Explore.draw()
 			slotIndex = i,
 		})
 	end
+	love.graphics.setColor(1, 1, 1, 1) -- Reset color
 end
 
 function Explore.mousepressed(x, y, button)
@@ -154,7 +157,7 @@ function Explore.mousepressed(x, y, button)
 					Explore.pickUp(zone.id)
 				elseif zone.type == "path" then
 					Explore.enterNode(zone.targetId)
-				-- NEW: Handle Inventory Clicks
+				-- Handle Inventory Clicks
 				elseif zone.type == "inventory" then
 					if player.inventory[zone.slotIndex] then
 						selectedSlot = zone.slotIndex
@@ -166,8 +169,8 @@ function Explore.mousepressed(x, y, button)
 			end
 		end
         
-		-- If the loop finishes without hitting any buttons/items:
-		-- selectedSlot = nil
+		-- If the loop finishes without hitting any buttons/items (deselects inventory slot)
+		selectedSlot = nil
 	end
 end
 
