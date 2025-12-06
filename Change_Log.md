@@ -40,5 +40,8 @@ Day 6 (12/5/2025):
 - Added music
 
 Day 7 (12/6/2025):
-- Styled the GUI and HUD a little more
+- Styled the GUI and HUD 
 - Shelf wobble minigame added for node 1
+- Added can images to sprites folder for gold and normal cans
+- Broke up the explore file into smaller files
+- 
