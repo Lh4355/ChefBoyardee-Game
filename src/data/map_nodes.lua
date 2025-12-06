@@ -50,7 +50,7 @@ return {
 			textColor = { 1, 1, 1, 1 }, -- White text
 
 			-- 3. Font Customization
-			fontPath = "", -- src/data/fonts/RINGM___.TTF
+			fontPath = "src/data/fonts/friz-quadrata-regular.ttf", 
 			fontSize = 15,
 
 			-- 4. Feel (Shake)

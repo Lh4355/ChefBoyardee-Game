@@ -7,7 +7,7 @@ local text_font
 
 function Menu.enter()
 	-- Load Background Image
-	background_image = love.graphics.newImage("src/data/images/image1.png")
+	background_image = love.graphics.newImage("src/data/images/locations/main_menu.png")
 	-- Load the Hobbit-style fonts
 	title_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 60)
 	text_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 20)

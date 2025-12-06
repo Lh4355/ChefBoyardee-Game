@@ -7,7 +7,7 @@ local uiFontSmall
 
 function SceneRenderer.init()
     -- Load font for paths
-    local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/RINGM___.TTF", 16)
+    local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
     if successSmall then uiFontSmall = fontSmall else uiFontSmall = love.graphics.newFont(16) end
 end
 

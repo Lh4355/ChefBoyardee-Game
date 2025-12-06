@@ -3,15 +3,22 @@ local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
 
 local HUD = {}
-local uiFont, uiFontSmall
+local uiFont, uiFontSmall, skinImages
 
 function HUD.init()
     -- Load fonts safely
-    local success, font = pcall(love.graphics.newFont, "src/data/fonts/RINGM___.TTF", 24)
+    local success, font = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 24)
     if success then uiFont = font else uiFont = love.graphics.newFont(24) end
     
-    local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/RINGM___.TTF", 16)
+    local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
     if successSmall then uiFontSmall = fontSmall else uiFontSmall = love.graphics.newFont(16) end
+    
+    -- Load skin images
+    skinImages = {
+        normal = love.graphics.newImage("src/data/images/sprites/can_default.png"),
+        gold = love.graphics.newImage("src/data/images/sprites/angled_can.png")
+        -- Add more skins here as you create them
+    }
 end
 
 function HUD.draw(player, currentNode, eventMessage, selectedSlot)
@@ -27,11 +34,11 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
     love.graphics.rectangle("fill", 0, panelY, w, gui.inv_panel_height)
 
     -- Inventory Label
-    love.graphics.setColor(0.8, 0, 0) -- Reddish Text
+    love.graphics.setColor(unpack(gui.COLORS.cream)) -- Reddish Text
     love.graphics.setFont(uiFontSmall)
-    love.graphics.print("Inventory", 20, panelY + 5)
+    love.graphics.print("Inventory", 240, panelY + 5)
 
-    -- Draw Slots (Red Boxes)
+    -- Draw Slots (Inventory Boxes)
     for i = 1, 8 do
         local bx = gui.inv_start_x + (i - 1) * (gui.inv_slot_size + gui.inv_padding)
         local by = panelY + 30 
@@ -41,7 +48,7 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
         if i == selectedSlot then
             love.graphics.setColor(1, 1, 0) -- Yellow if selected
         else
-            love.graphics.setColor(unpack(gui.COLORS.red_border)) -- Red otherwise
+            love.graphics.setColor(unpack(gui.COLORS.cream)) -- Red otherwise
         end
         love.graphics.rectangle("line", bx, by, gui.inv_slot_size, gui.inv_slot_size)
 
@@ -70,29 +77,35 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
         love.graphics.printf("Select item for info", 550, panelY + 25, 230, "left")
     end
 
-    -- 2. TOP LEFT: HEALTH BAR
-    love.graphics.setColor(unpack(gui.COLORS.health_bg))
-    love.graphics.rectangle("fill", 20, 20, 250, 30)
-    
-    love.graphics.setColor(1, 0, 0)
-    local healthWidth = (player.health / 100) * 250
-    love.graphics.rectangle("fill", 20, 20, healthWidth, 30)
-    
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.setLineWidth(4)
-    love.graphics.rectangle("line", 20, 20, 250, 30)
-    
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.setFont(uiFontSmall)
-    love.graphics.print("Health: " .. player.health .. "%", 280, 25)
+    -- TOP Bar -------------------------------------
 
-    -- 3. TOP CENTER: NODE NAME
+    -- Background
+    love.graphics.setColor(unpack(gui.COLORS.cream))
+    love.graphics.rectangle("fill", 0, 0, 800, 40)
+
+    -- Health Background Bar
+    love.graphics.setColor(unpack(gui.COLORS.grey))
+    love.graphics.rectangle("fill", 10, 10, 150, 20)
+    
+    -- Health Fill Bar
+    love.graphics.setColor(unpack(gui.COLORS.red))
+    local healthWidth = (player.health / 100) * 150
+    love.graphics.rectangle("fill", 10, 10, healthWidth, 20)
+    
+    -- Health Border
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.setLineWidth(2)
+    love.graphics.rectangle("line", 10, 10, 150, 20)
+    
+    -- Health Text
+    love.graphics.setColor(unpack(gui.COLORS.red))
+    love.graphics.setFont(uiFontSmall)
+    love.graphics.print("Health: " .. player.health .. "%", 170, 13)
+
+    -- NODE NAME (top center)
     local nodeName = currentNode.name:upper()
-    local nw = uiFont:getWidth(nodeName)
-    love.graphics.setColor(unpack(gui.COLORS.red_border)) 
-    love.graphics.rectangle("fill", w / 2 - nw / 2 - 10, 20, nw + 20, 35)
     love.graphics.setColor(0, 0, 0) 
-    love.graphics.print(nodeName, w / 2 - nw / 2, 25)
+    love.graphics.printf(nodeName, 0, 15, w, "center")
 
     -- 4. TOP RIGHT: SKIN BOX
     local skinBoxSize = 60
@@ -110,12 +123,20 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
     love.graphics.setFont(love.graphics.newFont(10))
     love.graphics.print("Skin: " .. player.skin, sbX, sbY - 15)
 
-    if player.skin == "gold" then
-        love.graphics.setColor(1, 0.8, 0) 
+    -- Draw skin image
+    local skinImage = skinImages[player.skin]
+    if skinImage then
+        love.graphics.setColor(1, 1, 1)
+        -- Draw image centered in the box, scaled to fit
+        local scale = (skinBoxSize - 10) / math.max(skinImage:getDimensions())
+        local ix = skinImage:getWidth()
+        local iy = skinImage:getHeight()
+        love.graphics.draw(skinImage, sbX + skinBoxSize / 2, sbY + skinBoxSize / 2, 0, scale, scale, ix / 2, iy / 2)
     else
-        love.graphics.setColor(0.8, 0, 0) 
+        -- Fallback if image not found
+        love.graphics.setColor(0.8, 0, 0)
+        love.graphics.circle("fill", sbX + 30, sbY + 30, 15)
     end
-    love.graphics.circle("fill", sbX + 30, sbY + 30, 15)
 
     -- 5. EVENT MESSAGES
     if eventMessage ~= "" then
