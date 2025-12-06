@@ -1,18 +1,19 @@
 -- src/states/explore.lua
-local Constants = require("src.constants")
-local Utils = require("src.utils")
 local Events = require("src.system.events")
 local Interactions = require("src.system.interactions")
 local ClickFiller = require("src.minigames.click_filler")
 
-local Explore = {}
-local currentMinigame = nil -- Holds the active minigame object
+-- Load Systems
+local InputManager = require("src.system.input_manager")
+local SceneRenderer = require("src.system.scene_renderer")
+local HUD = require("src.system.hud")
 
--- These will be passed in from main.lua
+local Explore = {}
+local currentMinigame = nil 
+
 local player, nodes, currentNode
-local clickZones = {}
 local eventMessage = ""
-local selectedSlot = nil -- Tracks the currently selected inventory slot
+local selectedSlot = nil 
 local gameFlags = { jewelry_robbery_done = false, has_gold_skin = false }
 
 function Explore.enter(pPlayer, pNodes, pStartNode)
@@ -20,18 +21,20 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	nodes = pNodes
 	currentNode = pStartNode
 	eventMessage = ""
-	selectedSlot = nil -- Reset selection when entering exploration
-	Explore.loadNodeMinigame()
+	selectedSlot = nil
+	
+    -- Initialize Systems
+    HUD.init()
+    SceneRenderer.init()
+    Explore.loadNodeMinigame()
 end
 
--- Helper to check data and load class
 function Explore.loadNodeMinigame()
-	currentMinigame = nil -- Reset
+	currentMinigame = nil 
 	if currentNode.minigame then
 		if currentNode.minigame.type == "click_filler" then
 			currentMinigame = ClickFiller.new(currentNode.minigame)
 		end
-		-- FIXME:Add other types here later (e.g. "puzzle_slider")
 	end
 end
 
@@ -39,13 +42,11 @@ function Explore.update(dt)
 	if player.health <= 0 then
 		return "gameover"
 	end
-	-- Run generic minigame logic if active
+	
 	if currentMinigame then
-		-- The update function returns: didWin, nextNodeId, winMessage
 		local won, nextNodeId, msg = currentMinigame:update(dt)
-
 		if won then
-			Explore.enterNode(nextNodeId) -- Move player to the win node
+			Explore.enterNode(nextNodeId) 
 			eventMessage = msg
 			return
 		end
@@ -53,162 +54,49 @@ function Explore.update(dt)
 end
 
 function Explore.draw()
-	clickZones = {} -- Reset click zones for this frame
+    -- 1. Reset Input Zones for this frame
+    InputManager.clear()
 
-	-- 1. Draw Background (Fixed Scaling)
-	if currentNode.image then
-		local windowWidth = love.graphics.getWidth()
-		local windowHeight = love.graphics.getHeight()
-		local imageWidth = currentNode.image:getWidth()
-		local imageHeight = currentNode.image:getHeight()
+    -- 2. Draw World
+	SceneRenderer.drawBackground(currentNode)
 
-		local scaleX = windowWidth / imageWidth
-		local scaleY = windowHeight / imageHeight
-
-		love.graphics.draw(currentNode.image, 0, 0, 0, scaleX, scaleY)
-	end
-
-	-- 2. Draw Text (Description)
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.printf(currentNode.description, 50, 50, 700, "left")
-
-	-- Draw Event Message (Yellow)
-	if eventMessage ~= "" then
-		love.graphics.setColor(1, 1, 0)
-		love.graphics.printf(eventMessage, 50, 100, 700, "left")
-	end
-
+    -- 3. Draw Minigame OR Items/Paths
 	if currentMinigame then
 		currentMinigame:draw()
 	else
-		-- 3. Draw Items (Clickable)
-		for i, item in ipairs(currentNode.items) do
-			local ix, iy = item.x or (100 + i * 60), item.y or 400
-			local iw, ih = item.w or Constants.GUI.item_scene_size, item.h or Constants.GUI.item_scene_size
-
-			if item.id == "attendant" then
-				love.graphics.setColor(0, 1, 0)
-			else
-				love.graphics.setColor(0, 0, 1)
-			end
-
-			love.graphics.rectangle("fill", ix, iy, iw, ih)
-			love.graphics.setColor(1, 1, 1)
-			love.graphics.print(item.name, ix, iy - 20)
-
-			table.insert(clickZones, { x = ix, y = iy, w = iw, h = ih, type = "item", id = item.id })
-		end
+        SceneRenderer.drawElements(currentNode)
 	end
 
-	-- 4. Draw Paths
-	local y = 200
-	love.graphics.setColor(1, 1, 1)
-	for pathName, targetId in pairs(currentNode.paths) do
-		local txt = "Go to " .. pathName
-		love.graphics.print(txt, 50, y)
-		local font = love.graphics.getFont()
-		table.insert(
-			clickZones,
-			{ x = 50, y = y, w = font:getWidth(txt), h = font:getHeight(), type = "path", targetId = targetId }
-		)
-		y = y + 30
-	end
-
-	-- 5. Draw HUD (Health & Inventory)
-	love.graphics.setColor(0.3, 0.3, 0.3)
-	love.graphics.rectangle("fill", 10, 10, 200, 20)
-	love.graphics.setColor(1, 0, 0)
-	love.graphics.rectangle("fill", 10, 10, player.health * 2, 20)
-	-- love.graphics.setColor(1, 1, 1)
-	love.graphics.print("Health: " .. player.health .. "%", 215, 12)
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.print("Skin: " .. player.skin, 700, 12)
-
-	-- Draw Description ABOVE inventory if selected, otherwise show title
-	if selectedSlot and player.inventory[selectedSlot] then
-		local item = player.inventory[selectedSlot]
-		love.graphics.setColor(0.96, 0.73, 0.12) -- Yellow text for description
-		-- Print description slightly higher than the title was
-		love.graphics.printf(item.description, Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 45, 700, "left")
-	else
-		love.graphics.setColor(1, 1, 1) -- (0.02, 0.63, 0.29) -- Green text for inventory title
-		love.graphics.print("INVENTORY", Constants.GUI.inv_start_x, Constants.GUI.inv_start_y - 25)
-	end
-
-	for i = 1, 8 do
-		local bx = Constants.GUI.inv_start_x + (i - 1) * (Constants.GUI.inv_slot_size + Constants.GUI.inv_padding)
-
-		-- Highlight the box if it is the selected slot
-		if i == selectedSlot then
-			love.graphics.setColor(0.96, 0.73, 0.12) -- Yellow border
-		else
-			love.graphics.setColor(0.02, 0.63, 0.29) -- Green border
-		end
-
-		love.graphics.rectangle(
-			"line", -- change to "fill" for the full boxes
-			bx,
-			Constants.GUI.inv_start_y,
-			Constants.GUI.inv_slot_size,
-			Constants.GUI.inv_slot_size,
-			5,
-			5 -- Rounded corners
-		)
-
-		if player.inventory[i] then
-			love.graphics.setColor(1, 1, 1) -- Reset to white for text
-			love.graphics.printf(
-				player.inventory[i].name,
-				bx,
-				Constants.GUI.inv_start_y + 15,
-				Constants.GUI.inv_slot_size,
-				"center"
-			)
-		end
-
-		-- NEW: Add inventory slot to clickZones so mousepressed can see it
-		table.insert(clickZones, {
-			x = bx,
-			y = Constants.GUI.inv_start_y,
-			w = Constants.GUI.inv_slot_size,
-			h = Constants.GUI.inv_slot_size,
-			type = "inventory",
-			slotIndex = i,
-		})
-	end
-	love.graphics.setColor(1, 1, 1, 1) -- Reset color
+    -- 4. Draw HUD (Health, Inventory, Messages)
+    HUD.draw(player, currentNode, eventMessage, selectedSlot)
 end
 
 function Explore.mousepressed(x, y, button)
 	if button == 1 then
-		-- Pass click to minigame first
+		-- Minigame priority
 		if currentMinigame then
 			local handled = currentMinigame:mousepressed(x, y)
-			-- If the minigame used the click, stop here (don't click items/inventory underneath)
-			if handled then
-				return
-			end
-		end
-		for _, zone in ipairs(clickZones) do
-			if Utils.checkCollision(x, y, 1, 1, zone.x, zone.y, zone.w, zone.h) then
-				if zone.type == "item" then
-					Explore.pickUp(zone.id)
-				elseif zone.type == "path" then
-					Explore.enterNode(zone.targetId)
-				-- Handle Inventory Clicks
-				elseif zone.type == "inventory" then
-					if player.inventory[zone.slotIndex] then
-						selectedSlot = zone.slotIndex
-					else
-						selectedSlot = nil -- Deselect if clicking empty slot
-					end
-				end
-				return
-			end
+			if handled then return end
 		end
 
-		-- If the loop finishes without hitting any buttons/items (deselects inventory slot)
-		selectedSlot = nil
+        -- Check Input Manager
+        local type, data = InputManager.handleMousePressed(x, y)
+        
+        if type == "item" then
+            Explore.pickUp(data)
+        elseif type == "path" then
+            Explore.enterNode(data)
+        elseif type == "inventory" then
+            -- Toggle selection
+            if player.inventory[data] then
+                selectedSlot = data
+            else
+                selectedSlot = nil
+            end
+        else
+            -- Clicked nothing (deselect)
+            selectedSlot = nil
+        end
 	end
 end
 
@@ -223,9 +111,8 @@ function Explore.enterNode(targetId)
 
 	currentNode = targetNode
 	eventMessage = msg or ""
-	selectedSlot = nil -- Deselect item when moving to a new room
-
-	Explore.loadNodeMinigame() -- Load minigame for the new room
+	selectedSlot = nil
+	Explore.loadNodeMinigame()
 end
 
 function Explore.pickUp(itemId)
@@ -247,7 +134,7 @@ function Explore.pickUp(itemId)
 	if itemObj then
 		if player:addItem(itemObj) then
 			table.remove(currentNode.items, itemIndex)
-			eventMessage = "Picked up: " .. itemObj.name -- Show confirmation on screen
+			eventMessage = "Picked up: " .. itemObj.name
 		else
 			eventMessage = "Inventory Full!"
 		end
