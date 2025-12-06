@@ -1,5 +1,5 @@
 -- src/events.lua
-local Item = require("src.item")
+local Item = require("src.entities.item")
 
 local Events = {}
 

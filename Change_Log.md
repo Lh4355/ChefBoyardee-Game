@@ -24,7 +24,6 @@ Day 4 (12/3/2025):
 - Nodes are now navigated by clicking on the node name
 - Inventory can be navigated by pressing keys 1-8 (I want to change this so that it is clickable)
 
-
 Day 5 (12/4/2025):
 - Added more images and another image folder
 - Added Has_Item function
@@ -36,3 +35,7 @@ Day 6 (12/5/2025):
 - Added event and interaction logic
 - Health bar added to screen
 - Gameover screen when you hit 0 health
+- Organized files into structured folders
+- 
+
+Day 7 (12/6/2025):

@@ -1,8 +1,8 @@
 -- src/states/explore.lua
 local Constants = require("src.constants")
 local Utils = require("src.utils")
-local Events = require("src.events")
-local Interactions = require("src.interactions")
+local Events = require("src.system.events")
+local Interactions = require("src.system.interactions")
 
 local Explore = {}
 

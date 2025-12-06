@@ -1,7 +1,7 @@
 -- main.lua
-local Node = require("src.node")
-local Item = require("src.item")
-local Player = require("src.player")
+local Node = require("src.entities.node")
+local Item = require("src.entities.item")
+local Player = require("src.entities.player")
 local map_nodes_data = require("src.data.map_nodes")
 
 -- Import States
