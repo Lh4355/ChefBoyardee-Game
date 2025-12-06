@@ -1,0 +1,144 @@
+-- src/states/explore.lua
+local Events = require("src.system.events")
+local Interactions = require("src.system.interactions")
+local ClickFiller = require("src.minigames.click_filler")
+
+-- Load Systems
+local InputManager = require("src.system.input_manager")
+local SceneRenderer = require("src.system.scene_renderer")
+local HUD = require("src.system.hud")
+
+local Explore = {}
+local currentMinigame = nil 
+
+local player, nodes, currentNode
+local eventMessage = ""
+local selectedSlot = nil 
+local gameFlags = { jewelry_robbery_done = false, has_gold_skin = false }
+
+function Explore.enter(pPlayer, pNodes, pStartNode)
+	player = pPlayer
+	nodes = pNodes
+	currentNode = pStartNode
+	eventMessage = ""
+	selectedSlot = nil
+	
+    -- Initialize Systems
+    HUD.init()
+    SceneRenderer.init()
+    Explore.loadNodeMinigame()
+end
+
+function Explore.loadNodeMinigame()
+	currentMinigame = nil 
+	if currentNode.minigame then
+		if currentNode.minigame.type == "click_filler" then
+			currentMinigame = ClickFiller.new(currentNode.minigame)
+		end
+	end
+end
+
+function Explore.update(dt)
+	if player.health <= 0 then
+		return "gameover"
+	end
+	
+	if currentMinigame then
+		local won, nextNodeId, msg = currentMinigame:update(dt)
+		if won then
+			Explore.enterNode(nextNodeId) 
+			eventMessage = msg
+			return
+		end
+	end
+end
+
+function Explore.draw()
+    -- 1. Reset Input Zones for this frame
+    InputManager.clear()
+
+    -- 2. Draw World
+	SceneRenderer.drawBackground(currentNode)
+
+    -- 3. Draw Minigame OR Items/Paths
+	if currentMinigame then
+		currentMinigame:draw()
+	else
+        SceneRenderer.drawElements(currentNode)
+	end
+
+    -- 4. Draw HUD (Health, Inventory, Messages)
+    HUD.draw(player, currentNode, eventMessage, selectedSlot)
+end
+
+function Explore.mousepressed(x, y, button)
+	if button == 1 then
+		-- Minigame priority
+		if currentMinigame then
+			local handled = currentMinigame:mousepressed(x, y)
+			if handled then return end
+		end
+
+        -- Check Input Manager
+        local type, data = InputManager.handleMousePressed(x, y)
+        
+        if type == "item" then
+            Explore.pickUp(data)
+        elseif type == "path" then
+            Explore.enterNode(data)
+        elseif type == "inventory" then
+            -- Toggle selection
+            if player.inventory[data] then
+                selectedSlot = data
+            else
+                selectedSlot = nil
+            end
+        else
+            -- Clicked nothing (deselect)
+            selectedSlot = nil
+        end
+	end
+end
+
+function Explore.enterNode(targetId)
+	local targetNode = nodes[targetId]
+	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags)
+
+	if not allowed then
+		eventMessage = msg or ""
+		return
+	end
+
+	currentNode = targetNode
+	eventMessage = msg or ""
+	selectedSlot = nil
+	Explore.loadNodeMinigame()
+end
+
+function Explore.pickUp(itemId)
+	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags)
+	if handled then
+		eventMessage = msg or ""
+		return
+	end
+
+	local itemIndex, itemObj
+	for i, item in ipairs(currentNode.items) do
+		if item.id == itemId then
+			itemIndex = i
+			itemObj = item
+			break
+		end
+	end
+
+	if itemObj then
+		if player:addItem(itemObj) then
+			table.remove(currentNode.items, itemIndex)
+			eventMessage = "Picked up: " .. itemObj.name
+		else
+			eventMessage = "Inventory Full!"
+		end
+	end
+end
+
+return Explore
