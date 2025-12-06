@@ -10,6 +10,13 @@ end
 
 -- Define events by Node ID
 Events.nodes = {
+
+	-- NODE 2: Aisle Floor (Fall Damage Event)
+    [2] = function(player, node, flags)
+        player:takeDamage(5) -- Deduct 5 health
+        return true, "Ouch! You hit the floor hard and took 5 damage."
+    end,
+
 	-- NODE 8: Scary Highway (Locked Path Example)
 	[8] = function(player, node, flags)
 		if not player:hasItem("rusty_key") then

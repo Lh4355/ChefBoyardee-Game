@@ -37,17 +37,17 @@ function ClickFiller.new(config)
 end
 
 function ClickFiller:update(dt)
+	-- Check Win Condition
+	if self.val >= self.max then
+		return true, self.winNode, self.winMsg
+	end
+
 	-- Decay the bar
 	if self.val > 0 then
 		self.val = self.val - (self.decay * dt)
 		if self.val < 0 then
 			self.val = 0
 		end
-	end
-
-	-- Check Win Condition
-	if self.val >= self.max then
-		return true, self.winNode, self.winMsg
 	end
 
 	return false
