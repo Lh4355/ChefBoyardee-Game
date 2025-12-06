@@ -20,13 +20,19 @@ return {
 
 		-- Data-Driven Minigame Config
 		minigame = {
-			type = "click_filler", -- Identifier for the logic
+			type = "click_filler",
 			imagePath = "src/data/images/sprites/angled_can.png",
-			decay = 30,
+
+			-- Config Image Properties
+			x = 448, -- X position (pixels)
+			y = 283, -- Y position (pixels)
+			scale = 0.35, -- 0.5 is half size, 2.0 is double size
+
+			decay = 25,
 			add = 15,
 			max = 100,
-			winNode = 2, -- Go to aisle_floor on win
-			winMsg = "You wobble off the edge and hit the floor!",
+			winNode = 2,
+			winMsg = "You wobble off the shelf and land on the aisle floor!",
 			prompt = "CLICK TO WOBBLE!",
 		},
 	},

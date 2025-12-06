@@ -7,20 +7,25 @@ function ClickFiller.new(config)
 	local instance = setmetatable({}, ClickFiller)
 
 	instance.imagePath = config.imagePath
-	instance.image = nil -- Load this later to be safe
+	instance.image = nil
 
-	-- Game settings (use defaults if not provided)
+	-- Game settings
 	instance.val = 0
 	instance.max = config.max or 100
-	instance.decay = config.decay or 30 -- How fast it drains
-	instance.add = config.add or 15 -- How much per click
-	instance.winNode = config.winNode -- Where to go when you win
+	instance.decay = config.decay or 30
+	instance.add = config.add or 15
+	instance.winNode = config.winNode
 	instance.winMsg = config.winMsg or "Success!"
 	instance.prompt = config.prompt or "CLICK ME!"
 
-	-- Load the image immediately if possible
+	-- NEW: Position and Scale Configuration
+	-- We default scale to 1 if not provided
+	instance.x = config.x
+	instance.y = config.y
+	instance.scale = config.scale or 1
+
+	-- Load the image
 	if instance.imagePath then
-		-- Change this block to print errors if loading fails
 		local status, result = pcall(function()
 			return love.graphics.newImage(instance.imagePath)
 		end)
@@ -29,7 +34,6 @@ function ClickFiller.new(config)
 			instance.image = result
 		else
 			print("ERROR: Could not load minigame image: " .. instance.imagePath)
-			print("Reason: " .. tostring(result))
 		end
 	end
 
@@ -37,12 +41,10 @@ function ClickFiller.new(config)
 end
 
 function ClickFiller:update(dt)
-	-- Check Win Condition
 	if self.val >= self.max then
 		return true, self.winNode, self.winMsg
 	end
 
-	-- Decay the bar
 	if self.val > 0 then
 		self.val = self.val - (self.decay * dt)
 		if self.val < 0 then
@@ -61,28 +63,30 @@ function ClickFiller:draw()
 	local w, h = love.graphics.getDimensions()
 	local imgW, imgH = self.image:getDimensions()
 
-	-- Calculate shake based on how full the bar is
+	-- Safety Check: Ensure we have defaults if x/y/scale are missing
+	local drawX = self.x or (w / 2)
+	local drawY = self.y or (h / 2)
+	local drawScale = self.scale or 1
+
+	-- Calculate shake
 	local shakeIntensity = (self.val / self.max) * 0.5
 	local rotation = math.sin(love.timer.getTime() * 30) * shakeIntensity
 
-	-- Draw Image Centered
+	-- Draw Image at specific X/Y with specific Scale
 	love.graphics.setColor(1, 1, 1)
-	love.graphics.draw(self.image, w / 2, h / 2, rotation, 1, 1, imgW / 2, imgH / 2)
+	love.graphics.draw(self.image, drawX, drawY, rotation, drawScale, drawScale, imgW / 2, imgH / 2)
 
-	-- Draw Bar Background
+	-- Draw UI Elements (Keeping these centered on screen for readability)
 	love.graphics.setColor(0, 0, 0, 0.7)
-	love.graphics.rectangle("fill", w / 2 - 100, h / 2 + 200, 200, 20)
+	love.graphics.rectangle("fill", w / 2 - 100, h - 100, 200, 20)
 
-	-- Draw Bar Fill (Orange)
 	love.graphics.setColor(1, 0.5, 0)
-	love.graphics.rectangle("fill", w / 2 - 100, h / 2 + 200, 200 * (self.val / self.max), 20)
+	love.graphics.rectangle("fill", w / 2 - 100, h - 100, 200 * (self.val / self.max), 20)
 
-	-- Draw Prompt Text
 	love.graphics.setColor(1, 1, 1)
-	love.graphics.printf(self.prompt, w / 2 - 100, h / 2 + 225, 200, "center")
+	love.graphics.printf(self.prompt, w / 2 - 100, h - 75, 200, "center")
 end
 
--- Returns true if clicked
 function ClickFiller:mousepressed(x, y)
 	if not self.image then
 		return false
@@ -91,11 +95,22 @@ function ClickFiller:mousepressed(x, y)
 	local w, h = love.graphics.getDimensions()
 	local imgW, imgH = self.image:getDimensions()
 
-	-- Hitbox check (centered image)
-	local startX = w / 2 - imgW / 2
-	local startY = h / 2 - imgH / 2
+	-- Safety Check: Ensure we have defaults
+	local centerX = self.x or (w / 2)
+	local centerY = self.y or (h / 2)
+	local checkScale = self.scale or 1
 
-	if x >= startX and x <= startX + imgW and y >= startY and y <= startY + imgH then
+	-- Calculate hitbox based on scale
+	-- The arithmetic error happened here because checkScale was nil
+	local scaledHalfW = (imgW * checkScale) / 2
+	local scaledHalfH = (imgH * checkScale) / 2
+
+	if
+		x >= centerX - scaledHalfW
+		and x <= centerX + scaledHalfW
+		and y >= centerY - scaledHalfH
+		and y <= centerY + scaledHalfH
+	then
 		self.val = self.val + self.add
 		if self.val > self.max then
 			self.val = self.max
