@@ -7,19 +7,57 @@
 -- FIXME: Did i link them all correctly
 
 return {
-    -- NODE 1: The Starting Area/Shelf
-    -- FIXME: Should the the person coming to look at them be an event?
-    -- FIXME: Should falling off the shelf be an event?
-    [1] = {
-        id = 1,
-        name = "shelf",
-        description =
-        "The cold metal of the shelf seeps into the aluminum of your can. A shopper picks you up and gazes at you longingly before setting you down. You are filled with a sense of determination.",
-        imagePath = "src/data/images/locations/shelf.png",
-        paths = {
-            aisle_floor = 2
-        }
-    },
+	-- NODE 1: The Starting Area/Shelf
+	-- FIXME: Should the the person coming to look at them be an event?
+	-- FIXME: Should falling off the shelf be an event?
+	[1] = {
+		id = 1,
+		name = "shelf",
+		description = "The cold metal of the shelf...",
+		imagePath = "src/data/images/locations/shelf.png",
+		paths = {},
+
+		minigame = {
+			type = "click_filler",
+			imagePath = "src/data/images/sprites/angled_can.png",
+
+			-- Position & Sprite
+			x = 448,
+			y = 283,
+			scale = 0.35,
+
+			-- Gameplay
+			decay = 25,
+			add = 15,
+			max = 100,
+			winNode = 2,
+			winMsg = "You wobble off the shelf!",
+
+			-- New Visual Customization --
+			prompt = "WOBBLE!",
+
+			-- 1. Bar Dimensions & Position
+			barWidth = 100,
+			barHeight = 15,
+			barX = 401,
+			barY = 382,
+
+			-- 2. Colors (R, G, B, A)
+			barColor = { 1, 0.84, 0, 1 }, -- Gold fill
+			barBgColor = { 0.2, 0.2, 0.2, 0.8 }, -- Dark Grey background
+			borderColor = { 1, 1, 1, 1 }, -- White border
+			borderWidth = 2,
+			textColor = { 1, 1, 1, 1 }, -- White text
+
+			-- 3. Font Customization
+			fontPath = "", -- src/data/fonts/RINGM___.TTF
+			fontSize = 15,
+
+			-- 4. Feel (Shake)
+			shakeIntensity = 0.2, -- Higher number = more violent shake
+			shakeSpeed = 30, -- Higher number = faster vibration
+		},
+	},
 
 	-- NODE 2: The Aisle Floor
 	-- FIXME: Add damage for falling off the shelf? Should this be an event (to remove the health)?
