@@ -20,7 +20,8 @@ return {
 			red = { 0.82, 0.11, 0.15 }, -- Dark red background for health
 			text_yellow = { 1, 0.9, 0.2, 1 }, -- Event text color
 			black_box = { 0, 0, 0, 0.7 }, -- Background for Node Name
-            grey = { 0.60, 0.62, 0.64 }
+            grey = { 0.60, 0.62, 0.64 },
+            white = { 1, 1, 1 }
 		},
 	},
 }

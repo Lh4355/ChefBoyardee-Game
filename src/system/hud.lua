@@ -23,12 +23,12 @@ function HUD.init()
 
 	-- Load skin images
 	skinImages = {
-		normal = love.graphics.newImage("src/data/images/sprites/can_default.png"),
-		normal_dented_1 = love.graphics.newImage("src/data/images/sprites/can_default_dented_1.png"),
-		normal_dented_2 = love.graphics.newImage("src/data/images/sprites/can_default_dented_2.png"),
-		normal_dented_3 = love.graphics.newImage("src/data/images/sprites/can_default_dented_3.png"),
-		normal_dented_4 = love.graphics.newImage("src/data/images/sprites/can_default_dented_4.png"),
-		normal_destroyed = love.graphics.newImage("src/data/images/sprites/can_default_destroyed.png"),
+		tin = love.graphics.newImage("src/data/images/sprites/can_tin.png"),
+		tin_dented_1 = love.graphics.newImage("src/data/images/sprites/can_tin_dented_1.png"),
+		tin_dented_2 = love.graphics.newImage("src/data/images/sprites/can_tin_dented_2.png"),
+		tin_dented_3 = love.graphics.newImage("src/data/images/sprites/can_tin_dented_3.png"),
+		tin_dented_4 = love.graphics.newImage("src/data/images/sprites/can_tin_dented_4.png"),
+		tin_destroyed = love.graphics.newImage("src/data/images/sprites/can_tin_destroyed.png"),
 
 		gold = love.graphics.newImage("src/data/images/sprites/can_gold.png"),
 		gold_dented_1 = love.graphics.newImage("src/data/images/sprites/can_gold_dented_1.png"),
@@ -129,21 +129,29 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.printf(nodeName, 0, 15, w, "center")
 
-	-- 4. TOP RIGHT: SKIN BOX
-	local skinBoxSize = 60
-	local sbX = w - 90
-	local sbY = 20
+	-- SKIN DISPLAY BOX
+	local skinBoxSize = 100
+	local sbX = w - 1 - skinBoxSize
+	local sbY = 0
 
-	love.graphics.setColor(0.5, 0.5, 0.5)
+	love.graphics.setColor(unpack(gui.COLORS.grey))
 	love.graphics.rectangle("fill", sbX, sbY, skinBoxSize, skinBoxSize)
 
-	love.graphics.setColor(0, 0.6, 0)
-	love.graphics.setLineWidth(5)
+	love.graphics.setColor(unpack(gui.COLORS.green_panel))
+	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("line", sbX, sbY, skinBoxSize, skinBoxSize)
 
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.setFont(love.graphics.newFont(10))
-	love.graphics.print("Skin: " .. player.skin, sbX, sbY - 15)
+    love.graphics.setColor(unpack(gui.COLORS.grey))
+    love.graphics.rectangle("fill", sbX, sbY + skinBoxSize, skinBoxSize, 20)
+
+    love.graphics.setColor(unpack(gui.COLORS.green_panel))
+    love.graphics.setLineWidth(4)
+    love.graphics.rectangle("line", sbX, sbY + skinBoxSize, skinBoxSize, 20)
+
+	love.graphics.setColor(unpack(gui.COLORS.green_panel))
+	-- love.graphics.setFont(love.graphics.newFont(10))
+    love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 1)
+	love.graphics.print("Skin: " .. player.skin, sbX + 5, sbY + skinBoxSize + 5)
 
 	-- Draw skin image
 	local skinImage = skinImages[player.skin]
