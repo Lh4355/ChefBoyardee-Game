@@ -20,20 +20,32 @@ return {
 
 		-- Data-Driven Minigame Config
 		minigame = {
+            -- Minigame Type
 			type = "click_filler",
+
+            -- Sprite Image
 			imagePath = "src/data/images/sprites/angled_can.png",
 
-			-- Config Image Properties
-			x = 448, -- X position (pixels)
-			y = 283, -- Y position (pixels)
-			scale = 0.35, -- 0.5 is half size, 2.0 is double size
+			-- Sprite Config
+			x = 448,
+			y = 283,
+			scale = 0.345,
 
-			decay = 25,
+			-- Gameplay Config
+			decay = 30,
 			add = 15,
 			max = 100,
 			winNode = 2,
 			winMsg = "You wobble off the shelf and land on the aisle floor!",
+
+			-- UI / Bar Configuration
 			prompt = "CLICK TO WOBBLE!",
+			barX = 400, -- X Position of the bar
+			barY = 380, -- Y Position of the bar
+			barWidth = 100, -- Make the bar wider
+			barHeight = 10, -- Make the bar taller
+			barColor = { 0, 1, 0, 1 }, -- Green bar {r, g, b, alpha}
+			textColor = { 1, 1, 0, 1 }, -- Yellow text {r, g, b, alpha}
 		},
 	},
 

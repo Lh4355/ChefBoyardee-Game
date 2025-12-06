@@ -18,11 +18,22 @@ function ClickFiller.new(config)
 	instance.winMsg = config.winMsg or "Success!"
 	instance.prompt = config.prompt or "CLICK ME!"
 
-	-- NEW: Position and Scale Configuration
-	-- We default scale to 1 if not provided
+	-- Sprite Position and Scale
 	instance.x = config.x
 	instance.y = config.y
 	instance.scale = config.scale or 1
+
+	-- [NEW] Bar Configuration (with defaults if not provided)
+	instance.barWidth = config.barWidth or 200
+	instance.barHeight = config.barHeight or 20
+	-- If barX/barY are nil, we calculate them in the draw function relative to screen center
+	instance.barX = config.barX
+	instance.barY = config.barY
+
+	-- [NEW] Colors (Default to Orange and White)
+	-- format: {r, g, b, a}
+	instance.barColor = config.barColor or { 1, 0.5, 0, 1 }
+	instance.textColor = config.textColor or { 1, 1, 1, 1 }
 
 	-- Load the image
 	if instance.imagePath then
@@ -56,35 +67,44 @@ function ClickFiller:update(dt)
 end
 
 function ClickFiller:draw()
-	if not self.image then
-		return
-	end
-
 	local w, h = love.graphics.getDimensions()
-	local imgW, imgH = self.image:getDimensions()
 
-	-- Safety Check: Ensure we have defaults if x/y/scale are missing
-	local drawX = self.x or (w / 2)
-	local drawY = self.y or (h / 2)
-	local drawScale = self.scale or 1
+	-- 1. Draw The Can Sprite
+	if self.image then
+		local imgW, imgH = self.image:getDimensions()
+		local drawX = self.x or (w / 2)
+		local drawY = self.y or (h / 2)
+		local drawScale = self.scale or 1
 
-	-- Calculate shake
-	local shakeIntensity = (self.val / self.max) * 0.5
-	local rotation = math.sin(love.timer.getTime() * 30) * shakeIntensity
+		-- Calculate shake
+		local shakeIntensity = (self.val / self.max) * 0.5
+		local rotation = math.sin(love.timer.getTime() * 30) * shakeIntensity
 
-	-- Draw Image at specific X/Y with specific Scale
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.draw(self.image, drawX, drawY, rotation, drawScale, drawScale, imgW / 2, imgH / 2)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.draw(self.image, drawX, drawY, rotation, drawScale, drawScale, imgW / 2, imgH / 2)
+	end
+    
+	-- 2. Draw The UI (Only if active)
+	-- Check if val > 0. If it is 0, the bar is hidden.
+	if self.val > 0 then
+		-- 2. Draw The Wobble Bar
+		-- Determine Position: Use config if provided, otherwise default to bottom center
+		local bx = self.barX or (w / 2 - self.barWidth / 2)
+		local by = self.barY or (h - 100)
 
-	-- Draw UI Elements (Keeping these centered on screen for readability)
-	love.graphics.setColor(0, 0, 0, 0.7)
-	love.graphics.rectangle("fill", w / 2 - 100, h - 100, 200, 20)
+		-- Draw Background (Black transparent)
+		love.graphics.setColor(0, 0, 0, 0.7)
+		love.graphics.rectangle("fill", bx, by, self.barWidth, self.barHeight)
 
-	love.graphics.setColor(1, 0.5, 0)
-	love.graphics.rectangle("fill", w / 2 - 100, h - 100, 200 * (self.val / self.max), 20)
+		-- Draw Foreground (Dynamic Color)
+		love.graphics.setColor(unpack(self.barColor))
+		love.graphics.rectangle("fill", bx, by, self.barWidth * (self.val / self.max), self.barHeight)
 
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.printf(self.prompt, w / 2 - 100, h - 75, 200, "center")
+		-- 3. Draw Text
+		love.graphics.setColor(unpack(self.textColor))
+		-- Text is centered on the bar, slightly below it
+		love.graphics.printf(self.prompt, bx, by + 25, self.barWidth, "center")
+	end
 end
 
 function ClickFiller:mousepressed(x, y)
@@ -100,8 +120,6 @@ function ClickFiller:mousepressed(x, y)
 	local centerY = self.y or (h / 2)
 	local checkScale = self.scale or 1
 
-	-- Calculate hitbox based on scale
-	-- The arithmetic error happened here because checkScale was nil
 	local scaledHalfW = (imgW * checkScale) / 2
 	local scaledHalfH = (imgH * checkScale) / 2
 
