@@ -9,7 +9,7 @@ function Player.new(name, x, y)
 	instance.y = y
 	instance.health = 100
 	instance.inventory = {}
-	instance.skin = "normal"
+	instance.skin = "tin"
 	return instance
 end
 
