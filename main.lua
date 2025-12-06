@@ -38,6 +38,16 @@ function love.load()
     testItem.h = Constants.GUI.item_scene_size
     table.insert(nodes[1].items, testItem)
 
+
+    -- 4. Load and Play Background Music
+    -- "stream" tells Love2D to stream it from the disk (good for long music)
+    -- "static" would be used for short sound effects (keeps it in memory)
+    local music = love.audio.newSource("src/data/audio/chef_music.mp3", "stream")
+    music:setLooping(true) -- Make it repeat forever
+    music:setVolume(0.5)   -- Set volume (0.0 to 1.0)
+    music:play()
+
+
     -- 4. Start Game in Menu
     SwitchState(Menu)
 end

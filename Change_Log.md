@@ -36,6 +36,7 @@ Day 6 (12/5/2025):
 - Health bar added to screen
 - Gameover screen when you hit 0 health
 - Organized files into structured folders
-- 
+- Added background and font to main menu
+- Added music
 
 Day 7 (12/6/2025):

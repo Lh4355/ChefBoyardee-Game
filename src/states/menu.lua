@@ -2,9 +2,15 @@
 local Menu = {}
 
 local background_image
+local title_font
+local text_font
 
 function Menu.enter()
+	-- Load Background Image
 	background_image = love.graphics.newImage("src/data/images/image1.png")
+	-- Load the Hobbit-style fonts
+	title_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 60)
+	text_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 20)
 end
 
 function Menu.update(dt)
@@ -17,31 +23,50 @@ function Menu.draw()
 
 	love.graphics.setColor(1, 1, 1) -- White
 
-	-- Draw the background image FIRST (so it sits behind the text)
-    if background_image then
-        -- Calculate scale factor to make image fit the screen
-        local sx = windowWidth / background_image:getWidth()
-        local sy = windowHeight / background_image:getHeight()
-        
-        -- Draw image at 0,0 with scale factors sx and sy
-        love.graphics.draw(background_image, 0, 0, 0, sx, sy)
-    end
+	-- 1. Draw Background
+	if background_image then
+		local sx = windowWidth / background_image:getWidth()
+		local sy = windowHeight / background_image:getHeight()
+		love.graphics.draw(background_image, 0, 0, 0, sx, sy)
+	end
 
-	-- Draw Title (Centered)
+	-- 2. Draw Title
 	local title = "The Rolling Can"
-	local font = love.graphics.getFont()
-	local titleWidth = font:getWidth(title)
 
-	love.graphics.setColor(0, 0, 0) -- Black shadow?
-    love.graphics.print(title, (windowWidth - titleWidth) / 2 + 2, 202)
-    
-    love.graphics.setColor(1, 1, 1) -- White text
-    love.graphics.print(title, (windowWidth - titleWidth) / 2, 200)
+	-- Set Title Font
+	if title_font then
+		love.graphics.setFont(title_font)
+	end
 
-	-- Draw Instruction
+	-- Calculate Title Width using the current font
+	local currentFont = love.graphics.getFont()
+	local titleWidth = currentFont:getWidth(title)
+
+	-- Draw Shadow & Title
+	love.graphics.setColor(0, 0, 0)
+	love.graphics.print(title, (windowWidth - titleWidth) / 2 + 3, 203)
+
+	love.graphics.setColor(1, 0.8, 0.2) -- Gold
+	love.graphics.print(title, (windowWidth - titleWidth) / 2, 200)
+
+	-- 3. Draw Instruction
 	local text = "Press ENTER or CLICK to Start"
-	local textWidth = font:getWidth(text)
-	love.graphics.print(text, (windowWidth - textWidth) / 2, 300)
+
+	-- Switch to Text Font
+	if text_font then
+		love.graphics.setFont(text_font)
+	end
+
+	-- Update the font variable to the NEW font before calculating width
+	currentFont = love.graphics.getFont()
+	local textWidth = currentFont:getWidth(text)
+
+	love.graphics.setColor(1, 1, 1) -- White
+	love.graphics.print(text, (windowWidth - textWidth) / 2, 350)
+
+
+	-- FIXME: where should i put this to reset font for small text later?
+	love.graphics.setFont(love.graphics.newFont(12)) -- Uncomment to reset font for small text
 end
 
 function Menu.mousepressed(x, y, button)
