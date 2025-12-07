@@ -32,3 +32,4 @@ Prettification Needed
 
 Bugs
 - Lose extra 5 health sometimes when going from node 1 -> 2 (shelf -> aisle) 
+- If the living room is not unlock, you cannot enter it when you go through the backyard->kitchen->living_room path

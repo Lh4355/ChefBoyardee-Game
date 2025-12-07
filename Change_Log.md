@@ -51,3 +51,5 @@ Day 8 (12/7/2025):
 - Added last intersection image
 - Added funtional jewelry story robbery with a chance to miss it and changing images.
 - Added puting out the dumpster fire to get key and unlock front door
+- Moved more code of out of explore.lua and put it into utils.lua and game_state.lua (dumpster fire and robbery made it too crowded)
+- 

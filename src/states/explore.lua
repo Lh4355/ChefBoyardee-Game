@@ -1,7 +1,10 @@
 -- src/states/explore.lua
+
 local Events = require("src.system.events")
 local Interactions = require("src.system.interactions")
 local ClickFiller = require("src.minigames.click_filler")
+local Utils = require("src.utils")
+local GameState = require("src.system.game_state")
 
 -- Load Systems
 local InputManager = require("src.system.input_manager")
@@ -14,7 +17,7 @@ local currentMinigame = nil
 local player, nodes, currentNode
 local eventMessage = ""
 local selectedSlot = nil
-local gameFlags = { jewelry_robbery_done = false, has_gold_skin = false }
+local gameFlags = GameState.new() -- Initialize once for persistent state
 
 function Explore.enter(pPlayer, pNodes, pStartNode)
 	player = pPlayer
@@ -22,6 +25,7 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	currentNode = pStartNode
 	eventMessage = ""
 	selectedSlot = nil
+	-- Do not reset gameFlags here; it should persist across state transitions
 
 	-- Initialize Systems
 	HUD.init()
@@ -126,31 +130,8 @@ function Explore.enterNode(targetId)
 
 	-- If the player is leaving intersection_1 (node 5) on its first visit
 	-- and they did not enter the jewelry store (17), mark the robbery as missed.
-	if prevNode and prevNode.id == 5 and gameFlags.jewelry_robbery_pending then
-		-- If player hasn't visited jewelry store yet, they missed the robbery
-		if not player:hasVisited(17) then
-			gameFlags.jewelry_store_missed = true
-			gameFlags.jewelry_robbery_done = true
-			gameFlags.jewelry_robbery_pending = false
-			-- Update jewelry store node to be empty
-			if nodes[17] then
-				nodes[17].imagePath = "src/data/images/locations/jewelry_store_empty.png"
-				nodes[17].description = "The jewelry shop is empty."
-				-- Reload the image from the new path
-				local success, img = pcall(love.graphics.newImage, nodes[17].imagePath)
-				if success then
-					nodes[17].image = img
-				end
-				-- remove any robber/attendant items just in case
-				local newItems = {}
-				for _, it in ipairs(nodes[17].items or {}) do
-					if it.id ~= "robber" and it.id ~= "attendant" then
-						table.insert(newItems, it)
-					end
-				end
-				nodes[17].items = newItems
-			end
-		end
+	if prevNode and prevNode.id == 5 then
+		gameFlags:handleMissedJewelryRobbery(nodes, player)
 	end
 	Explore.loadNodeMinigame()
 end
@@ -175,10 +156,7 @@ function Explore.pickUp(itemId)
 			eventMessage = msg or ""
 
 			-- Update sketchy_alley description if fire was extinguished
-			if gameFlags.sketchy_alley_needs_update and nodes[12] then
-				nodes[12].description = "It is a sketchy alley."
-				gameFlags.sketchy_alley_needs_update = false
-			end
+			gameFlags:handleSketchyAlleyUpdate(nodes)
 
 			-- Deselect the item after use
 			selectedSlot = nil
@@ -195,10 +173,7 @@ function Explore.pickUp(itemId)
 		eventMessage = msg or ""
 
 		-- Update sketchy_alley description if fire was extinguished
-		if gameFlags.sketchy_alley_needs_update and nodes[12] then
-			nodes[12].description = "It is a sketchy alley."
-			gameFlags.sketchy_alley_needs_update = false
-		end
+		gameFlags:handleSketchyAlleyUpdate(nodes)
 
 		-- Deselect the item after use
 		selectedSlot = nil
