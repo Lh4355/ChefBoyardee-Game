@@ -311,7 +311,7 @@ return {
 		id = 21,
 		name = "outside_house",
 		description = "Outside of House",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/outside_house.png",
 		paths = {
 			-- park = 22,
 			neighborhood_street = 10,
@@ -341,7 +341,7 @@ return {
 		id = 23,
 		name = "front_porch",
 		description = "Front Porch",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/front_porch.png",
 		paths = {
 			outside_house = 21,
 			-- front_door = 2, -- FIXME: idk if i want to add this rn
@@ -355,7 +355,7 @@ return {
 		id = 24,
 		name = "backyard",
 		description = "Backyard",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/backyard.png",
 		paths = {
 			kitchen = 25,
 			outside_house = 21,
@@ -367,7 +367,7 @@ return {
 		id = 25,
 		name = "kitchen",
 		description = "Kitchen",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/kitchen.png",
 		paths = {
 			backyard = 24,
 			living_room = 26,
@@ -379,7 +379,7 @@ return {
 		id = 26,
 		name = "living_room",
 		description = "Living Room",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/living_room.png",
 		paths = {
 			kitchen = 25,
 			victory_bowl = 27,
@@ -393,7 +393,7 @@ return {
 		id = 27,
 		name = "victory_bowl",
 		description = "Victory Bowl. You Win!",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/victory_bowl.png",
 		paths = {},
 	},
 
