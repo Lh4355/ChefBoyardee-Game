@@ -1,7 +1,10 @@
 -- src/states/explore.lua
+
 local Events = require("src.system.events")
 local Interactions = require("src.system.interactions")
 local ClickFiller = require("src.minigames.click_filler")
+local Utils = require("src.utils")
+local GameState = require("src.system.game_state")
 
 -- Load Systems
 local InputManager = require("src.system.input_manager")
@@ -9,12 +12,12 @@ local SceneRenderer = require("src.system.scene_renderer")
 local HUD = require("src.system.hud")
 
 local Explore = {}
-local currentMinigame = nil 
+local currentMinigame = nil
 
 local player, nodes, currentNode
 local eventMessage = ""
-local selectedSlot = nil 
-local gameFlags = { jewelry_robbery_done = false, has_gold_skin = false }
+local selectedSlot = nil
+local gameFlags = GameState.new() -- Initialize once for persistent state
 
 function Explore.enter(pPlayer, pNodes, pStartNode)
 	player = pPlayer
@@ -22,15 +25,20 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	currentNode = pStartNode
 	eventMessage = ""
 	selectedSlot = nil
-	
-    -- Initialize Systems
-    HUD.init()
-    SceneRenderer.init()
-    Explore.loadNodeMinigame()
+	-- Do not reset gameFlags here; it should persist across state transitions
+
+	-- Initialize Systems
+	HUD.init()
+	SceneRenderer.init()
+	-- Mark starting node as visited
+	if player and currentNode and player.visitNode then
+		player:visitNode(currentNode.id)
+	end
+	Explore.loadNodeMinigame()
 end
 
 function Explore.loadNodeMinigame()
-	currentMinigame = nil 
+	currentMinigame = nil
 	if currentNode.minigame then
 		if currentNode.minigame.type == "click_filler" then
 			currentMinigame = ClickFiller.new(currentNode.minigame)
@@ -42,11 +50,11 @@ function Explore.update(dt)
 	if player.health <= 0 then
 		return "gameover"
 	end
-	
+
 	if currentMinigame then
 		local won, nextNodeId, msg = currentMinigame:update(dt)
 		if won then
-			Explore.enterNode(nextNodeId) 
+			Explore.enterNode(nextNodeId)
 			eventMessage = msg
 			return
 		end
@@ -54,21 +62,21 @@ function Explore.update(dt)
 end
 
 function Explore.draw()
-    -- 1. Reset Input Zones for this frame
-    InputManager.clear()
+	-- 1. Reset Input Zones for this frame
+	InputManager.clear()
 
-    -- 2. Draw World
+	-- 2. Draw World
 	SceneRenderer.drawBackground(currentNode)
 
-    -- 3. Draw Minigame OR Items/Paths
+	-- 3. Draw Minigame OR Items/Paths
 	if currentMinigame then
 		currentMinigame:draw()
 	else
-        SceneRenderer.drawElements(currentNode)
+		SceneRenderer.drawElements(currentNode)
 	end
 
-    -- 4. Draw HUD (Health, Inventory, Messages)
-    HUD.draw(player, currentNode, eventMessage, selectedSlot)
+	-- 4. Draw HUD (Health, Inventory, Messages)
+	HUD.draw(player, currentNode, eventMessage, selectedSlot)
 end
 
 function Explore.mousepressed(x, y, button)
@@ -76,31 +84,34 @@ function Explore.mousepressed(x, y, button)
 		-- Minigame priority
 		if currentMinigame then
 			local handled = currentMinigame:mousepressed(x, y)
-			if handled then return end
+			if handled then
+				return
+			end
 		end
 
-        -- Check Input Manager
-        local type, data = InputManager.handleMousePressed(x, y)
-        
-        if type == "item" then
-            Explore.pickUp(data)
-        elseif type == "path" then
-            Explore.enterNode(data)
-        elseif type == "inventory" then
-            -- Toggle selection
-            if player.inventory[data] then
-                selectedSlot = data
-            else
-                selectedSlot = nil
-            end
-        else
-            -- Clicked nothing (deselect)
-            selectedSlot = nil
-        end
+		-- Check Input Manager
+		local type, data = InputManager.handleMousePressed(x, y)
+
+		if type == "item" then
+			Explore.pickUp(data)
+		elseif type == "path" then
+			Explore.enterNode(data)
+		elseif type == "inventory" then
+			-- Toggle selection
+			if player.inventory[data] then
+				selectedSlot = data
+			else
+				selectedSlot = nil
+			end
+		else
+			-- Clicked nothing (deselect)
+			selectedSlot = nil
+		end
 	end
 end
 
 function Explore.enterNode(targetId)
+	local prevNode = currentNode
 	local targetNode = nodes[targetId]
 	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags)
 
@@ -112,13 +123,61 @@ function Explore.enterNode(targetId)
 	currentNode = targetNode
 	eventMessage = msg or ""
 	selectedSlot = nil
+	-- Mark the node as visited for tracking
+	if player and currentNode and player.visitNode then
+		player:visitNode(currentNode.id)
+	end
+
+	-- If the player is leaving intersection_1 (node 5) on its first visit
+	-- and they did not enter the jewelry store (17), mark the robbery as missed.
+	if prevNode and prevNode.id == 5 then
+		gameFlags:handleMissedJewelryRobbery(nodes, player)
+	end
 	Explore.loadNodeMinigame()
 end
 
 function Explore.pickUp(itemId)
-	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags)
+	-- Get selected item ID from inventory slot if one is selected
+	local selectedItemId = nil
+	if selectedSlot and player.inventory[selectedSlot] then
+		selectedItemId = player.inventory[selectedSlot].id
+	end
+
+	-- Define items that can only be interacted with, not picked up
+	local interactionOnlyItems = {
+		["dumpster_fire"] = true,
+		["front_door"] = true,
+	}
+
+	-- If the item is interaction-only, try to interact with it
+	if interactionOnlyItems[itemId] then
+		local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
+		if handled then
+			eventMessage = msg or ""
+
+			-- Update sketchy_alley description if fire was extinguished
+			gameFlags:handleSketchyAlleyUpdate(nodes)
+
+			-- Deselect the item after use
+			selectedSlot = nil
+		else
+			-- Interaction failed, show the message but don't allow pickup
+			eventMessage = msg or ""
+		end
+		return
+	end
+
+	-- Try normal interaction for non-pickup-only items
+	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
 	if handled then
 		eventMessage = msg or ""
+
+		-- Update sketchy_alley description if fire was extinguished
+		gameFlags:handleSketchyAlleyUpdate(nodes)
+
+		-- Deselect the item after use
+		selectedSlot = nil
+
 		return
 	end
 

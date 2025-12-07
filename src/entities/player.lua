@@ -10,6 +10,7 @@ function Player.new(name, x, y)
 	instance.health = 100
 	instance.inventory = {}
 	instance.skin = "tin"
+	instance.visitedNodes = {}
 	return instance
 end
 
@@ -52,6 +53,26 @@ function Player:heal(amount)
 		self.health = 100
 	end
 	print("Player healed " .. amount .. ". Health is now: " .. self.health)
+end
+
+-- Check if player has visited a node by ID
+function Player:hasVisited(nodeId)
+	for _, id in ipairs(self.visitedNodes) do
+		if id == nodeId then
+			return true
+		end
+	end
+	return false
+end
+
+-- Mark a node as visited (avoid duplicates)
+function Player:visitNode(nodeId)
+	if not nodeId then
+		return
+	end
+	if not self:hasVisited(nodeId) then
+		table.insert(self.visitedNodes, nodeId)
+	end
 end
 
 return Player
