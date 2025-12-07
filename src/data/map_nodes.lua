@@ -60,7 +60,6 @@ return {
 	},
 
 	-- NODE 2: The Aisle Floor
-	-- FIXME: Add damage for falling off the shelf? Should this be an event (to remove the health)?
 	[2] = {
 		id = 2,
 		name = "aisle_floor",
@@ -76,7 +75,7 @@ return {
 		id = 3,
 		name = "outside_store",
 		description = "The air blinds you as you exit the grocery store. The noise of the people and passing cars overwhelms your senses.",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/outside_store.png",
 		paths = {
 			road_1 = 4,
 			aisle_floor = 2,
@@ -142,7 +141,7 @@ return {
 		id = 8,
 		name = "scary_highway",
 		description = "Scary, busy highway (goes to sketchy alley or steep downhill)",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/scary_highway.png",
 		paths = {
 			intersection_1 = 5,
 			steep_hill = 11,
@@ -156,7 +155,7 @@ return {
 		id = 9,
 		name = "gravel_path",
 		description = "Gravel Path (from Road 2-> Neighborhood street)",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/gravel_path.png",
 		paths = {
 			neighborhood_street = 10,
 			road_3 = 7,
@@ -169,7 +168,7 @@ return {
 		id = 10,
 		name = "neighborhood_street",
 		description = "Neighborhood Street",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/neighborhood_street.png",
 		paths = {
 			gravel_path = 9,
 			steep_hill = 11,
@@ -184,7 +183,7 @@ return {
 		id = 11,
 		name = "steep_hill",
 		description = "Steep Hill (connects scary_highway to neighborhood_street)",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/steep_hill.png",
 		paths = {
 			neighborhood_street = 10,
 			scary_highway = 8,

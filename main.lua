@@ -40,7 +40,7 @@ function love.load()
 	local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
 	testItem.w = Constants.GUI.item_scene_size
 	testItem.h = Constants.GUI.item_scene_size
-	table.insert(nodes[1].items, testItem)
+	table.insert(nodes[2].items, testItem)
 
 	-- 4. Load and Play Background Music
 	-- "stream" tells Love2D to stream it from the disk (good for long music)
