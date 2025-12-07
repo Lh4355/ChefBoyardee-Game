@@ -44,4 +44,7 @@ Day 7 (12/6/2025):
 - Shelf wobble minigame added for node 1
 - Added can images to sprites folder for gold and normal cans
 - Broke up the explore file into smaller files
-- 
+- Scaled down nodes (commented them out)
+- Finished adding location images for scaled down node map
+
+Day 8 (12/7/2025):
