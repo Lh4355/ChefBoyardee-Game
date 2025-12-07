@@ -17,7 +17,7 @@ function love.load()
 	io.stdout:setvbuf("no")
 
 	-- 1. Load Nodes
-	for id, data in ipairs(map_nodes_data) do
+	for id, data in pairs(map_nodes_data) do
 		local newNode = Node.new(data.id, data.name or "Unnamed", data.description, data.imagePath)
 		nodes[id] = newNode
 		if data.imagePath then

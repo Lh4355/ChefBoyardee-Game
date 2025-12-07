@@ -77,24 +77,23 @@ return {
 		description = "The air blinds you as you exit the grocery store. The noise of the people and passing cars overwhelms your senses.",
 		imagePath = "src/data/images/locations/outside_store.png",
 		paths = {
-			road_1 = 4,
+			intersection_1 = 5,
 			aisle_floor = 2,
-			behind_store = 34,
 		},
 	},
 
-	-- NODE 4: Road 1
-	-- FIXME: maybe add a sewer grate
-	[4] = {
-		id = 4,
-		name = "road_1",
-		description = "Road 1 (Outside Grocery Store)",
-		imagePath = nil,
-		paths = {
-			intersection_1 = 5,
-			outside_store = 3,
-		},
-	},
+	-- -- NODE 4: Road 1
+	-- -- FIXME: maybe add a sewer grate
+	-- [4] = {
+	-- 	id = 4,
+	-- 	name = "road_1",
+	-- 	description = "Road 1 (Outside Grocery Store)",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		intersection_1 = 5,
+	-- 		outside_store = 3,
+	-- 	},
+	-- },
 
 	-- NODE 5: Main Intersection
 	[5] = {
@@ -103,38 +102,37 @@ return {
 		description = "Intersection 1 (main one)",
 		imagePath = nil,
 		paths = {
-			road_1 = 4,
-			road_2 = 6,
-			road_3 = 7,
+			outside_store = 3,
+			jewelry_store = 17,
 			scary_highway = 8,
 		},
 	},
 
-	-- NODE 7: Road 2
-	[6] = {
-		id = 6,
-		name = "road_2",
-		description = "Road 2 (goes to shops)",
-		imagePath = nil,
-		paths = {
-			shops = 16,
-			intersection_1 = 5,
-		},
-	},
+	-- -- NODE 7: Road 2
+	-- [6] = {
+	-- 	id = 6,
+	-- 	name = "road_2",
+	-- 	description = "Road 2 (goes to shops)",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		shops = 16,
+	-- 		intersection_1 = 5,
+	-- 	},
+	-- },
 
-	-- NODE 7: Road 3
-	[7] = {
-		id = 7,
-		name = "road_3",
-		description = "Road 3 (goes to cannery and gravel path)",
-		imagePath = nil,
-		paths = {
-			intersection_1 = 5,
-			gravel_path = 9,
-			cannery = 18,
-			intersection_2 = 15,
-		},
-	},
+	-- -- NODE 7: Road 3
+	-- [7] = {
+	-- 	id = 7,
+	-- 	name = "road_3",
+	-- 	description = "Road 3 (goes to cannery and gravel path)",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		intersection_1 = 5,
+	-- 		gravel_path = 9,
+	-- 		cannery = 18,
+	-- 		intersection_2 = 15,
+	-- 	},
+	-- },
 
 	-- NODE 8: Scary Highway
 	[8] = {
@@ -149,19 +147,19 @@ return {
 		},
 	},
 
-	-- NODE 9: Gravel Path
-	-- FIXME: add event to take health away if the can takes the gravel path
-	[9] = {
-		id = 9,
-		name = "gravel_path",
-		description = "Gravel Path (from Road 2-> Neighborhood street)",
-		imagePath = "src/data/images/locations/gravel_path.png",
-		paths = {
-			neighborhood_street = 10,
-			road_3 = 7,
-			movers_house = 32,
-		},
-	},
+	-- -- NODE 9: Gravel Path
+	-- -- FIXME: add event to take health away if the can takes the gravel path
+	-- [9] = {
+	-- 	id = 9,
+	-- 	name = "gravel_path",
+	-- 	description = "Gravel Path (from Road 2-> Neighborhood street)",
+	-- 	imagePath = "src/data/images/locations/gravel_path.png",
+	-- 	paths = {
+	-- 		neighborhood_street = 10,
+	-- 		road_3 = 7,
+	-- 		movers_house = 32,
+	-- 	},
+	-- },
 
 	-- NODE 10: Neighborhood Street
 	[10] = {
@@ -170,10 +168,10 @@ return {
 		description = "Neighborhood Street",
 		imagePath = "src/data/images/locations/neighborhood_street.png",
 		paths = {
-			gravel_path = 9,
+			-- gravel_path = 9,
 			steep_hill = 11,
-			recycling_house = 33,
-			movers_house = 32,
+			-- recycling_house = 33,
+			-- movers_house = 32,
 			outside_house = 21,
 		},
 	},
@@ -204,56 +202,56 @@ return {
 		},
 	},
 
-	-- NODE 13: Road 4
-	[13] = {
-		id = 13,
-		name = "road_4",
-		description = "Road 4",
-		imagePath = nil,
-		paths = {
-			dump = 19,
-			park = 22,
-		},
-	},
+	-- -- NODE 13: Road 4
+	-- [13] = {
+	-- 	id = 13,
+	-- 	name = "road_4",
+	-- 	description = "Road 4",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		dump = 19,
+	-- 		park = 22,
+	-- 	},
+	-- },
 
-	-- NODE 14: Road 5
-	[14] = {
-		id = 14,
-		name = "road_5",
-		description = "Road 5",
-		imagePath = nil,
-		paths = {
-			intersection_2 = 15,
-			dump = 19,
-			cannery = 18,
-		},
-	},
+	-- -- NODE 14: Road 5
+	-- [14] = {
+	-- 	id = 14,
+	-- 	name = "road_5",
+	-- 	description = "Road 5",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		intersection_2 = 15,
+	-- 		dump = 19,
+	-- 		cannery = 18,
+	-- 	},
+	-- },
 
-	-- NODE 15: Intersection 2
-	[15] = {
-		id = 15,
-		name = "intersection_2",
-		description = "Intersection 2",
-		imagePath = nil,
-		paths = {
-			road_3 = 7,
-			road_4 = 13,
-			road_5 = 14,
-		},
-	},
+	-- -- NODE 15: Intersection 2
+	-- [15] = {
+	-- 	id = 15,
+	-- 	name = "intersection_2",
+	-- 	description = "Intersection 2",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		road_3 = 7,
+	-- 		road_4 = 13,
+	-- 		road_5 = 14,
+	-- 	},
+	-- },
 
-	-- NODE 16: Shops
-	-- FIXME: potentially add more shops
-	[16] = {
-		id = 16,
-		name = "shops",
-		description = "Various Shops",
-		imagePath = nil,
-		paths = {
-			jewelry_store = 17,
-			road_2 = 6,
-		},
-	},
+	-- -- NODE 16: Shops
+	-- -- FIXME: potentially add more shops
+	-- [16] = {
+	-- 	id = 16,
+	-- 	name = "shops",
+	-- 	description = "Various Shops",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		jewelry_store = 17,
+	-- 		road_2 = 6,
+	-- 	},
+	-- },
 
 	-- NODE 17: Jewelry Store
 	-- FIXME: when player goes here, a robbery will be happening, if can enters store the robber will trip on them and dent the can
@@ -265,47 +263,48 @@ return {
 		description = "Jewelry Store",
 		imagePath = "src/data/images/locations/jewelry_store_robbery.png",
 		paths = {
-			shops = 16,
+			-- shops = 16,
+			intersection_1 = 5,
 		},
 	},
 
-	-- NODE 18: Cannery
-	-- FIXME: visiting Cannery increases health/new label?
-	[18] = {
-		id = 18,
-		name = "cannery",
-		description = "Cannery",
-		imagePath = nil,
-		paths = {
-			road_3 = 7,
-			road_5 = 14,
-		},
-	},
+	-- -- NODE 18: Cannery
+	-- -- FIXME: visiting Cannery increases health/new label?
+	-- [18] = {
+	-- 	id = 18,
+	-- 	name = "cannery",
+	-- 	description = "Cannery",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		road_3 = 7,
+	-- 		road_5 = 14,
+	-- 	},
+	-- },
 
-	-- NODE 19: Dump
-	[19] = {
-		id = 19,
-		name = "dump",
-		description = "Dump",
-		imagePath = nil,
-		paths = {
-			road_4 = 13,
-			road_5 = 14,
-			recycling_truck = 20,
-		},
-	},
+	-- -- NODE 19: Dump
+	-- [19] = {
+	-- 	id = 19,
+	-- 	name = "dump",
+	-- 	description = "Dump",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		road_4 = 13,
+	-- 		road_5 = 14,
+	-- 		recycling_truck = 20,
+	-- 	},
+	-- },
 
-	-- NODE 20: Recycling Truck
-	[20] = {
-		id = 20,
-		name = "recycling_truck",
-		description = "Recycling truck",
-		imagePath = nil,
-		paths = {
-			neighborhood_street = 10,
-			outside_house = 21,
-		},
-	},
+	-- -- NODE 20: Recycling Truck
+	-- [20] = {
+	-- 	id = 20,
+	-- 	name = "recycling_truck",
+	-- 	description = "Recycling truck",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		neighborhood_street = 10,
+	-- 		outside_house = 21,
+	-- 	},
+	-- },
 
 	-- NODE 21: Outside of House
 	[21] = {
@@ -314,27 +313,27 @@ return {
 		description = "Outside of House",
 		imagePath = nil,
 		paths = {
-			park = 22,
+			-- park = 22,
 			neighborhood_street = 10,
 			front_porch = 23,
 			backyard = 24,
 		},
 	},
 
-	-- NODE 22: Park
-	-- FIXME: Maybe add wooded area with Trees
-	[22] = {
-		id = 22,
-		name = "park",
-		description = "Park",
-		imagePath = nil,
-		paths = {
-			road_4 = 13,
-			outside_house = 21,
-			playground = 28,
-			pond = 29,
-		},
-	},
+	-- -- NODE 22: Park
+	-- -- FIXME: Maybe add wooded area with Trees
+	-- [22] = {
+	-- 	id = 22,
+	-- 	name = "park",
+	-- 	description = "Park",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		road_4 = 13,
+	-- 		outside_house = 21,
+	-- 		playground = 28,
+	-- 		pond = 29,
+	-- 	},
+	-- },
 
 	-- NODE 23: Front Porch
 	-- FIXME: Make it so that if the player has a key (FIXME: idk from where yet) and a pogo stick (accquired from movers_house) they can get in
@@ -398,41 +397,41 @@ return {
 		paths = {},
 	},
 
-	-- NODE 28: Playground
-	-- FIXME: Add event of children kicking the can if the can enters here, also maybe add an incentive to come here?
-	[28] = {
-		id = 28,
-		name = "playground",
-		description = "Playground",
-		imagePath = "src/data/images/locations/playground.png",
-		paths = {
-			park = 22,
-		},
-	},
+	-- -- NODE 28: Playground
+	-- -- FIXME: Add event of children kicking the can if the can enters here, also maybe add an incentive to come here?
+	-- [28] = {
+	-- 	id = 28,
+	-- 	name = "playground",
+	-- 	description = "Playground",
+	-- 	imagePath = "src/data/images/locations/playground.png",
+	-- 	paths = {
+	-- 		park = 22,
+	-- 	},
+	-- },
 
-	-- NODE 29: Pond
-	-- FIXME: Can will rust/get a soggy label?
-	-- FIXME: Add harry potter sword to the bottom of the pond?
-	[29] = {
-		id = 29,
-		name = "pond",
-		description = "Pond (underwater)",
-		imagePath = nil,
-		paths = {
-			house_bathroom = 30,
-		},
-	},
+	-- -- NODE 29: Pond
+	-- -- FIXME: Can will rust/get a soggy label?
+	-- -- FIXME: Add harry potter sword to the bottom of the pond?
+	-- [29] = {
+	-- 	id = 29,
+	-- 	name = "pond",
+	-- 	description = "Pond (underwater)",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		house_bathroom = 30,
+	-- 	},
+	-- },
 
-	-- NODE 30: House Bathroom
-	[30] = {
-		id = 30,
-		name = "house_bathroom",
-		description = "House Bathroom. Can emerges from the toilet",
-		imagePath = nil,
-		paths = {
-			living_room = 26,
-		},
-	},
+	-- -- NODE 30: House Bathroom
+	-- [30] = {
+	-- 	id = 30,
+	-- 	name = "house_bathroom",
+	-- 	description = "House Bathroom. Can emerges from the toilet",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		living_room = 26,
+	-- 	},
+	-- },
 
 	-- NODE 31: Dumpster Fire
 	-- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher
@@ -446,47 +445,47 @@ return {
 		},
 	},
 
-	-- NODE 32: Movers House
-	-- FIXME: add a pogo stick item here for player to collect
-	[32] = {
-		id = 32,
-		name = "movers_house",
-		description = "House with movers out front",
-		imagePath = nil,
-		paths = {
-			neighborhood_street = 10,
-		},
-	},
+	-- -- NODE 32: Movers House
+	-- -- FIXME: add a pogo stick item here for player to collect
+	-- [32] = {
+	-- 	id = 32,
+	-- 	name = "movers_house",
+	-- 	description = "House with movers out front",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		neighborhood_street = 10,
+	-- 	},
+	-- },
 
-	-- NODE 33: Recycling House
-	-- FIXME: make this place more existential
-	[33] = {
-		id = 33,
-		name = "recycling_house",
-		description = "House with recycling bin full of empty cans. Their labels peeled off.",
-		imagePath = nil,
-		paths = {
-			neighborhood_street = 10,
-		},
-	},
+	-- -- NODE 33: Recycling House
+	-- -- FIXME: make this place more existential
+	-- [33] = {
+	-- 	id = 33,
+	-- 	name = "recycling_house",
+	-- 	description = "House with recycling bin full of empty cans. Their labels peeled off.",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		neighborhood_street = 10,
+	-- 	},
+	-- },
 
-	-- NODE 34: Behind the Grocery Store
-	[34] = {
-		id = 34,
-		name = "behind_store",
-		description = "Behind the Grocery Store",
-		imagePath = nil,
-		paths = {
-			outside_house = 21, -- sewer grate here goes straight to the house,
-		},
-	},
+	-- -- NODE 34: Behind the Grocery Store
+	-- [34] = {
+	-- 	id = 34,
+	-- 	name = "behind_store",
+	-- 	description = "Behind the Grocery Store",
+	-- 	imagePath = nil,
+	-- 	paths = {
+	-- 		outside_house = 21, -- sewer grate here goes straight to the house,
+	-- 	},
+	-- },
 
-	-- NODE 35: Dumpster
+	-- NODE 35: Dumpster (after the fire is put out)
 	-- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher and get a reward
 	[35] = {
 		id = 35,
 		name = "dumpster",
-		description = "Dumpster fire",
+		description = "Dumpster",
 		imagePath = "src/data/images/locations/dumpster.png",
 		paths = {
 			sketchy_alley = 12,
