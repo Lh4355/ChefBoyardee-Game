@@ -1,5 +1,5 @@
 -- src/events.lua
-local Item = require("src.entities.item")
+local Items = require("src.data.items")
 
 local Events = {}
 
@@ -19,10 +19,8 @@ Events.nodes = {
 
 	-- NODE 8: Scary Highway (Locked Path Example)
 	[8] = function(player, node, flags)
-		if not player:hasItem("rusty_key") then
-			return false, "LOCKED: You need a Rusty Key to enter the Scary Highway!"
-		end
-		return true, "" -- Access Granted
+		-- Previously required a rusty key; now open by default.
+		return true, ""
 	end,
 
 	-- NODE 5: Intersection 1 (first-visit yelling triggers pending robbery)
@@ -77,7 +75,7 @@ Events.nodes = {
 				end
 			end
 			if not hasRobber then
-				local robber = Item.new("robber", "Robber", "A masked robber. Click to intervene!", "robber_sprite")
+				local robber = Items.robber
 				robber.x = 320
 				robber.y = 220
 				robber.w = 120
@@ -105,7 +103,7 @@ Events.nodes = {
 					end
 				end
 				if not hasAttendant then
-					local attendant = Item.new("attendant", "Shop Attendant", "She looks grateful.", "attendant_sprite")
+					local attendant = Items.attendant
 					attendant.x = 300
 					attendant.y = 350
 					attendant.w = 150

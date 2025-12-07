@@ -48,8 +48,8 @@ Interactions.items = {
 			end
 		end
 		if not hasAttendant then
-			local Item = require("src.entities.item")
-			local attendant = Item.new("attendant", "Shop Attendant", "She looks grateful.", "attendant_sprite")
+			local Items = require("src.data.items")
+			local attendant = Items.attendant
 			attendant.x = 300
 			attendant.y = 350
 			attendant.w = 150
@@ -57,7 +57,6 @@ Interactions.items = {
 		end
 		return true, "CRASH! The robber trips and hits you for 15 damage. The police take him away."
 	end,
-
 	["dumpster_fire"] = function(player, currentNode, flags, selectedItemId)
 		-- This interaction requires the fire_extinguisher to be selected in inventory
 		if selectedItemId ~= "fire_extinguisher" then
@@ -96,14 +95,9 @@ Interactions.items = {
 			end
 		end
 
-		-- Add a key item to the dumpster
-		local Item = require("src.entities.item")
-		local key = Item.new(
-			"dumpster_key",
-			"Dumpster Key",
-			"A key found in the dumpster. It might open something.",
-			"key_sprite"
-		)
+		-- Add a key item to the dumpster (use centralized definition)
+		local Items = require("src.data.items")
+		local key = Items.dumpster_key
 		key.w = 50
 		key.h = 50
 		table.insert(currentNode.items, key)
@@ -149,6 +143,8 @@ function Interactions.tryInteract(itemId, player, currentNode, flags, selectedIt
 	if func then
 		return func(player, currentNode, flags, selectedItemId)
 	end
+
+	-- No handler found: explicitly return false (handled=false)
 	return false, nil
 end
 

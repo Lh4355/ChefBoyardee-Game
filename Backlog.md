@@ -25,6 +25,8 @@ General
 - add interaction for clicking on recycling bin of can, unlocks a blue mental health bar 
 - descide what to put on inventory bar
 - make inventory bar collapseable 
+- add a gameover button that goes to the main menu
+- volume settings on main menu and accible throughout the game via a settings menu (you will eventually be able to save on this menu)
 
 Prettification Needed
 - Robbery interactible clicking boxes (add sprites and overlay with image?) (robber, and attendant sprites needed)

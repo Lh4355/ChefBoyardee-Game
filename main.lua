@@ -47,18 +47,10 @@ function love.load()
 	-- 3. Add Test Item (Logic moved from main to here is fine for setup)
 	-- Note: Ideally this data belongs in map_nodes.lua, but this works for now.
 	local Constants = require("src.constants")
-	local testItem = Item.new("rusty_key", "Rusty Key", "An old key.", "gfx_key")
-	testItem.w = Constants.GUI.item_scene_size
-	testItem.h = Constants.GUI.item_scene_size
-	table.insert(nodes[2].items, testItem)
+	local Items = require("src.data.items")
 
 	-- Add fire extinguisher to neighborhood_street (node 10)
-	local fireExtinguisher = Item.new(
-	"fire_extinguisher",
-		"Fire Extinguisher",
-		"A red fire extinguisher. You can use it to put out fires.",
-		"fire_extinguisher_sprite"
-	)
+	local fireExtinguisher = Items.fire_extinguisher
 	fireExtinguisher.w = Constants.GUI.item_scene_size
 	fireExtinguisher.h = Constants.GUI.item_scene_size
 	table.insert(nodes[10].items, fireExtinguisher)
@@ -68,7 +60,6 @@ function love.load()
 	-- "static" would be used for short sound effects (keeps it in memory)
 	local music = love.audio.newSource("src/data/audio/chef_music.mp3", "stream")
 	music:setLooping(true) -- Make it repeat forever
-	-- music:setVolume(0.5)   -- Set volume (0.0 to 1.0)
 	music:setVolume(0.0) -- FIXME: Muted for now, uncomment out line above to enable music and delete this line
 	music:play()
 
