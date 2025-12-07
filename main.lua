@@ -28,6 +28,16 @@ function love.load()
 		newNode.paths = data.paths -- Load paths
 		newNode.items = newNode.items or {} -- Initialize items table
 
+		-- Load items data from map_nodes if present
+		if data.items then
+			for _, itemData in ipairs(data.items) do
+				local item = Item.new(itemData.id, itemData.name, itemData.description, itemData.spriteId)
+				item.w = item.w or 50
+				item.h = item.h or 50
+				table.insert(newNode.items, item)
+			end
+		end
+
 		newNode.minigame = data.minigame -- Load minigame data if present
 	end
 
@@ -41,6 +51,17 @@ function love.load()
 	testItem.w = Constants.GUI.item_scene_size
 	testItem.h = Constants.GUI.item_scene_size
 	table.insert(nodes[2].items, testItem)
+
+	-- Add fire extinguisher to neighborhood_street (node 10)
+	local fireExtinguisher = Item.new(
+	"fire_extinguisher",
+		"Fire Extinguisher",
+		"A red fire extinguisher. You can use it to put out fires.",
+		"fire_extinguisher_sprite"
+	)
+	fireExtinguisher.w = Constants.GUI.item_scene_size
+	fireExtinguisher.h = Constants.GUI.item_scene_size
+	table.insert(nodes[10].items, fireExtinguisher)
 
 	-- 4. Load and Play Background Music
 	-- "stream" tells Love2D to stream it from the disk (good for long music)

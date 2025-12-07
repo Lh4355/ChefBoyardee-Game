@@ -118,6 +118,23 @@ Events.nodes = {
 		-- Default: let them in
 		return true, ""
 	end,
+
+	-- NODE 23: Front Porch (allows access to living_room once door is unlocked)
+	[23] = function(player, node, flags)
+		-- Check if fire has been extinguished
+		if flags.dumpster_fire_extinguished then
+			return true, "The front porch is quiet."
+		end
+		return true, ""
+	end,
+
+	-- NODE 26: Living Room (requires front door to be unlocked)
+	[26] = function(player, node, flags)
+		if not flags.front_door_unlocked then
+			return false, "You need to unlock the front door first."
+		end
+		return true, ""
+	end,
 }
 
 -- The function Main.lua will actually call

@@ -50,7 +50,7 @@ return {
 			textColor = { 1, 1, 1, 1 }, -- White text
 
 			-- 3. Font Customization
-			fontPath = "src/data/fonts/friz-quadrata-regular.ttf", 
+			fontPath = "src/data/fonts/friz-quadrata-regular.ttf",
 			fontSize = 15,
 
 			-- 4. Feel (Shake)
@@ -194,7 +194,7 @@ return {
 	[12] = {
 		id = 12,
 		name = "sketchy_alley",
-		description = "Sketchy Alley",
+		description = "You smell something burning...",
 		imagePath = "src/data/images/locations/sketchy_alley.png",
 		paths = {
 			scary_highway = 8,
@@ -344,7 +344,16 @@ return {
 		imagePath = "src/data/images/locations/front_porch.png",
 		paths = {
 			outside_house = 21,
+			living_room = 26,
 			-- front_door = 2, -- FIXME: idk if i want to add this rn
+		},
+		items = {
+			{
+				id = "front_door",
+				name = "Front Door",
+				description = "A locked front door. You need a key to open it.",
+				spriteId = "front_door_sprite",
+			},
 		},
 	},
 
@@ -438,10 +447,18 @@ return {
 	[31] = {
 		id = 31,
 		name = "dumpster_fire",
-		description = "Dumpster fire",
+		description = "The dumpster is on fire but you see something shiny in the flames.",
 		imagePath = "src/data/images/locations/dumpster_fire.png",
 		paths = {
 			sketchy_alley = 12,
+		},
+		items = {
+			{
+				id = "dumpster_fire",
+				name = "Burning Dumpster",
+				description = "The dumpster is on fire but you see something shiny in the flames.",
+				spriteId = "dumpster_fire_sprite",
+			},
 		},
 	},
 
@@ -485,7 +502,7 @@ return {
 	[35] = {
 		id = 35,
 		name = "dumpster",
-		description = "Dumpster",
+		description = "The dumpster is burnt.",
 		imagePath = "src/data/images/locations/dumpster.png",
 		paths = {
 			sketchy_alley = 12,

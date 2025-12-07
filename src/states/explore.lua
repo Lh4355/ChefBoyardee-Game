@@ -156,9 +156,53 @@ function Explore.enterNode(targetId)
 end
 
 function Explore.pickUp(itemId)
-	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags)
+	-- Get selected item ID from inventory slot if one is selected
+	local selectedItemId = nil
+	if selectedSlot and player.inventory[selectedSlot] then
+		selectedItemId = player.inventory[selectedSlot].id
+	end
+
+	-- Define items that can only be interacted with, not picked up
+	local interactionOnlyItems = {
+		["dumpster_fire"] = true,
+		["front_door"] = true,
+	}
+
+	-- If the item is interaction-only, try to interact with it
+	if interactionOnlyItems[itemId] then
+		local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
+		if handled then
+			eventMessage = msg or ""
+
+			-- Update sketchy_alley description if fire was extinguished
+			if gameFlags.sketchy_alley_needs_update and nodes[12] then
+				nodes[12].description = "It is a sketchy alley."
+				gameFlags.sketchy_alley_needs_update = false
+			end
+
+			-- Deselect the item after use
+			selectedSlot = nil
+		else
+			-- Interaction failed, show the message but don't allow pickup
+			eventMessage = msg or ""
+		end
+		return
+	end
+
+	-- Try normal interaction for non-pickup-only items
+	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
 	if handled then
 		eventMessage = msg or ""
+
+		-- Update sketchy_alley description if fire was extinguished
+		if gameFlags.sketchy_alley_needs_update and nodes[12] then
+			nodes[12].description = "It is a sketchy alley."
+			gameFlags.sketchy_alley_needs_update = false
+		end
+
+		-- Deselect the item after use
+		selectedSlot = nil
+
 		return
 	end
 

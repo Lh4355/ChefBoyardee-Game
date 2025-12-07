@@ -8,7 +8,6 @@ Music
 Health/Can
 - Make can image change to be more dented (100 is default can, divy up the rest of the health can can pictures)
 
-
 Items
 - get rid of test key item
 - make it so that the dumpster fire can be put out to get the key to unlock the front door at front_porch
@@ -21,9 +20,15 @@ Events
 General
 - add arrows for navigation
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
+- once you unlock the front door and go into the living room, you can also exit out of the living room to the porch
+- add man in trenchcoat to sketchy alley that you can trade your gold skin for a fire extinguisher
+- add interaction for clicking on recycling bin of can, unlocks a blue mental health bar 
+- descide what to put on inventory bar
+- make inventory bar collapseable 
 
-Pretification Needed
-- Robbery interactible clicking boxes (add sprites and overlay with image?)
+Prettification Needed
+- Robbery interactible clicking boxes (add sprites and overlay with image?) (robber, and attendant sprites needed)
+- Make dumpster, dumpster key, and front door objects, fire extinguisher
 
 Bugs
 - Lose extra 5 health sometimes when going from node 1 -> 2 (shelf -> aisle) 
