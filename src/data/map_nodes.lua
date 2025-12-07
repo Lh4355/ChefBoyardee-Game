@@ -174,6 +174,9 @@ return {
 			-- movers_house = 32,
 			outside_house = 21,
 		},
+		items = {
+			"fire_extinguisher",
+		},
 	},
 
 	-- NODE 11: Steep Hill

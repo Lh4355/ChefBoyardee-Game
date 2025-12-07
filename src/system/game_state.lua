@@ -56,4 +56,14 @@ function GameState:handleSketchyAlleyUpdate(nodes)
 	end
 end
 
+-- State switching function
+function GameState.switchState(currentState, newState, player, nodes)
+	currentState = newState
+	-- Pass shared data (player, nodes) to the state if it needs it
+	if currentState.enter then
+		currentState.enter(player, nodes, nodes[1])
+	end
+	return currentState
+end
+
 return GameState

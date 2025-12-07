@@ -52,4 +52,5 @@ Day 8 (12/7/2025):
 - Added funtional jewelry story robbery with a chance to miss it and changing images.
 - Added puting out the dumpster fire to get key and unlock front door
 - Moved more code of out of explore.lua and put it into utils.lua and game_state.lua (dumpster fire and robbery made it too crowded)
-- 
+- Moved item logic to items.lua and added more files to clean up the main logic and handle audio, initialization, and updated game_state to switch between states of the game
+-  
