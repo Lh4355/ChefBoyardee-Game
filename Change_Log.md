@@ -49,4 +49,5 @@ Day 7 (12/6/2025):
 
 Day 8 (12/7/2025):
 - Added last intersection image
-- 
+- Added funtional jewelry story robbery with a chance to miss it and changing images.
+-  
