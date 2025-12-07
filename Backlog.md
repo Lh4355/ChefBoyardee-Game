@@ -22,5 +22,8 @@ General
 - add arrows for navigation
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
 
+Pretification Needed
+- Robbery interactible clicking boxes (add sprites and overlay with image?)
+
 Bugs
 - Lose extra 5 health sometimes when going from node 1 -> 2 (shelf -> aisle) 
