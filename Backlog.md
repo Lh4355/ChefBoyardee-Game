@@ -10,3 +10,7 @@ To-Do
 - the movers have a toolkit that can be used to fix your can to 100% health
 - add arrows for navigation
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
+
+
+Bugs
+- Lose extra 5 health sometimes when going from node 1 -> 2 (shelf -> aisle) 
