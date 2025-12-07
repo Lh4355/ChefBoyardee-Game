@@ -48,3 +48,5 @@ Day 7 (12/6/2025):
 - Finished adding location images for scaled down node map
 
 Day 8 (12/7/2025):
+- Added last intersection image
+- 

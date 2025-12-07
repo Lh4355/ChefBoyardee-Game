@@ -100,7 +100,7 @@ return {
 		id = 5,
 		name = "intersection_1",
 		description = "Intersection 1 (main one)",
-		imagePath = nil,
+		imagePath = "src/data/images/locations/intersection_1.png",
 		paths = {
 			outside_store = 3,
 			jewelry_store = 17,
