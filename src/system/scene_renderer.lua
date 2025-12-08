@@ -103,10 +103,14 @@ function SceneRenderer.drawElements(currentNode)
 		local txt = "Go to " .. hoveredPath
 		local tw = uiFontSmall:getWidth(txt)
 		local th = uiFontSmall:getHeight()
-		local tooltipX = mouseX + 20
-		local tooltipY = mouseY - th - 10
+		local boxW = tw + 12
+		local boxH = th + 8
+		local w, h = love.graphics.getDimensions()
+		local margin = 10
+		local tooltipX = math.min(math.max(mouseX + 20, margin), w - boxW - margin)
+		local tooltipY = math.min(math.max(mouseY - th - 10, margin), h - boxH - margin)
 		love.graphics.setColor(0, 0, 0, 0.7)
-		love.graphics.rectangle("fill", tooltipX, tooltipY, tw + 12, th + 8)
+		love.graphics.rectangle("fill", tooltipX, tooltipY, boxW, boxH)
 		love.graphics.setColor(1, 1, 1)
 		love.graphics.print(txt, tooltipX + 6, tooltipY + 4)
 	end

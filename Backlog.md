@@ -22,11 +22,9 @@ Prettification Needed
 - add descriptions to nodes (make sure they dont overlap/repeat)
 
 Bugs
-- The node name gets cut off if the arrow is too close to the edge of the screen
 - At front_porch, there is a front_door item and an arrow to go to the living room, the arrow should only appear once the front door has been locked.
-
-
-
 
 FINAL TO-DO
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
+- get rid of duplicated or unused code
+- add file headers and detailed comments

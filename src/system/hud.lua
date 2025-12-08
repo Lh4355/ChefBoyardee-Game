@@ -155,7 +155,7 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	local sbX = w - 1 - skinBoxSize
 	local sbY = 0
 
-	-- NODE DESCRIPTION (below top bar, but avoiding skin box)
+	-- NODE DESCRIPTION (below top bar)
 	if currentNode.description then
 		love.graphics.setFont(uiFontSmall)
 		-- Semi-transparent black background for readability
