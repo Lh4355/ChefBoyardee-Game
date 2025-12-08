@@ -25,7 +25,5 @@ Prettification Needed
 - Give front_door a pretty image
 
 Bugs
-- Lose extra 5 health sometimes when going from node 1 -> 2 (shelf -> aisle) 
-- If the living room is not unlocked, you cannot enter it when you go through the backyard->kitchen->living_room path
 - The node name gets cut off if the arrow is too close to the edge of the screen
 - At front_porch, there is a front_door item and an arrow to go to the living room, the arrow should only appear once the front door has been locked.

@@ -1,3 +1,5 @@
+
+
 Day 1 (11/30/2025):
 - Installed Love2D and extenstions
 - Set up github repo (this created default README.md and .attributes files)
@@ -24,12 +26,14 @@ Day 4 (12/3/2025):
 - Nodes are now navigated by clicking on the node name
 - Inventory can be navigated by pressing keys 1-8 (I want to change this so that it is clickable)
 
+
 Day 5 (12/4/2025):
 - Added more images and another image folder
 - Added Has_Item function
 - Started Main menu screen
 - Created separate player class and moved logic over from main
 - Added health and damage logic
+
 
 Day 6 (12/5/2025):
 - Added event and interaction logic
@@ -39,6 +43,7 @@ Day 6 (12/5/2025):
 - Added background and font to main menu
 - Added music
 
+
 Day 7 (12/6/2025):
 - Styled the GUI and HUD 
 - Shelf wobble minigame added for node 1
@@ -47,6 +52,7 @@ Day 7 (12/6/2025):
 - Scaled down nodes (commented them out)
 - Finished adding location images for scaled down node map
 
+
 Day 8 (12/7/2025):
 - Added last intersection image
 - Added funtional jewelry story robbery with a chance to miss it and changing images.
@@ -54,3 +60,13 @@ Day 8 (12/7/2025):
 - Moved more code of out of explore.lua and put it into utils.lua and game_state.lua (dumpster fire and robbery made it too crowded)
 - Moved item logic to items.lua and added more files to clean up the main logic and handle audio, initialization, and updated game_state to switch between states of the game
 - Added chance to take damage on scary_highway and steep_hill
+- Added arrows for navigation
+
+- Fixed issue where additional health was taken when entering aisle_floor node
+- Fixed issue where you could not access the living through the kitchen if the the front door was locked
+- 
+
+
+
+Day 9 (12/8/2025):
+-

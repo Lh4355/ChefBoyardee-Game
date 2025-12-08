@@ -13,8 +13,12 @@ Events.nodes = {
 
 	-- NODE 2: Aisle Floor (Fall Damage Event)
 	[2] = function(player, node, flags)
-		player:takeDamage(5) -- Deduct 5 health
-		return true, "That fall hurt! You took 5 Damage."
+		if not flags.aisle_floor_visited then
+			flags.aisle_floor_visited = true
+			player:takeDamage(5) -- Deduct 5 health
+			return true, "That fall hurt! You took 5 Damage."
+		end
+		return true, ""
 	end,
 
 	-- NODE 8: Scary Highway (risk of traffic damage)
@@ -142,9 +146,10 @@ Events.nodes = {
 		return true, ""
 	end,
 
-	-- NODE 26: Living Room (requires front door to be unlocked)
-	[26] = function(player, node, flags)
-		if not flags.front_door_unlocked then
+	-- NODE 26: Living Room (requires front door to be unlocked only when entering from front porch)
+	[26] = function(player, node, flags, prevNode)
+		-- Only require front door to be unlocked when coming from the front porch (node 23)
+		if prevNode and prevNode.id == 23 and not flags.front_door_unlocked then
 			return false, "You need to unlock the front door first."
 		end
 		return true, ""
@@ -152,13 +157,13 @@ Events.nodes = {
 }
 
 -- The function Main.lua will actually call
-function Events.checkEnter(node, player, flags)
+function Events.checkEnter(node, player, flags, prevNode)
 	-- Use node.id to find the event
 	local eventFunc = Events.nodes[node.id]
 
 	if eventFunc then
-		-- Pass the REAL node object (which has the .items table)
-		return eventFunc(player, node, flags)
+		-- Pass the REAL node object (which has the .items table) and previous node
+		return eventFunc(player, node, flags, prevNode)
 	end
 
 	-- Default: No event, just let them in

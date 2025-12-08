@@ -113,7 +113,7 @@ end
 function Explore.enterNode(targetId)
 	local prevNode = currentNode
 	local targetNode = nodes[targetId]
-	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags)
+	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags, prevNode)
 
 	if not allowed then
 		eventMessage = msg or ""
