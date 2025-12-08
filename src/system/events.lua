@@ -39,8 +39,6 @@ Events.nodes = {
 		return true, "You keep your balance down the hill."
 	end,
 
-	
-
 	-- NODE 5: Intersection 1 (first-visit yelling triggers pending robbery)
 	[5] = function(player, node, flags)
 		-- If robbery is pending, show the yelling message

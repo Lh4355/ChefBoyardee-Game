@@ -5,12 +5,7 @@ Music
 - Change background music to trigger only when on I want it
 - Add music/audio for robbery
 
-Health/Can
-- Make can image change to be more dented (100 is default can, divy up the rest of the health can can pictures)
-
 Events
-- make it so every time you use the scary_highway there is a chance to lose 10-50 health
-- make it so every time you use the steep_hill there is a chance to lose 10-20 health
 - the movers have a toolkit that can be used to fix your can to 100% health
 
 General

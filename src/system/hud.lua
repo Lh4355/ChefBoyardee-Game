@@ -5,6 +5,27 @@ local InputManager = require("src.system.input_manager")
 local HUD = {}
 local uiFont, uiFontSmall, skinImages
 
+-- Pick the correct can sprite based on skin and health buckets
+local function selectSkinImage(skin, health)
+	local h = math.max(0, math.floor(health or 0))
+	local variant
+
+	if h <= 25 then
+		variant = "destroyed"
+	elseif h <= 49 then
+		variant = "dented_4"
+	elseif h <= 69 then
+		variant = "dented_3"
+	elseif h <= 84 then
+		variant = "dented_2"
+	elseif h <= 95 then
+		variant = "dented_1"
+	end
+
+	local key = variant and (skin .. "_" .. variant) or skin
+	return (skinImages and skinImages[key]) or (skinImages and skinImages[skin])
+end
+
 function HUD.init()
 	-- Load fonts safely
 	local success, font = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 24)
@@ -45,8 +66,8 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	local w, h = love.graphics.getDimensions()
 	local gui = Constants.GUI
 
-	-- Ensure fonts are loaded
-	if not uiFont then
+	-- Ensure fonts and sprites are loaded
+	if not uiFont or not skinImages then
 		HUD.init()
 	end
 
@@ -141,20 +162,20 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("line", sbX, sbY, skinBoxSize, skinBoxSize)
 
-    love.graphics.setColor(unpack(gui.COLORS.grey))
-    love.graphics.rectangle("fill", sbX, sbY + skinBoxSize, skinBoxSize, 20)
+	love.graphics.setColor(unpack(gui.COLORS.grey))
+	love.graphics.rectangle("fill", sbX, sbY + skinBoxSize, skinBoxSize, 20)
 
-    love.graphics.setColor(unpack(gui.COLORS.green_panel))
-    love.graphics.setLineWidth(4)
-    love.graphics.rectangle("line", sbX, sbY + skinBoxSize, skinBoxSize, 20)
+	love.graphics.setColor(unpack(gui.COLORS.green_panel))
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("line", sbX, sbY + skinBoxSize, skinBoxSize, 20)
 
 	love.graphics.setColor(unpack(gui.COLORS.green_panel))
 	-- love.graphics.setFont(love.graphics.newFont(10))
-    love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 1)
+	love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 1)
 	love.graphics.print("Skin: " .. player.skin, sbX + 5, sbY + skinBoxSize + 5)
 
-	-- Draw skin image
-	local skinImage = skinImages[player.skin]
+	-- Draw skin image (health-aware denting)
+	local skinImage = selectSkinImage(player.skin, player.health)
 	if skinImage then
 		love.graphics.setColor(1, 1, 1)
 		-- Draw image centered in the box, scaled to fit
