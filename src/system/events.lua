@@ -17,11 +17,29 @@ Events.nodes = {
 		return true, "That fall hurt! You took 5 Damage."
 	end,
 
-	-- NODE 8: Scary Highway (Locked Path Example)
+	-- NODE 8: Scary Highway (risk of traffic damage)
 	[8] = function(player, node, flags)
-		-- Previously required a rusty key; now open by default.
-		return true, ""
+		local dmgChance = 0.35 -- 35% per entry; adjust to taste
+		if love.math.random() < dmgChance then
+			local dmg = love.math.random(10, 25)
+			player:takeDamage(dmg)
+			return true, ("Traffic grazes you for %d damage!"):format(dmg)
+		end
+		return true, "You dodge the traffic and make it across."
 	end,
+
+	-- NODE 11: Steep Hill (tumble damage on descent)
+	[11] = function(player, node, flags)
+		local dmgChance = 0.18 -- 18% chance to tumble
+		if love.math.random() < dmgChance then
+			local dmg = love.math.random(3, 10)
+			player:takeDamage(dmg)
+			return true, ("You tumble down the hill for %d damage!"):format(dmg)
+		end
+		return true, "You keep your balance down the hill."
+	end,
+
+	
 
 	-- NODE 5: Intersection 1 (first-visit yelling triggers pending robbery)
 	[5] = function(player, node, flags)
