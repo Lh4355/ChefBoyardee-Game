@@ -8,10 +8,6 @@ Music
 Health/Can
 - Make can image change to be more dented (100 is default can, divy up the rest of the health can can pictures)
 
-Items
-- get rid of test key item
-- make it so that the dumpster fire can be put out to get the key to unlock the front door at front_porch
-
 Events
 - make it so every time you use the scary_highway there is a chance to lose 10-50 health
 - make it so every time you use the steep_hill there is a chance to lose 10-20 health
@@ -23,10 +19,10 @@ General
 - once you unlock the front door and go into the living room, you can also exit out of the living room to the porch
 - add man in trenchcoat to sketchy alley that you can trade your gold skin for a fire extinguisher
 - add interaction for clicking on recycling bin of can, unlocks a blue mental health bar 
-- descide what to put on inventory bar
-- make inventory bar collapseable 
-- add a gameover button that goes to the main menu
-- volume settings on main menu and accible throughout the game via a settings menu (you will eventually be able to save on this menu)
+- descide what to put on inventory bar (on the right side)
+- make inventory bar collapseable (use ravioli backpack item)
+- add a gameover button that goes to the main menu after victory
+- volume settings on main menu and accessible throughout the game via a settings menu (you will eventually be able to save on this menu)
 
 Prettification Needed
 - Robbery interactible clicking boxes (add sprites and overlay with image?) (robber, and attendant sprites needed)
