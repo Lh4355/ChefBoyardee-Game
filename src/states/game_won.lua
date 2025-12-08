@@ -1,6 +1,7 @@
 -- src/states/game_won.lua
 local InputManager = require("src.system.input_manager")
 local GameState = require("src.system.game_state")
+local VolumeWidget = require("src.system.volume_widget")
 
 local Won = {}
 
@@ -17,13 +18,15 @@ function Won.enter(pPlayer, pNodes)
 	player = pPlayer
 	nodes = pNodes
 	gameFlags = GameState.new()
+	VolumeWidget.init()
+	VolumeWidget.setAnchor(nil, nil)
 
 	-- Load background image
 	victory_image = love.graphics.newImage("src/data/images/locations/victory_bowl.png")
 end
 
 function Won.update(dt)
-	-- No logic needed for static screen
+	VolumeWidget.update(dt)
 end
 
 function Won.draw()
@@ -72,9 +75,15 @@ function Won.draw()
 	InputManager.register(buttonX, buttonY, buttonW, buttonH, "main_menu", nil)
 
 	love.graphics.setColor(1, 1, 1, 1) -- Reset color
+
+	VolumeWidget.draw()
 end
 
 function Won.mousepressed(x, y, button)
+	if VolumeWidget.mousepressed(x, y, button) then
+		return
+	end
+
 	if button == 1 then
 		local type, data = InputManager.handleMousePressed(x, y)
 		if type == "main_menu" then

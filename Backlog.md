@@ -2,8 +2,6 @@ To-Do
 
 Music
 - Credit chef_music (Tetes Raides, un p'tit air)
-- Change background music to trigger only when on I want it
-- Add music/audio for robbery
 
 Additions
 - the movers have a toolkit that can be used to fix your can to 100% health
@@ -12,7 +10,6 @@ Additions
 General
 - decide what to put on inventory bar (on the right side)
 - make inventory bar collapsable (use ravioli backpack item)
-- volume settings on main menu and accessible throughout the game via a settings menu (you will eventually be able to save on this menu)
 
 Prettification Needed
 - Robbery interactible clicking boxes (add sprites and overlay with image?) (robber, and attendant sprites needed)

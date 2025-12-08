@@ -10,6 +10,7 @@ local GameState = require("src.system.game_state")
 local InputManager = require("src.system.input_manager")
 local SceneRenderer = require("src.system.scene_renderer")
 local HUD = require("src.system.hud")
+local VolumeWidget = require("src.system.volume_widget")
 
 local Explore = {}
 local currentMinigame = nil
@@ -30,6 +31,7 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	-- Initialize Systems
 	HUD.init()
 	SceneRenderer.init()
+	VolumeWidget.init()
 	-- Mark starting node as visited
 	if player and currentNode and player.visitNode then
 		player:visitNode(currentNode.id)
@@ -52,6 +54,8 @@ function Explore.resetGameState()
 end
 
 function Explore.update(dt)
+	VolumeWidget.update(dt)
+
 	if player.health <= 0 then
 		return "gameover"
 	end
@@ -85,12 +89,16 @@ function Explore.draw()
 		SceneRenderer.drawElements(currentNode)
 	end
 
-	-- 4. Draw HUD (Health, Inventory, Messages)
+	-- 4. Draw HUD (Health, Inventory, Messages, Volume)
 	HUD.draw(player, currentNode, eventMessage, selectedSlot)
 end
 
 function Explore.mousepressed(x, y, button)
 	if button == 1 then
+		if VolumeWidget.mousepressed(x, y, button) then
+			return
+		end
+
 		-- Minigame priority
 		if currentMinigame then
 			local handled = currentMinigame:mousepressed(x, y)

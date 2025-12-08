@@ -1,4 +1,6 @@
 -- src/menu.lua
+local VolumeWidget = require("src.system.volume_widget")
+
 local Menu = {}
 
 local background_image
@@ -11,10 +13,17 @@ function Menu.enter()
 	-- Load the Hobbit-style fonts
 	title_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 60)
 	text_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 20)
+
+	VolumeWidget.init()
+	-- Anchor on top area, right side like cream bar
+	local w = love.graphics.getWidth()
+	local buttonSize = VolumeWidget.getButtonSize()
+	VolumeWidget.setAnchor(w - 12 - buttonSize, 8)
 end
 
 function Menu.update(dt)
 	-- Add animation logic here later (e.g., bouncing text)
+	VolumeWidget.update(dt)
 end
 
 function Menu.draw()
@@ -64,12 +73,18 @@ function Menu.draw()
 	love.graphics.setColor(1, 1, 1) -- White
 	love.graphics.print(text, (windowWidth - textWidth) / 2, 350)
 
-
 	-- FIXME: where should i put this to reset font for small text later?
 	love.graphics.setFont(love.graphics.newFont(12)) -- Uncomment to reset font for small text
+
+	-- Volume control (bottom-right)
+	VolumeWidget.draw()
 end
 
 function Menu.mousepressed(x, y, button)
+	if VolumeWidget.mousepressed(x, y, button) then
+		return nil
+	end
+
 	if button == 1 then
 		return "explore" -- Signal to switch state
 	end

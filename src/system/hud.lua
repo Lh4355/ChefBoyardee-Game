@@ -1,6 +1,7 @@
 -- src/system/hud.lua
 local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
+local VolumeWidget = require("src.system.volume_widget")
 
 local HUD = {}
 local uiFont, uiFontSmall, skinImages
@@ -155,6 +156,12 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	local sbX = w - 1 - skinBoxSize
 	local sbY = 0
 
+	-- Volume button anchored on the cream bar, left of skin box
+	local buttonSize = VolumeWidget.getButtonSize()
+	local volumeX = sbX - buttonSize - 10
+	local volumeY = math.max(2, (40 - buttonSize) / 2)
+	VolumeWidget.setAnchor(volumeX, volumeY)
+
 	-- NODE DESCRIPTION (below top bar)
 	if currentNode.description then
 		love.graphics.setFont(uiFontSmall)
@@ -205,7 +212,10 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 		love.graphics.circle("fill", sbX + 30, sbY + 30, 15)
 	end
 
-	-- 5. EVENT MESSAGES
+	-- 5. Volume control (draw over top bar)
+	VolumeWidget.draw()
+
+	-- 6. EVENT MESSAGES
 	if eventMessage ~= "" then
 		local msgW = uiFont:getWidth(eventMessage)
 		love.graphics.setColor(0, 0, 0, 0.8)
