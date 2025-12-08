@@ -57,14 +57,11 @@ function GameState:handleSketchyAlleyUpdate(nodes)
 end
 
 -- State switching function
--- TEMP: change START_NODE_ID to pick a different starting node while testing
-local START_NODE_ID = 31 -- set to 1 for normal flow
-
 function GameState.switchState(currentState, newState, player, nodes)
 	currentState = newState
 	-- Pass shared data (player, nodes) to the state if it needs it
 	if currentState.enter then
-		currentState.enter(player, nodes, nodes[START_NODE_ID])
+		currentState.enter(player, nodes, nodes[1])
 	end
 	return currentState
 end

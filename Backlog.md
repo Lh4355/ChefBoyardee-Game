@@ -9,7 +9,6 @@ Events
 - the movers have a toolkit that can be used to fix your can to 100% health
 
 General
-- add arrows for navigation
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
 - once you unlock the front door and go into the living room, you can also exit out of the living room to the porch
 - add man in trenchcoat to sketchy alley that you can trade your gold skin for a fire extinguisher
