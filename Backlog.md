@@ -19,7 +19,7 @@ Prettification Needed
 - add descriptions to nodes (make sure they dont overlap/repeat)
 
 Bugs
-- At front_porch, there is a front_door item and an arrow to go to the living room, the arrow should only appear once the front door has been locked.
+- At front_porch, there is a front_door item and an arrow to go to the living room, the arrow should only appear once the front door has been unlocked.
 - Fix warning in audio_manager.lua
 
 FINAL TO-DO

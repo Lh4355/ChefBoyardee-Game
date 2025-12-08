@@ -6,6 +6,15 @@ local SceneRenderer = {}
 local uiFontSmall
 local arrowImage
 
+-- Decide whether a navigation arrow should be visible for the current node.
+local function isPathVisible(currentNode, pathName, flags)
+	if currentNode and currentNode.id == 23 and pathName == "living_room" then
+		return flags and flags.front_door_unlocked
+	end
+
+	return true
+end
+
 function SceneRenderer.init()
 	-- Load font for paths
 	local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
@@ -31,7 +40,7 @@ function SceneRenderer.drawBackground(currentNode)
 	end
 end
 
-function SceneRenderer.drawElements(currentNode)
+function SceneRenderer.drawElements(currentNode, gameFlags)
 	if not uiFontSmall then
 		SceneRenderer.init()
 	end
@@ -62,6 +71,9 @@ function SceneRenderer.drawElements(currentNode)
 
 	local i = 0
 	for pathName, targetId in pairs(currentNode.paths) do
+		if not isPathVisible(currentNode, pathName, gameFlags) then
+			goto continue
+		end
 		-- Use custom arrow data if available, otherwise use defaults
 		local arrowData = currentNode.arrows and currentNode.arrows[pathName]
 		local arrowX = (arrowData and arrowData.x) or (50 + i * (arrowSize + arrowPadding))
@@ -98,6 +110,7 @@ function SceneRenderer.drawElements(currentNode)
 			hoveredPath = pathName
 		end
 		i = i + 1
+		::continue::
 	end -- Draw tooltip if hovering over an arrow
 	if hoveredPath then
 		local txt = "Go to " .. hoveredPath

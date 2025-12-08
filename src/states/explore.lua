@@ -86,7 +86,7 @@ function Explore.draw()
 	if currentMinigame then
 		currentMinigame:draw()
 	else
-		SceneRenderer.drawElements(currentNode)
+		SceneRenderer.drawElements(currentNode, gameFlags)
 	end
 
 	-- 4. Draw HUD (Health, Inventory, Messages, Volume)

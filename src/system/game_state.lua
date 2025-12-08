@@ -11,6 +11,7 @@ function GameState.new()
 		jewelry_robbery_pending = false,
 		jewelry_store_missed = false,
 		sketchy_alley_needs_update = false,
+		front_door_unlocked = false,
 	}
 	return setmetatable(self, GameState)
 end
@@ -64,6 +65,7 @@ function GameState:reset(player, nodes)
 	self.jewelry_robbery_pending = false
 	self.jewelry_store_missed = false
 	self.sketchy_alley_needs_update = false
+	self.front_door_unlocked = false
 
 	-- Reset player
 	player.health = 100
@@ -84,7 +86,7 @@ function GameState.switchState(currentState, newState, player, nodes)
 	currentState = newState
 	-- Pass shared data (player, nodes) to the state if it needs it
 	if currentState.enter then
-		currentState.enter(player, nodes, nodes[2]) -- pass starting node index
+		currentState.enter(player, nodes, nodes[1]) -- pass starting node index
 	end
 	return currentState
 end
