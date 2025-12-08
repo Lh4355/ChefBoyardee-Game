@@ -444,10 +444,12 @@ return {
 		paths = {
 			kitchen = 25,
 			victory_bowl = 27,
+            front_porch = 23,
 		},
 		arrows = {
 			kitchen = { x = 50, y = 300, rotation = math.pi, scale = 1 },
 			victory_bowl = { x = 650, y = 365, rotation = 0, scale = 1 },
+            front_porch = { x = 750, y = 280, rotation = 3* math.pi/2, scale = 1 }
 		},
 	},
 

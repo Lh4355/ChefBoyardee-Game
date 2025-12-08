@@ -46,6 +46,11 @@ function Explore.loadNodeMinigame()
 	end
 end
 
+-- Reset game state for a fresh playthrough
+function Explore.resetGameState()
+	gameFlags:reset(player, nodes)
+end
+
 function Explore.update(dt)
 	if player.health <= 0 then
 		return "gameover"
@@ -58,6 +63,11 @@ function Explore.update(dt)
 			eventMessage = msg
 			return
 		end
+	end
+
+	-- Check if we've reached the victory bowl (won game)
+	if currentNode.id == 27 then
+		return "won"
 	end
 end
 

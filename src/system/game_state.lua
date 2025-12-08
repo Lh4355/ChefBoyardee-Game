@@ -56,6 +56,29 @@ function GameState:handleSketchyAlleyUpdate(nodes)
 	end
 end
 
+-- Reset all game state for a fresh playthrough
+function GameState:reset(player, nodes)
+	-- Reset all flags
+	self.jewelry_robbery_done = false
+	self.has_gold_skin = false
+	self.jewelry_robbery_pending = false
+	self.jewelry_store_missed = false
+	self.sketchy_alley_needs_update = false
+
+	-- Reset player
+	player.health = 100
+	player.skin = "tin"
+	player.inventory = {}
+	player.visitedNodes = {}
+
+	-- Reinitialize nodes
+	local Initialization = require("src.system.initialization")
+	local newNodes = Initialization.initializeNodes()
+	for id, node in pairs(newNodes) do
+		nodes[id] = node
+	end
+end
+
 -- State switching function
 function GameState.switchState(currentState, newState, player, nodes)
 	currentState = newState

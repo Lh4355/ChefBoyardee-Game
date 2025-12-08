@@ -7,6 +7,7 @@ local GameState = require("src.system.game_state")
 local Menu = require("src.states.menu")
 local Explore = require("src.states.explore")
 local GameOver = require("src.states.gameover")
+local Won = require("src.states.game_won")
 
 local nodes = {}
 local player
@@ -39,6 +40,12 @@ function love.update(dt)
 		if signal == "gameover" then
 			SwitchState(GameOver)
 		end
+		if signal == "won" then
+			SwitchState(Won)
+		end
+		if signal == "menu" then
+			SwitchState(Menu)
+		end
 	end
 end
 
@@ -53,6 +60,12 @@ function love.mousepressed(x, y, button)
 		local signal = currentState.mousepressed(x, y, button)
 		if signal == "explore" then
 			SwitchState(Explore)
+		end
+		if signal == "menu" then
+			SwitchState(Menu)
+		end
+		if signal == "won" then
+			SwitchState(Won)
 		end
 	end
 end

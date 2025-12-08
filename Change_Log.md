@@ -61,11 +61,11 @@ Day 8 (12/7/2025):
 - Moved item logic to items.lua and added more files to clean up the main logic and handle audio, initialization, and updated game_state to switch between states of the game
 - Added chance to take damage on scary_highway and steep_hill
 - Added arrows for navigation
-
 - Fixed issue where additional health was taken when entering aisle_floor node
 - Fixed issue where you could not access the living through the kitchen if the the front door was locked
+- Added path to exit living room to the front porch
+- Added win screen and button to go back to the main menu
 - 
-
 
 
 Day 9 (12/8/2025):
