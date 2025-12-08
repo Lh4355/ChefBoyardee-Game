@@ -8,7 +8,6 @@ Music
 Additions
 - the movers have a toolkit that can be used to fix your can to 100% health
 - add man in trenchcoat to sketchy alley that you can trade your gold skin for a fire extinguisher
-- add interaction for clicking on recycling bin of can, unlocks a blue mental health bar
 
 General
 - decide what to put on inventory bar (on the right side)
@@ -20,6 +19,7 @@ Prettification Needed
 - Make dumpster, dumpster key, and front door objects, fire extinguisher
 - finalize arrow positions (make sure an arrow is created in map_nodes for each location)
 - Give front_door a pretty image
+- add descriptions to nodes (make sure they dont overlap/repeat)
 
 Bugs
 - The node name gets cut off if the arrow is too close to the edge of the screen

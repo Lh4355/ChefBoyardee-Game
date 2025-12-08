@@ -13,7 +13,7 @@ return {
 	[1] = {
 		id = 1,
 		name = "shelf",
-		description = "The cold metal of the shelf...",
+		description = "The cold metal of the cans surrounding you gives you a sense of determination. You must escape this shelf!",
 		imagePath = "src/data/images/locations/shelf.png",
 		paths = {},
 
@@ -63,7 +63,7 @@ return {
 	[2] = {
 		id = 2,
 		name = "aisle_floor",
-		description = "You leap off the shelf. The tiles are cold.", --FIXME: add better description
+		description = "You leap off the shelf. The tiles are cold under your ridges.",
 		imagePath = "src/data/images/locations/aisle_floor.png",
 		paths = {
 			outside_store = 3,
@@ -77,7 +77,7 @@ return {
 	[3] = {
 		id = 3,
 		name = "outside_store",
-		description = "The air blinds you as you exit the grocery store. The noise of the people and passing cars overwhelms your senses.",
+		description = "The sun blinds you as you exit the grocery store. The city feels alive with noise and movement.",
 		imagePath = "src/data/images/locations/outside_store.png",
 		paths = {
 			intersection_1 = 5,
@@ -193,6 +193,7 @@ return {
 		},
 		items = {
 			"fire_extinguisher",
+			"recycling_bin",
 		},
 		arrows = {
 			steep_hill = { x = 50, y = 480, rotation = math.pi / 2, scale = 1 },
@@ -388,12 +389,7 @@ return {
 			-- front_door = 2, -- FIXME: idk if i want to add this rn
 		},
 		items = {
-			{
-				id = "front_door",
-				name = "Front Door",
-				description = "A locked front door. You need a key to open it.",
-				spriteId = "front_door_sprite",
-			},
+			"front_door",
 		},
 		arrows = {
 			outside_house = { x = 100, y = 450, rotation = math.pi / 2, scale = 1 },
@@ -414,7 +410,7 @@ return {
 			outside_house = 21,
 		},
 		arrows = {
-			kitchen = { x = 585, y = 410, rotation = 3 * math.pi / 2, scale = .75 },
+			kitchen = { x = 585, y = 410, rotation = 3 * math.pi / 2, scale = 0.75 },
 			outside_house = { x = 195, y = 395, rotation = 3 * math.pi / 2, scale = 1 },
 		},
 	},
@@ -444,12 +440,12 @@ return {
 		paths = {
 			kitchen = 25,
 			victory_bowl = 27,
-            front_porch = 23,
+			front_porch = 23,
 		},
 		arrows = {
 			kitchen = { x = 50, y = 300, rotation = math.pi, scale = 1 },
 			victory_bowl = { x = 650, y = 365, rotation = 0, scale = 1 },
-            front_porch = { x = 750, y = 280, rotation = 3* math.pi/2, scale = 1 }
+			front_porch = { x = 750, y = 280, rotation = 3 * math.pi / 2, scale = 1 },
 		},
 	},
 
@@ -511,12 +507,7 @@ return {
 			sketchy_alley = 12,
 		},
 		items = {
-			{
-				id = "dumpster_fire",
-				name = "Burning Dumpster",
-				description = "The dumpster is on fire but you see something shiny in the flames.",
-				spriteId = "dumpster_fire_sprite",
-			},
+			"dumpster_fire",
 		},
 		arrows = {
 			sketchy_alley = { x = 50, y = 450, rotation = math.pi / 2, scale = 1 },

@@ -84,7 +84,7 @@ function GameState.switchState(currentState, newState, player, nodes)
 	currentState = newState
 	-- Pass shared data (player, nodes) to the state if it needs it
 	if currentState.enter then
-		currentState.enter(player, nodes, nodes[1])
+		currentState.enter(player, nodes, nodes[23]) -- pass starting node index
 	end
 	return currentState
 end

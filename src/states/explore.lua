@@ -153,14 +153,17 @@ function Explore.pickUp(itemId)
 		selectedItemId = player.inventory[selectedSlot].id
 	end
 
-	-- Define items that can only be interacted with, not picked up
-	local interactionOnlyItems = {
-		["dumpster_fire"] = true,
-		["front_door"] = true,
-	}
+	-- Find the item object to check if it can be picked up
+	local itemObj
+	for _, item in ipairs(currentNode.items) do
+		if item.id == itemId then
+			itemObj = item
+			break
+		end
+	end
 
-	-- If the item is interaction-only, try to interact with it
-	if interactionOnlyItems[itemId] then
+	-- If the item cannot be picked up, only allow interaction
+	if itemObj and not itemObj.canPickup then
 		local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
 		if handled then
 			eventMessage = msg or ""

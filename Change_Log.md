@@ -65,7 +65,8 @@ Day 8 (12/7/2025):
 - Fixed issue where you could not access the living through the kitchen if the the front door was locked
 - Added path to exit living room to the front porch
 - Added win screen and button to go back to the main menu
-- 
+- Added recycling bin interaction
+- Added descriptions to nodes and displayed them
 
 
 Day 9 (12/8/2025):

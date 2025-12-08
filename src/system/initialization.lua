@@ -42,7 +42,8 @@ function Initialization.initializeNodes()
 							itemTemplate.id,
 							itemTemplate.name,
 							itemTemplate.description,
-							itemTemplate.spriteId
+							itemTemplate.spriteId,
+							itemTemplate.canPickup
 						)
 					else
 						print("Warning: Item '" .. itemData .. "' not found in Items registry")

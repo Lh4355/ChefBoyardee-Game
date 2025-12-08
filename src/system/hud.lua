@@ -150,10 +150,25 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.printf(nodeName, 0, 15, w, "center")
 
-	-- SKIN DISPLAY BOX
+	-- SKIN DISPLAY BOX (define position variables first)
 	local skinBoxSize = 100
 	local sbX = w - 1 - skinBoxSize
 	local sbY = 0
+
+	-- NODE DESCRIPTION (below top bar, but avoiding skin box)
+	if currentNode.description then
+		love.graphics.setFont(uiFontSmall)
+		-- Semi-transparent black background for readability
+		local descBoxY = 50
+		local descBoxHeight = 50
+		local descBoxWidth = sbX - 20 -- End before skin box starts
+		love.graphics.setColor(0, 0, 0, 0.7)
+		love.graphics.rectangle("fill", 10, descBoxY, descBoxWidth, descBoxHeight)
+
+		-- Draw description text
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.printf(currentNode.description, 20, descBoxY + 10, descBoxWidth - 20, "left")
+	end
 
 	love.graphics.setColor(unpack(gui.COLORS.grey))
 	love.graphics.rectangle("fill", sbX, sbY, skinBoxSize, skinBoxSize)
@@ -171,6 +186,7 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 
 	love.graphics.setColor(unpack(gui.COLORS.green_panel))
 	-- love.graphics.setFont(love.graphics.newFont(10))
+	love.graphics.setFont(uiFontSmall)
 	love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 1)
 	love.graphics.print("Skin: " .. player.skin, sbX + 5, sbY + skinBoxSize + 5)
 

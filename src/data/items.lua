@@ -13,7 +13,29 @@ Items.fire_extinguisher = Item.new(
 	"fire_extinguisher",
 	"Fire Extinguisher",
 	"A red fire extinguisher. You can use it to put out fires.",
-	"fire_extinguisher_sprite"
+	"fire_extinguisher_sprite",
+	true -- Can be picked up
+)
+Items.recycling_bin = Item.new(
+	"recycling_bin",
+	"Recycling Bin",
+	"A blue bin overflowing with tin cans.",
+	"recycling_bin_sprite",
+	false -- Cannot be picked up (interaction only)
+)
+Items.dumpster_fire = Item.new(
+	"dumpster_fire",
+	"Dumpster Fire",
+	"A dumpster engulfed in flames.",
+	"dumpster_fire_sprite",
+	false -- Cannot be picked up (interaction only)
+)
+Items.front_door = Item.new(
+	"front_door",
+	"Front Door",
+	"A locked front door.",
+	"front_door_sprite",
+	false -- Cannot be picked up (interaction only)
 )
 
 return Items

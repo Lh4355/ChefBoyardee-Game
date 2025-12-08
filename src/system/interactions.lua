@@ -134,6 +134,10 @@ Interactions.items = {
 		return true, "You unlock the front door with the key and it swings open!"
 	end,
 
+	["recycling_bin"] = function(player, currentNode, flags, selectedItemId)
+		return false, "There is a blue bin overflowing with tin cans, their skins removed. You feel sad."
+	end,
+
 	-- You could add other items here later, e.g.:
 	-- ["potion"] = function(player) ... end
 }
