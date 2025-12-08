@@ -27,6 +27,7 @@ function Initialization.initializeNodes()
 			end)
 		end
 		newNode.paths = data.paths -- Load paths
+		newNode.arrows = data.arrows -- Load arrow positioning data
 		newNode.items = newNode.items or {} -- Initialize items table
 
 		-- Load items data from map_nodes if present

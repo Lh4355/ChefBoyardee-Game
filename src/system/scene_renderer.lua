@@ -4,65 +4,112 @@ local InputManager = require("src.system.input_manager")
 
 local SceneRenderer = {}
 local uiFontSmall
+local arrowImage
 
 function SceneRenderer.init()
-    -- Load font for paths
-    local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
-    if successSmall then uiFontSmall = fontSmall else uiFontSmall = love.graphics.newFont(16) end
+	-- Load font for paths
+	local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
+	if successSmall then
+		uiFontSmall = fontSmall
+	else
+		uiFontSmall = love.graphics.newFont(16)
+	end
+
+	-- Load arrow sprite
+	arrowImage = love.graphics.newImage("src/data/images/sprites/arrow.png")
 end
 
 function SceneRenderer.drawBackground(currentNode)
-    if currentNode.image then
-        local w, h = love.graphics.getDimensions()
-        local imageWidth = currentNode.image:getWidth()
-        local imageHeight = currentNode.image:getHeight()
-        local scaleX = w / imageWidth
-        local scaleY = h / imageHeight
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(currentNode.image, 0, 0, 0, scaleX, scaleY)
-    end
+	if currentNode.image then
+		local w, h = love.graphics.getDimensions()
+		local imageWidth = currentNode.image:getWidth()
+		local imageHeight = currentNode.image:getHeight()
+		local scaleX = w / imageWidth
+		local scaleY = h / imageHeight
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.draw(currentNode.image, 0, 0, 0, scaleX, scaleY)
+	end
 end
 
 function SceneRenderer.drawElements(currentNode)
-    if not uiFontSmall then SceneRenderer.init() end
-    local gui = Constants.GUI
+	if not uiFontSmall then
+		SceneRenderer.init()
+	end
+	local gui = Constants.GUI
 
-    -- 1. Draw Items
-    for i, item in ipairs(currentNode.items) do
-        local ix, iy = item.x or (100 + i * 60), item.y or 400
-        local iw, ih = item.w or gui.item_scene_size, item.h or gui.item_scene_size
+	-- 1. Draw Items
+	for i, item in ipairs(currentNode.items) do
+		local ix, iy = item.x or (100 + i * 60), item.y or 400
+		local iw, ih = item.w or gui.item_scene_size, item.h or gui.item_scene_size
 
-        -- Draw Blue Box
-        love.graphics.setColor(0, 0, 1)
-        love.graphics.rectangle("fill", ix, iy, iw, ih)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print(item.name, ix, iy - 20)
+		-- Draw Blue Box
+		love.graphics.setColor(0, 0, 1)
+		love.graphics.rectangle("fill", ix, iy, iw, ih)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.print(item.name, ix, iy - 20)
 
-        -- Register Click
-        InputManager.register(ix, iy, iw, ih, "item", item.id)
-    end
+		-- Register Click
+		InputManager.register(ix, iy, iw, ih, "item", item.id)
+	end
 
-    -- 2. Draw Navigation Paths
-    local py = 150
-    love.graphics.setFont(uiFontSmall)
-    
-    for pathName, targetId in pairs(currentNode.paths) do
-        local txt = "Go to " .. pathName
-        local tw = uiFontSmall:getWidth(txt)
-        
-        -- Text Background
-        love.graphics.setColor(0,0,0,0.5) 
-        love.graphics.rectangle("fill", 45, py, tw+10, 25)
-        
-        -- Text
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print(txt, 50, py)
-        
-        -- Register Click
-        InputManager.register(50, py, tw, 25, "path", targetId)
-        
-        py = py + 30
-    end
+	-- 2. Draw Navigation Arrows
+	local arrowSize = 48
+	local arrowPadding = 60
+	local defaultArrowY = 150
+	local mouseX, mouseY = love.mouse.getPosition()
+	love.graphics.setFont(uiFontSmall)
+	local hoveredPath = nil
+
+	local i = 0
+	for pathName, targetId in pairs(currentNode.paths) do
+		-- Use custom arrow data if available, otherwise use defaults
+		local arrowData = currentNode.arrows and currentNode.arrows[pathName]
+		local arrowX = (arrowData and arrowData.x) or (50 + i * (arrowSize + arrowPadding))
+		local arrowY = (arrowData and arrowData.y) or defaultArrowY
+		local arrowRotation = (arrowData and arrowData.rotation) or 0
+		local arrowScale = (arrowData and arrowData.scale) or 1
+
+		-- Calculate actual arrow size with scale
+		local actualSize = arrowSize * arrowScale
+		local scaleX = (actualSize / arrowImage:getWidth())
+		local scaleY = (actualSize / arrowImage:getHeight())
+
+		-- Calculate center offset for rotation pivot (center of the arrow image)
+		local offsetX = arrowImage:getWidth() / 2
+		local offsetY = arrowImage:getHeight() / 2
+
+		-- Draw yellow arrow (rotates around its center)
+		-- Position x,y is where the CENTER of the arrow will be drawn
+		love.graphics.setColor(1, 1, 0)
+		love.graphics.draw(arrowImage, arrowX, arrowY, arrowRotation, scaleX, scaleY, offsetX, offsetY)
+
+		-- Register Click (adjust for bounding box around center point)
+		local clickX = arrowX - actualSize / 2
+		local clickY = arrowY - actualSize / 2
+		InputManager.register(clickX, clickY, actualSize, actualSize, "path", targetId)
+
+		-- Hover detection
+		if
+			mouseX >= clickX
+			and mouseX <= clickX + actualSize
+			and mouseY >= clickY
+			and mouseY <= clickY + actualSize
+		then
+			hoveredPath = pathName
+		end
+		i = i + 1
+	end -- Draw tooltip if hovering over an arrow
+	if hoveredPath then
+		local txt = "Go to " .. hoveredPath
+		local tw = uiFontSmall:getWidth(txt)
+		local th = uiFontSmall:getHeight()
+		local tooltipX = mouseX + 20
+		local tooltipY = mouseY - th - 10
+		love.graphics.setColor(0, 0, 0, 0.7)
+		love.graphics.rectangle("fill", tooltipX, tooltipY, tw + 12, th + 8)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.print(txt, tooltipX + 6, tooltipY + 4)
+	end
 end
 
 return SceneRenderer

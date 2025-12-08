@@ -68,6 +68,9 @@ return {
 		paths = {
 			outside_store = 3,
 		},
+		arrows = {
+			outside_store = { x = 380, y = 375, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- NODE 3: Outside Front of Grocery Store
@@ -79,6 +82,10 @@ return {
 		paths = {
 			intersection_1 = 5,
 			aisle_floor = 2,
+		},
+		arrows = {
+			intersection_1 = { x = 75, y = 385, rotation = math.pi, scale = 1 },
+			aisle_floor = { x = 550, y = 400, rotation = math.pi, scale = 1 },
 		},
 	},
 
@@ -105,6 +112,11 @@ return {
 			outside_store = 3,
 			jewelry_store = 17,
 			scary_highway = 8,
+		},
+		arrows = {
+			outside_store = { x = 25, y = 400, rotation = math.pi, scale = 1 },
+			jewelry_store = { x = 200, y = 400, rotation = 3 * math.pi / 2, scale = 1 },
+			scary_highway = { x = 600, y = 200, rotation = 3 * math.pi / 2, scale = 1 },
 		},
 	},
 
@@ -145,6 +157,11 @@ return {
 			steep_hill = 11,
 			sketchy_alley = 12,
 		},
+		arrows = {
+			intersection_1 = { x = 75, y = 400, rotation = math.pi / 2, scale = 1 },
+			steep_hill = { x = 590, y = 150, rotation = math.pi, scale = 1 },
+			sketchy_alley = { x = 230, y = 150, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- -- NODE 9: Gravel Path
@@ -177,6 +194,10 @@ return {
 		items = {
 			"fire_extinguisher",
 		},
+		arrows = {
+			steep_hill = { x = 50, y = 480, rotation = math.pi / 2, scale = 1 },
+			outside_house = { x = 700, y = 400, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- NODE 11: Steep Hill
@@ -188,6 +209,10 @@ return {
 		paths = {
 			neighborhood_street = 10,
 			scary_highway = 8,
+		},
+		arrows = {
+			neighborhood_street = { x = 100, y = 450, rotation = math.pi / 2, scale = 1 },
+			scary_highway = { x = 700, y = 380, rotation = 3 * math.pi / 2, scale = 1 },
 		},
 	},
 
@@ -202,6 +227,10 @@ return {
 		paths = {
 			scary_highway = 8,
 			dumpster_fire = 31,
+		},
+		arrows = {
+			scary_highway = { x = 50, y = 450, rotation = math.pi / 2, scale = 1 },
+			dumpster_fire = { x = 450, y = 300, rotation = 3 * math.pi / 2, scale = 1 },
 		},
 	},
 
@@ -269,6 +298,9 @@ return {
 			-- shops = 16,
 			intersection_1 = 5,
 		},
+		arrows = {
+			intersection_1 = { x = 400, y = 450, rotation = math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- -- NODE 18: Cannery
@@ -321,6 +353,11 @@ return {
 			front_porch = 23,
 			backyard = 24,
 		},
+		arrows = {
+			neighborhood_street = { x = 100, y = 450, rotation = math.pi / 2, scale = 1 },
+			front_porch = { x = 300, y = 400, rotation = 3 * math.pi / 2, scale = 1 },
+			backyard = { x = 690, y = 400, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- -- NODE 22: Park
@@ -358,6 +395,10 @@ return {
 				spriteId = "front_door_sprite",
 			},
 		},
+		arrows = {
+			outside_house = { x = 100, y = 450, rotation = math.pi / 2, scale = 1 },
+			living_room = { x = 390, y = 400, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- NODE 24: Backyard
@@ -372,6 +413,10 @@ return {
 			kitchen = 25,
 			outside_house = 21,
 		},
+		arrows = {
+			kitchen = { x = 585, y = 410, rotation = 3 * math.pi / 2, scale = .75 },
+			outside_house = { x = 195, y = 395, rotation = 3 * math.pi / 2, scale = 1 },
+		},
 	},
 
 	-- NODE 25: Kitchen
@@ -384,6 +429,10 @@ return {
 			backyard = 24,
 			living_room = 26,
 		},
+		arrows = {
+			backyard = { x = 150, y = 400, rotation = math.pi / 2, scale = 1 },
+			living_room = { x = 720, y = 450, rotation = 0, scale = 1 },
+		},
 	},
 
 	-- NODE 26: Living Room
@@ -395,6 +444,10 @@ return {
 		paths = {
 			kitchen = 25,
 			victory_bowl = 27,
+		},
+		arrows = {
+			kitchen = { x = 50, y = 300, rotation = math.pi, scale = 1 },
+			victory_bowl = { x = 650, y = 365, rotation = 0, scale = 1 },
 		},
 	},
 
@@ -462,6 +515,9 @@ return {
 				description = "The dumpster is on fire but you see something shiny in the flames.",
 				spriteId = "dumpster_fire_sprite",
 			},
+		},
+		arrows = {
+			sketchy_alley = { x = 50, y = 450, rotation = math.pi / 2, scale = 1 },
 		},
 	},
 
