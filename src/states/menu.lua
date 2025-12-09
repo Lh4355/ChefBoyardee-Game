@@ -1,5 +1,6 @@
 -- src/menu.lua
 local VolumeWidget = require("src.system.volume_widget")
+local Utils = require("src.utils")
 
 local Menu = {}
 
@@ -12,9 +13,9 @@ function Menu.enter()
 	-- Load Background Image
 	background_image = love.graphics.newImage("src/data/images/locations/main_menu.png")
 	-- Load the Hobbit-style fonts
-	title_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 60)
-	text_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 20)
-	music_font = love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 15)
+	title_font = Utils.loadFont("src/data/fonts/RINGM___.TTF", 60)
+	text_font = Utils.loadFont("src/data/fonts/RINGM___.TTF", 20)
+	music_font = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 15)
 
 	VolumeWidget.init()
 	-- Anchor on top area, right side like cream bar

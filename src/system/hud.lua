@@ -1,6 +1,7 @@
 -- src/system/hud.lua
 local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
+local Utils = require("src.utils")
 local VolumeWidget = require("src.system.volume_widget")
 
 local HUD = {}
@@ -29,19 +30,8 @@ end
 
 function HUD.init()
 	-- Load fonts safely
-	local success, font = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 24)
-	if success then
-		uiFont = font
-	else
-		uiFont = love.graphics.newFont(24)
-	end
-
-	local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
-	if successSmall then
-		uiFontSmall = fontSmall
-	else
-		uiFontSmall = love.graphics.newFont(16)
-	end
+	uiFont = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 24)
+	uiFontSmall = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 16)
 
 	-- Load skin images
 	skinImages = {

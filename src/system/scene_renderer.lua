@@ -1,6 +1,7 @@
 -- src/system/scene_renderer.lua
 local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
+local Utils = require("src.utils")
 
 local SceneRenderer = {}
 local uiFontSmall
@@ -18,12 +19,7 @@ end
 
 function SceneRenderer.init()
 	-- Load font for paths
-	local successSmall, fontSmall = pcall(love.graphics.newFont, "src/data/fonts/friz-quadrata-regular.ttf", 16)
-	if successSmall then
-		uiFontSmall = fontSmall
-	else
-		uiFontSmall = love.graphics.newFont(16)
-	end
+	uiFontSmall = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 16)
 
 	-- Load arrow sprite
 	arrowImage = love.graphics.newImage("src/data/images/sprites/arrow.png")
