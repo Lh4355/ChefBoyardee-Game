@@ -13,8 +13,8 @@ FINAL TO-DO
 
 Prompt:
 - find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences, or replaced with helper functions (existing or new) to reduce repetition. 
-- could/should this code be more modular?
--add a file and description code block to the top and create new detailed comments throughout the file
+- could/should this code file be more modular?
+-add a file and description code block to the top and create new detailed comments throughout this file only
 
 Redundancy:
 

@@ -1,4 +1,8 @@
--- src/states/explore.lua
+--[[
+	File: /src/states/explore.lua
+	Description: Explore State - Handles the main exploration gameplay state, including
+	             node navigation, item interactions, minigames, and HUD rendering.
+--]]
 
 local Events = require("src.system.events")
 local Interactions = require("src.system.interactions")

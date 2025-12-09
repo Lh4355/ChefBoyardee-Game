@@ -1,7 +1,8 @@
 --[[
 	File: src/system/events.lua
 	Description: Handles node-specific events and conditions for player entry.
-	Each node can have a function that triggers on entry, affecting player state, flags, and node properties.
+				Each node can have a function that triggers on entry, affecting 
+				player state, flags, and node properties.
 ]]
 
 local Items = require("src.data.items") -- Centralized item definitions

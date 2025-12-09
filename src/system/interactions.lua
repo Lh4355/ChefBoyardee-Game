@@ -1,6 +1,7 @@
 --[[
 	File: src/system/interactions.lua
-	Description: Handles item-specific interactions when the player uses or interacts with items in the game world.
+	Description: Handles item-specific interactions when the player uses
+				 or interacts with items in the game world.
 --]]
 
 local Interactions = {}
