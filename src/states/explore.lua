@@ -199,7 +199,7 @@ function Explore.pickUp(itemId)
 		-- Interaction succeeded
 		-- Set event message
 		eventMessage = msg or ""
-		-- 
+		--
 		gameFlags:handleSketchyAlleyUpdate(nodes)
 		selectedSlot = nil
 		return true
@@ -218,12 +218,12 @@ function Explore.pickUp(itemId)
 
 	-- First try interaction (with selected item if any)
 	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
-	
+
 	-- If interaction succeeded, update state and exit
 	if applyInteractionResult(handled, msg) then
 		return
 	end
-	
+
 	-- If no interaction occurred, attempt to pick up the item
 	if itemObj then
 		if player:addItem(itemObj) then
