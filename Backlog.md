@@ -4,14 +4,14 @@ Prettification Needed
 - i dont want intersection to always show the event message that the intersection is quiet. I want it to only have a message when the robbery event is available
 
 FINAL TO-DO
-- do i hide old map_nodes.lua file? should i make an archive folder?
 - get rid of duplicated or unused code
 - add file headers and detailed comments
 - add installation steps (populate readme)
+- do i hide old map_nodes.lua file? should i make an archive folder?
 
 
-
-
+Prompt:
+find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences
 
 
 
