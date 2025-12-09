@@ -61,7 +61,7 @@ end
 function GameState:handleSketchyAlleyUpdate(nodes)
 	if self.sketchy_alley_needs_update and nodes[NODE_SKETCHY_ALLEY] then
 		Utils.updateNodeDescription(
-		nodes[NODE_SKETCHY_ALLEY],
+			nodes[NODE_SKETCHY_ALLEY],
 			"This alley looks like bad news. And it's suddenly nighttime. At least it isn't as smokey."
 		)
 		self:setFlag("sketchy_alley_needs_update", false)

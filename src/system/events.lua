@@ -107,7 +107,8 @@ Events.nodes = {
 		-- If robbery already resolved, show the peaceful store and attendant (if needed)
 		if flags.jewelry_robbery_done then
 			node.imagePath = "src/data/images/locations/jewelry_store.png"
-			node.description = "Glittering jewels and gold adorn the displays of the jewelry store. You can even see the reflection of you can on the floor. The attendant is happy."
+			node.description =
+			"Glittering jewels and gold adorn the displays of the jewelry store. You can even see the reflection of you can on the floor. The attendant is happy."
 			node.image = Utils.loadImage(node.imagePath)
 			-- If the attendant (woman) hasn't given the player the gold skin yet, ensure she's present
 			if not flags.has_gold_skin then

@@ -1,10 +1,13 @@
--- src/data/nodes.lua
+--[[
+	File: src/data/nodes.lua
+	Description: Data structure defining the nodes (locations) in the game.	
+]]
 
 return {
 	-- NODE 1: Shelf (starting node)
 	[1] = {
 		id = 1,
-		name = "shelf",
+		name = "Shelf",
 		description = "The cold metal of the cans surrounding you gives you a sense of determination. You must escape this shelf!",
 		imagePath = "src/data/images/locations/shelf.png",
 		paths = {},
@@ -47,14 +50,14 @@ return {
 
 			-- 4. Feel (Shake)
 			shakeIntensity = 0.2, -- Higher number = more violent shake
-			shakeSpeed = 30,      -- Higher number = faster vibration
+			shakeSpeed = 30, -- Higher number = faster vibration
 		},
 	},
 
 	-- NODE 2: The Aisle Floor
 	[2] = {
 		id = 2,
-		name = "aisle_floor",
+		name = "aisle floor",
 		description = "You leap off the shelf. The tiles are cold under your ridges. You see the exit to the store ahead.",
 		imagePath = "src/data/images/locations/aisle_floor.png",
 		paths = {
@@ -68,7 +71,7 @@ return {
 	-- NODE 3: Outside Front of Grocery Store
 	[3] = {
 		id = 3,
-		name = "outside_store",
+		name = "outside store",
 		description = "The sun blinds you as you exit the grocery store. The city feels alive with noise and movement.",
 		imagePath = "src/data/images/locations/outside_store.png",
 		paths = {
@@ -84,7 +87,7 @@ return {
 	-- NODE 5: Main Intersection
 	[5] = {
 		id = 5,
-		name = "intersection_1",
+		name = "intersection",
 		description = "Narrowly avoiding oncoming traffic, you reach a busy intersection. There is a highway and a storefront with glittering windows.",
 		imagePath = "src/data/images/locations/intersection_1.png",
 		paths = {
@@ -102,7 +105,7 @@ return {
 	-- NODE 8: Scary Highway
 	[8] = {
 		id = 8,
-		name = "scary_highway",
+		name = "scary highway",
 		description = "You roll along the shoulder of a busy highway. Cars zoom past you at terrifying speeds. The noise is overwhelming.",
 		imagePath = "src/data/images/locations/scary_highway.png",
 		paths = {
@@ -120,7 +123,7 @@ return {
 	-- NODE 10: Neighborhood Street
 	[10] = {
 		id = 10,
-		name = "neighborhood_street",
+		name = "neighborhood street",
 		description = "You find yourself on a quiet neighborhood street. New neighbors are moving in, probably for this area's recycling pick-up program.",
 		imagePath = "src/data/images/locations/neighborhood_street.png",
 		paths = {
@@ -141,7 +144,7 @@ return {
 	-- NODE 11: Steep Hill
 	[11] = {
 		id = 11,
-		name = "steep_hill",
+		name = "steep hill",
 		description = "This steep hill is dangerous, but you feel the training the cannery instilled in you and continue onward.",
 		imagePath = "src/data/images/locations/steep_hill.png",
 		paths = {
@@ -157,7 +160,7 @@ return {
 	-- NODE 12: Sketchy Alley
 	[12] = {
 		id = 12,
-		name = "sketchy_alley",
+		name = "sketchy alley",
 		description = "This alley looks like bad news. And its suddenly nightime. You smell something burning...",
 		imagePath = "src/data/images/locations/sketchy_alley.png",
 		paths = {
@@ -173,7 +176,7 @@ return {
 	-- NODE 17: Jewelry Store
 	[17] = {
 		id = 17,
-		name = "jewelry_store",
+		name = "jewelry store",
 		description = "Glittering jewels and gold adorn the displays of the jewelry store. You can even see the reflection of you can on the floor.",
 		imagePath = "src/data/images/locations/jewelry_store_robbery.png",
 		paths = {
@@ -187,7 +190,7 @@ return {
 	-- NODE 21: Outside of House
 	[21] = {
 		id = 21,
-		name = "outside_house",
+		name = "outside house",
 		description = "A strange warm feeling overwhelms you as you approach the house. You see a front porch and a backyard.",
 		imagePath = "src/data/images/locations/outside_house.png",
 		paths = {
@@ -205,7 +208,7 @@ return {
 	-- NODE 23: Front Porch
 	[23] = {
 		id = 23,
-		name = "front_porch",
+		name = "front porch",
 		description = "A dog sleeps on the front porch. You can almost hear the sound of the microwave beeping in your head. You're so close.",
 		imagePath = "src/data/images/locations/front_porch.png",
 		paths = {
@@ -213,7 +216,7 @@ return {
 			living_room = 26,
 		},
 		items = {
-			{ id = "front_door" , x = 310, y = 280, w = 30, h = 30 },
+			{ id = "front_door", x = 310, y = 280, w = 30, h = 30 },
 		},
 		arrows = {
 			outside_house = { x = 100, y = 450, rotation = math.pi / 2, scale = 1 },
@@ -256,7 +259,7 @@ return {
 	-- NODE 26: Living Room
 	[26] = {
 		id = 26,
-		name = "living_room",
+		name = "living room",
 		description = "The living room is cozy. You roll over to the human child and stare at them with your label facing outwards.",
 		imagePath = "src/data/images/locations/living_room.png",
 		paths = {
@@ -275,17 +278,16 @@ return {
 	-- NODE 27: Victory Bowl
 	[27] = {
 		id = 27,
-		name = "victory_bowl",
+		name = "victory bowl",
 		description = "Victory Bowl. You Win!",
 		imagePath = "src/data/images/locations/victory_bowl.png",
 		paths = {},
 	},
 
-
 	-- NODE 31: Dumpster Fire
 	[31] = {
 		id = 31,
-		name = "dumpster_fire",
+		name = "dumpster",
 		description = "The smell of burning trash fills your canstrils. The dumpster is on fire but you see something shiny in the flames.",
 		imagePath = "src/data/images/locations/dumpster_fire.png",
 		paths = {
@@ -293,11 +295,9 @@ return {
 		},
 		items = {
 			{ id = "dumpster_fire", x = 130, y = -1, w = 400, h = 500 },
-			
 		},
 		arrows = {
 			sketchy_alley = { x = 50, y = 450, rotation = math.pi / 2, scale = 1 },
 		},
 	},
-
 }

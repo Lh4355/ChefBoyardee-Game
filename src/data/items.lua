@@ -1,4 +1,8 @@
--- src/data/items.lua
+--[[
+	File: src/data/items.lua
+	Description: Definitions for items used across multiple nodes.
+-- ]]
+
 local Item = require("src.entities.item")
 
 local Items = {}

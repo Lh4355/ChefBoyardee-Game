@@ -4,14 +4,13 @@
 --]]
 
 -- Create the AudioManager table
-local AudioManager = {} 
+local AudioManager = {}
 
 local musicSource
 local currentVolume = 0.5
 
 --- Initialize audio and play background music
 function AudioManager.initializeAudio()
-	
 	-- "stream" tells Love2D to stream it from the disk (good for long music) - doesn't load the entire file into memory at once, saving RAM.
 	-- "static" would be used for short sound effects (keeps it in memory)
 
