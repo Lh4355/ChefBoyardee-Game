@@ -79,10 +79,10 @@ src/
 ## Development
 
 ### Current Status
-This project is in active development (Clean-Up branch). See [Backlog.md](Backlog.md) for planned features and improvements.
+This project is in active development. See [Backlog.md](Backlog.md) for planned features and improvements.
 
 ### Key Areas
-- **Code Cleanup** - Removing redundancy and improving modularity
+- **Code Cleanup** - Improving modularity
 - **Feature Expansion** - Implementing map system, save functionality, and additional minigames
 - **Content Addition** - Expanding locations, events, and NPCs
 

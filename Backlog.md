@@ -1,25 +1,3 @@
-To-Do
-
-Prettification Needed
-
-
-FINAL TO-DO
-- get rid of duplicated or unused code
-- add file headers and detailed comments
-- add installation steps (populate readme)
-- do i hide old map_nodes.lua file? should i make an archive folder?
-- make sure game node starts at 1
-
-
-Prompt:
-- find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences, or replaced with helper functions (existing or new) to reduce repetition. 
-- could/should this code file be more modular?
--add a file and description code block to the top and create new detailed comments throughout this file only
-
-Redundancy:
-
-
-
 
 ------------------ Future Implementation Plans ------------------
 
