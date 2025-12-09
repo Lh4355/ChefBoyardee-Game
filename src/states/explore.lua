@@ -45,11 +45,17 @@ end
 
 -- Loads the minigame for the current node if one is defined
 function Explore.loadNodeMinigame()
-	currentMinigame = nil
-	if currentNode.minigame then
-		if currentNode.minigame.type == "click_filler" then
-			currentMinigame = ClickFiller.new(currentNode.minigame)
-		end
+	local minigame = currentNode.minigame
+
+	if not minigame then
+		currentMinigame = nil
+		return
+	end
+
+	if minigame.type == "click_filler" then
+		currentMinigame = ClickFiller.new(minigame)
+	else
+		currentMinigame = nil
 	end
 end
 
@@ -83,20 +89,20 @@ end
 
 -- Renders the explore state: background, minigame or interactive elements, and HUD
 function Explore.draw()
-	-- 1. Reset Input Zones for this frame
+	-- Reset Input Zones for this frame
 	InputManager.clear()
 
-	-- 2. Draw World
+	-- Draw World
 	SceneRenderer.drawBackground(currentNode)
 
-	-- 3. Draw Minigame OR Items/Paths
+	-- Draw Minigame OR Items/Paths
 	if currentMinigame then
 		currentMinigame:draw()
 	else
 		SceneRenderer.drawElements(currentNode, gameFlags)
 	end
 
-	-- 4. Draw HUD (Health, Inventory, Messages, Volume)
+	-- Draw HUD (Health, Inventory, Messages, Volume)
 	HUD.draw(player, currentNode, eventMessage, selectedSlot)
 end
 
@@ -140,14 +146,16 @@ function Explore.enterNode(targetId)
 	local prevNode = currentNode
 	local targetNode = nodes[targetId]
 	local allowed, msg = Events.checkEnter(targetNode, player, gameFlags, prevNode)
+	-- Set event message regardless of success
+	eventMessage = msg or ""
 
+	-- If not allowed to enter, abort
 	if not allowed then
-		eventMessage = msg or ""
 		return
 	end
 
+	-- Transition to target node
 	currentNode = targetNode
-	eventMessage = msg or ""
 	selectedSlot = nil
 	-- Mark the node as visited for tracking
 	if player and currentNode and player.visitNode then
@@ -159,6 +167,7 @@ function Explore.enterNode(targetId)
 	if prevNode and prevNode.id == 5 then
 		gameFlags:handleMissedJewelryRobbery(nodes, player)
 	end
+	-- Load any minigame for the new node
 	Explore.loadNodeMinigame()
 end
 
@@ -170,56 +179,52 @@ function Explore.pickUp(itemId)
 		selectedItemId = player.inventory[selectedSlot].id
 	end
 
-	-- Find the item object to check if it can be picked up
-	local itemObj
-	for _, item in ipairs(currentNode.items) do
+	-- Locate the item once (capture both object and index)
+	local itemObj, itemIndex
+	for i, item in ipairs(currentNode.items) do
 		if item.id == itemId then
 			itemObj = item
+			itemIndex = i
 			break
 		end
+	end
+
+	-- Helper function to apply interaction results and update state
+	local function applyInteractionResult(handled, msg)
+		-- If interaction was handled, update game flags and clear selection
+		if not handled then
+			return false
+		end
+
+		-- Interaction succeeded
+		-- Set event message
+		eventMessage = msg or ""
+		-- 
+		gameFlags:handleSketchyAlleyUpdate(nodes)
+		selectedSlot = nil
+		return true
 	end
 
 	-- If the item cannot be picked up, only allow interaction
 	if itemObj and not itemObj.canPickup then
 		local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
-		if handled then
-			eventMessage = msg or ""
-
-			-- Update sketchy_alley description if fire was extinguished
-			gameFlags:handleSketchyAlleyUpdate(nodes)
-
-			-- Deselect the item after use
-			selectedSlot = nil
-		else
-			-- Interaction failed, show the message but don't allow pickup
-			eventMessage = msg or ""
+		if applyInteractionResult(handled, msg) then
+			return
 		end
-		return
-	end
-
-	-- Try normal interaction for non-pickup-only items
-	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
-	if handled then
+		-- Interaction failed, show the message but don't allow pickup
 		eventMessage = msg or ""
-
-		-- Update sketchy_alley description if fire was extinguished
-		gameFlags:handleSketchyAlleyUpdate(nodes)
-
-		-- Deselect the item after use
-		selectedSlot = nil
-
 		return
 	end
 
-	local itemIndex, itemObj
-	for i, item in ipairs(currentNode.items) do
-		if item.id == itemId then
-			itemIndex = i
-			itemObj = item
-			break
-		end
+	-- First try interaction (with selected item if any)
+	local handled, msg = Interactions.tryInteract(itemId, player, currentNode, gameFlags, selectedItemId)
+	
+	-- If interaction succeeded, update state and exit
+	if applyInteractionResult(handled, msg) then
+		return
 	end
-
+	
+	-- If no interaction occurred, attempt to pick up the item
 	if itemObj then
 		if player:addItem(itemObj) then
 			table.remove(currentNode.items, itemIndex)

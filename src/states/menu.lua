@@ -1,4 +1,11 @@
--- src/menu.lua
+--[[
+	File: src/states/menu.lua
+	Description: Main menu state for The Rolling Can game. Renders the menu background, 
+				 title, instructions, music credit, and volume widget. Provides input 
+				 handling for starting the game (ENTER, SPACE, or mouse click) and 
+				 interacting with the volume control.
+--]]
+
 local VolumeWidget = require("src.system.volume_widget")
 local Utils = require("src.utils")
 
@@ -8,6 +15,21 @@ local background_image
 local title_font
 local text_font
 local music_font
+
+-- Helper to draw centered text with font and color
+local function drawCenteredText(text, y, font, color, shadow)
+	if font then
+		love.graphics.setFont(font)
+	end
+	local currentFont = love.graphics.getFont()
+	local textWidth = currentFont:getWidth(text)
+	if shadow then
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.print(text, (love.graphics.getWidth() - textWidth) / 2 + 3, y + 3)
+	end
+	love.graphics.setColor(color[1], color[2], color[3])
+	love.graphics.print(text, (love.graphics.getWidth() - textWidth) / 2, y)
+end
 
 function Menu.enter()
 	-- Load Background Image
@@ -33,60 +55,24 @@ function Menu.draw()
 	local windowWidth = love.graphics.getWidth()
 	local windowHeight = love.graphics.getHeight()
 
-	love.graphics.setColor(1, 1, 1) -- White
-
-	-- 1. Draw Background
+	love.graphics.setColor(1, 1, 1)
+	-- Draw Background
 	if background_image then
 		local sx = windowWidth / background_image:getWidth()
 		local sy = windowHeight / background_image:getHeight()
 		love.graphics.draw(background_image, 0, 0, 0, sx, sy)
 	end
 
-	-- 2. Draw Title
-	local title = "The Rolling Can"
+	-- Draw Title with shadow
+	drawCenteredText("The Rolling Can", 200, title_font, { 1, 0.8, 0.2 }, true)
 
-	-- Set Title Font
-	if title_font then
-		love.graphics.setFont(title_font)
-	end
+	-- Draw Instruction
+	drawCenteredText("Press ENTER or CLICK to Start", 350, text_font, { 1, 1, 1 })
 
-	-- Calculate Title Width using the current font
-	local currentFont = love.graphics.getFont()
-	local titleWidth = currentFont:getWidth(title)
-
-	-- Draw Shadow & Title
-	love.graphics.setColor(0, 0, 0)
-	love.graphics.print(title, (windowWidth - titleWidth) / 2 + 3, 203)
-
-	love.graphics.setColor(1, 0.8, 0.2) -- Gold
-	love.graphics.print(title, (windowWidth - titleWidth) / 2, 200)
-
-	-- 3. Draw Instruction
-	local text = "Press ENTER or CLICK to Start"
-
-	-- Switch to Text Font
-	if text_font then
-		love.graphics.setFont(text_font)
-	end
-
-	-- Update the font variable to the NEW font before calculating width
-	currentFont = love.graphics.getFont()
-	local textWidth = currentFont:getWidth(text)
-
-	love.graphics.setColor(1, 1, 1) -- White
-	love.graphics.print(text, (windowWidth - textWidth) / 2, 350)
-
-	-- Add this after the title drawing code (around line 60)
-
-	--  Music Credit
-	local music_credit = "Song: Un p'tit air by Tetes Raides"
-
-	love.graphics.setFont(music_font) -- Use the smaller font
-	love.graphics.setColor(1, 0.8, 0.2) -- gold
-	love.graphics.print(music_credit, 10, 580)
-
-	-- FIXME: where should i put this to reset font for small text later?
-	love.graphics.setFont(love.graphics.newFont(12)) -- Uncomment to reset font for small text
+	-- Music Credit (bottom left)
+	love.graphics.setFont(music_font)
+	love.graphics.setColor(1, 0.8, 0.2)
+	love.graphics.print("Song: Un p'tit air by Tetes Raides", 10, windowHeight - 20)
 
 	-- Volume control (bottom-right)
 	VolumeWidget.draw()

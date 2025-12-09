@@ -1,7 +1,17 @@
--- src/states/gameover.lua
+--[[
+	File: src/states/gameover.lua
+	Description: Game Over State - Displays the game over screen with restart option.
+--]]
+
 local VolumeWidget = require("src.system.volume_widget")
 
 local GameOver = {}
+
+local function drawCenteredText(text, y, color)
+	local r, g, b = unpack(color or { 1, 1, 1 })
+	love.graphics.setColor(r, g, b)
+	love.graphics.printf(text, 0, y, love.graphics.getWidth(), "center")
+end
 
 function GameOver.enter()
 	VolumeWidget.setAnchor(nil, nil)
@@ -13,17 +23,15 @@ end
 
 function GameOver.draw()
 	love.graphics.clear(0, 0, 0)
-	love.graphics.setColor(1, 0, 0)
-	love.graphics.printf("YUCK! YOU ARE INEDIBLE!", 0, 250, 800, "center")
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.printf("Press 'R' to Restart", 0, 300, 800, "center")
+	drawCenteredText("YUCK! YOU ARE INEDIBLE!", 250, { 1, 0, 0 })
+	drawCenteredText("Press 'R' to Restart", 300)
 
 	VolumeWidget.draw()
 end
 
 function GameOver.keypressed(key)
 	if key == "r" then
-		love.event.quit("restart") -- Simplest way to restart the whole game
+		love.event.quit("restart") -- restarts game back to main menu (relaunches the game)
 	end
 end
 
