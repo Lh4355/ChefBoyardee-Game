@@ -32,14 +32,16 @@ General
 - add counterfiet soup seller --> should this be an event/encounter instead of a location and event/encounter
 - sewer shortcuts
 - add person coming to look at can event to the start
+- add tool tips so players know when to click on something to learn game mechanics
+- decide what to put on inventory bar (on the right side)
+- make inventory bar collapsable (use ravioli backpack item)
+
 
 Additions
 - the movers have a toolkit that can be used to fix your can to 100% health
 - add man in trenchcoat to sketchy alley that you can trade your gold skin for a fire extinguisher
 
 General
-- decide what to put on inventory bar (on the right side)
-- make inventory bar collapsable (use ravioli backpack item)
 
 Improve Modularity
 - Add sprite images folder for hud and scene_renderer

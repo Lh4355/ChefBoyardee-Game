@@ -35,7 +35,7 @@ function Menu.enter()
 	-- Load Background Image
 	background_image = love.graphics.newImage("src/data/images/locations/main_menu.png")
 	-- Load the Hobbit-style fonts
-	title_font = Utils.loadFont("src/data/fonts/RINGM___.TTF", 60)
+	title_font = Utils.loadFont("src/data/fonts/RINGM___.TTF", 55)
 	text_font = Utils.loadFont("src/data/fonts/RINGM___.TTF", 20)
 	music_font = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 15)
 
@@ -64,7 +64,7 @@ function Menu.draw()
 	end
 
 	-- Draw Title with shadow
-	drawCenteredText("The Rolling Can", 200, title_font, { 1, 0.8, 0.2 }, true)
+	drawCenteredText("Chef Boyardee Simulator", 200, title_font, { 1, 0.8, 0.2 }, true)
 
 	-- Draw Instruction
 	drawCenteredText("Press ENTER or CLICK to Start", 350, text_font, { 1, 1, 1 })
