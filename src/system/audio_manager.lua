@@ -39,9 +39,9 @@ function AudioManager.getVolume()
 end
 
 --- Retrieve the active music source (may be nil before initialization)
----@return love.Source|nil
-function AudioManager.getMusicSource()
-	return musicSource
-end
+--@return love.Source|nil
+-- function AudioManager.getMusicSource()
+-- 	return musicSource
+-- end
 
 return AudioManager
