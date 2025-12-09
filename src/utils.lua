@@ -1,6 +1,12 @@
--- src/utils.lua
+--[[
+	File: /src/utils.lua
+	Description: This file contains utility functions for the game (i.e. collision detection, resource loading, node/item management).
+--]]
+
 local Utils = {}
 
+-- Collision Detection
+-- Returns true if rectangles (x1,y1,w1,h1) and (x2,y2,w2,h2) overlap
 function Utils.checkCollision(x1, y1, w1, h1, x2, y2, w2, h2)
 	return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
 end
@@ -101,7 +107,8 @@ function Utils.removeInventoryItems(inventory, itemIds)
 			table.insert(newInventory, it)
 		end
 	end
-	-- mutate original table to keep references valid
+
+	-- Clear and repopulate inventory
 	for i = 1, #inventory do
 		inventory[i] = nil
 	end
