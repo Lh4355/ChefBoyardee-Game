@@ -51,7 +51,7 @@ end
 function GameState:handleSketchyAlleyUpdate(nodes)
 	if self.sketchy_alley_needs_update and nodes[12] then
 		local Utils = require("src.utils")
-		Utils.updateNodeDescription(nodes[12], "It is a sketchy alley.")
+		Utils.updateNodeDescription(nodes[12], "This alley looks like bad news. And its suddenly nightime. At least it isn't as smokey.")
 		self:setFlag("sketchy_alley_needs_update", false)
 	end
 end

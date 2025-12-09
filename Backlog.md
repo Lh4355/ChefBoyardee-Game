@@ -1,7 +1,7 @@
 To-Do
 
 Prettification Needed
-- i dont want intersection to always show the event message that the intersection is quiet. I want it to only have a message when the robbery event is available, same for if the shop is empty if you miss the robbery
+
 
 FINAL TO-DO
 - get rid of duplicated or unused code
@@ -12,10 +12,11 @@ FINAL TO-DO
 
 
 Prompt:
-find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences
+- find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences, or replaced with helper functions (existing or new) to reduce repetition. 
+- could/should this code be more modular?
 
 Redundancy:
-- the codebase has repetitive font-loading code across multiple files (HUD, Menu, SceneRenderer). 
+
 
 
 

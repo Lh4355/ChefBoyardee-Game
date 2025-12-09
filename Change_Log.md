@@ -79,3 +79,4 @@ Day 10 (12/9/2025):
 - Cleaned up code files and comments
 - Changed gameover screen text
 - moved loadfont function to utils.lua
+- Event messages now display at correct times

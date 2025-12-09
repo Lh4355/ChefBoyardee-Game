@@ -83,4 +83,30 @@ function Utils.removeNodeItems(node, itemIds)
 	node.items = newItems
 end
 
+-- Remove items from an inventory by itemIds table
+function Utils.removeInventoryItems(inventory, itemIds)
+	if not inventory then
+		return
+	end
+	local newInventory = {}
+	for _, it in ipairs(inventory) do
+		local remove = false
+		for _, id in ipairs(itemIds) do
+			if it.id == id then
+				remove = true
+				break
+			end
+		end
+		if not remove then
+			table.insert(newInventory, it)
+		end
+	end
+	-- mutate original table to keep references valid
+	for i = 1, #inventory do
+		inventory[i] = nil
+	end
+	for i, it in ipairs(newInventory) do
+		inventory[i] = it
+	end
+end
 return Utils

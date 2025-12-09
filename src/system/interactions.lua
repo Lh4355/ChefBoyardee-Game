@@ -1,7 +1,13 @@
--- src/interactions.lua
+--[[
+	File: interactions.lua
+	Description: Handles item-specific interactions when the player uses or interacts with items in the game world.
+--]]
+
 local Interactions = {}
 
 local Utils = require("src.utils")
+
+-- Define interaction functions by item ID
 Interactions.items = {
 	-- The Shop Attendant
 	["attendant"] = function(player, currentNode, flags, selectedItemId)
@@ -10,12 +16,7 @@ Interactions.items = {
 		flags.has_gold_skin = true
 
 		-- Remove the attendant from the room
-		for i, item in ipairs(currentNode.items) do
-			if item.id == "attendant" then
-				table.remove(currentNode.items, i)
-				break
-			end
-		end
+		Utils.removeNodeItems(currentNode, { "attendant" })
 
 		return true, "Attendant: 'You saved the shop! Let me fix that dent... and here, have a GOLD coating!'"
 	end,
@@ -26,12 +27,7 @@ Interactions.items = {
 		flags.jewelry_robbery_done = true
 		flags.jewelry_robbery_pending = false
 		-- Remove robber from the room
-		for i, item in ipairs(currentNode.items) do
-			if item.id == "robber" then
-				table.remove(currentNode.items, i)
-				break
-			end
-		end
+		Utils.removeNodeItems(currentNode, { "robber" })
 		-- Change the store image and description to resolved state
 		currentNode.imagePath = "src/data/images/locations/jewelry_store.png"
 		currentNode.description = "The robbers have been arrested and the woman is safe now."
@@ -57,7 +53,7 @@ Interactions.items = {
 		return true, "CRASH! The robber trips and hits you for 15 damage. The police take him away."
 	end,
 	["dumpster_fire"] = function(player, currentNode, flags, selectedItemId)
-		-- This interaction requires the fire_extinguisher to be selected in inventory
+		-- Requires the fire_extinguisher to be selected in inventory
 		if selectedItemId ~= "fire_extinguisher" then
 			return false, "The dumpster is on fire but you see something shiny in the flames."
 		end
@@ -76,20 +72,10 @@ Interactions.items = {
 		flags.sketchy_alley_needs_update = true
 
 		-- Remove the dumpster_fire item from the scene
-		for i, item in ipairs(currentNode.items) do
-			if item.id == "dumpster_fire" then
-				table.remove(currentNode.items, i)
-				break
-			end
-		end
+		Utils.removeNodeItems(currentNode, { "dumpster_fire" })
 
 		-- Remove fire extinguisher from player inventory
-		for i, item in ipairs(player.inventory) do
-			if item.id == "fire_extinguisher" then
-				table.remove(player.inventory, i)
-				break
-			end
-		end
+		Utils.removeInventoryItems(player.inventory, { "fire_extinguisher" })
 
 		-- Add a key item to the dumpster (use centralized definition)
 		local Items = require("src.data.items")
@@ -108,20 +94,10 @@ Interactions.items = {
 		flags.front_door_unlocked = true
 
 		-- Remove the front_door item from the scene (door is now unlocked/open)
-		for i, item in ipairs(currentNode.items) do
-			if item.id == "front_door" then
-				table.remove(currentNode.items, i)
-				break
-			end
-		end
+		Utils.removeNodeItems(currentNode, { "front_door" })
 
 		-- Remove dumpster_key from player inventory
-		for i, item in ipairs(player.inventory) do
-			if item.id == "dumpster_key" then
-				table.remove(player.inventory, i)
-				break
-			end
-		end
+		Utils.removeInventoryItems(player.inventory, { "dumpster_key" })
 
 		return true, "You unlock the front door with the key and it swings open!"
 	end,
@@ -131,6 +107,7 @@ Interactions.items = {
 	end,
 }
 
+-- Attempt to interact with an item by itemId
 function Interactions.tryInteract(itemId, player, currentNode, flags, selectedItemId)
 	local func = Interactions.items[itemId]
 	if func then
