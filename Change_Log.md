@@ -67,7 +67,10 @@ Day 8 (12/7/2025):
 - Added win screen and button to go back to the main menu
 - Added recycling bin interaction
 - Added descriptions to nodes and displayed them
-
+- volume slider
 
 Day 9 (12/8/2025):
--
+- Added sprite images for items and interactables
+- Added sprite images in inv slots
+- Finished node descriptions
+- fixed bigs/issues and various backlog tasks
