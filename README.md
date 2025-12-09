@@ -1,6 +1,6 @@
 # Chef Boyardee Simulator
 
-A humorous adventure game built with LÖVE 2D where you play as a sentient can of Chef Boyardee ravioli navigating various locations, managing your can's health, and completing minigames to survive your journey.
+An adventure game built with LÖVE 2D where you play as a sentient can of Chef Boyardee ravioli navigating various locations, managing your can's health, and completing minigames to survive your journey to get eaten.
 
 ## Installation
 
