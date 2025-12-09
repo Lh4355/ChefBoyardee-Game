@@ -2,7 +2,7 @@
 local Interactions = {}
 
 Interactions.items = {
-	-- SPECIAL ITEM: The Shop Attendant
+	-- The Shop Attendant
 	["attendant"] = function(player, currentNode, flags, selectedItemId)
 		player:heal(100)
 		player.skin = "gold"
@@ -39,7 +39,7 @@ Interactions.items = {
 		if success then
 			currentNode.image = img
 		end
-		-- Add/update the attendant NPC immediately so sizing/position apply without re-entering
+		-- Add/update the attendant NPC immediately so sizing/position apply without re-entering node
 		local attendant
 		for _, it in ipairs(currentNode.items or {}) do
 			if it.id == "attendant" then
@@ -142,8 +142,6 @@ Interactions.items = {
 		return false, "There is a blue bin overflowing with tin cans, their skins removed. You feel sad."
 	end,
 
-	-- You could add other items here later, e.g.:
-	-- ["potion"] = function(player) ... end
 }
 
 function Interactions.tryInteract(itemId, player, currentNode, flags, selectedItemId)
