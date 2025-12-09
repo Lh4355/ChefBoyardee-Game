@@ -5,6 +5,7 @@ local InputManager = require("src.system.input_manager")
 local SceneRenderer = {}
 local uiFontSmall
 local arrowImage
+local itemSprites = {}
 
 -- Decide whether a navigation arrow should be visible for the current node.
 local function isPathVisible(currentNode, pathName, flags)
@@ -26,6 +27,24 @@ function SceneRenderer.init()
 
 	-- Load arrow sprite
 	arrowImage = love.graphics.newImage("src/data/images/sprites/arrow.png")
+
+	-- Load item sprites (add new spriteIds and paths as needed)
+	local spriteList = {
+		robber_sprite = "src/data/images/sprites/robber.png",
+		attendant_sprite = "src/data/images/sprites/attendant.png",
+		key_sprite = "src/data/images/sprites/key.png",
+		fire_extinguisher_sprite = "src/data/images/sprites/fire_extinguisher.png",
+		recycling_bin_sprite = "src/data/images/sprites/recycling_bin.png",
+		dumpster_fire_sprite = "src/data/images/sprites/dumpster_fire.png",
+		front_door_sprite = "src/data/images/sprites/front_door.png",
+		-- Add more spriteIds and paths here as you add images
+	}
+	for id, path in pairs(spriteList) do
+		local ok, img = pcall(love.graphics.newImage, path)
+		if ok then
+			itemSprites[id] = img
+		end
+	end
 end
 
 function SceneRenderer.drawBackground(currentNode)
@@ -51,11 +70,24 @@ function SceneRenderer.drawElements(currentNode, gameFlags)
 		local ix, iy = item.x or (100 + i * 60), item.y or 400
 		local iw, ih = item.w or gui.item_scene_size, item.h or gui.item_scene_size
 
-		-- Draw Blue Box
-		love.graphics.setColor(0, 0, 1)
-		love.graphics.rectangle("fill", ix, iy, iw, ih)
+		local sprite = itemSprites[item.spriteId]
+		if sprite then
+			love.graphics.setColor(1, 1, 1, 1)
+			-- Center the sprite in the box
+			local sw, sh = sprite:getWidth(), sprite:getHeight()
+			local scaleX, scaleY = iw / sw, ih / sh
+			love.graphics.draw(sprite, ix, iy, 0, scaleX, scaleY)
+		else
+			-- Fallback: Draw Blue Box
+			love.graphics.setColor(0, 0, 1)
+			love.graphics.rectangle("fill", ix, iy, iw, ih)
+		end
+		
+		-- Center the label horizontally within the item
 		love.graphics.setColor(1, 1, 1)
-		love.graphics.print(item.name, ix, iy - 20)
+		local textWidth = uiFontSmall:getWidth(item.name)
+		local textX = ix + (iw - textWidth) / 2
+		love.graphics.print(item.name, textX, iy - 20)
 
 		-- Register Click
 		InputManager.register(ix, iy, iw, ih, "item", item.id)

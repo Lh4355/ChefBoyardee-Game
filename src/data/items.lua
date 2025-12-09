@@ -9,6 +9,7 @@ Items.dumpster_key =
 
 -- Additional centralized items used across the game
 Items.robber = Item.new("robber", "Robber", "A masked robber. Click to intervene!", "robber_sprite")
+
 Items.fire_extinguisher = Item.new(
 	"fire_extinguisher",
 	"Fire Extinguisher",

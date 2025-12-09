@@ -48,12 +48,33 @@ function Initialization.initializeNodes()
 					else
 						print("Warning: Item '" .. itemData .. "' not found in Items registry")
 					end
+				elseif type(itemData) == "table" and itemData.id then
+					-- Look up item from Items registry by ID, then override with per-node properties
+					local itemTemplate = Items[itemData.id]
+					if itemTemplate then
+						item = Item.new(
+							itemTemplate.id,
+							itemTemplate.name,
+							itemTemplate.description,
+							itemTemplate.spriteId,
+							itemTemplate.canPickup
+						)
+						-- Override with any per-node properties (x, y, w, h, etc.)
+						for k, v in pairs(itemData) do
+							if k ~= "id" then
+								item[k] = v
+							end
+						end
+					else
+						print("Warning: Item '" .. tostring(itemData.id) .. "' not found in Items registry")
+					end
 				else
 					-- Handle inline item data (for backward compatibility)
 					item = Item.new(itemData.id, itemData.name, itemData.description, itemData.spriteId)
 				end
 
 				if item then
+					-- Only set default w/h if not already set
 					item.w = item.w or 50
 					item.h = item.h or 50
 					table.insert(newNode.items, item)

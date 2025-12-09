@@ -39,22 +39,26 @@ Interactions.items = {
 		if success then
 			currentNode.image = img
 		end
-		-- Add the attendant NPC so player may be healed/gifted
-		local hasAttendant = false
+		-- Add/update the attendant NPC immediately so sizing/position apply without re-entering
+		local attendant
 		for _, it in ipairs(currentNode.items or {}) do
 			if it.id == "attendant" then
-				hasAttendant = true
+				attendant = it
 				break
 			end
 		end
-		if not hasAttendant then
+		if not attendant then
 			local Items = require("src.data.items")
-			local attendant = Items.attendant
-			attendant.x = 300
-			attendant.y = 350
-			attendant.w = 150
+			local Item = require("src.entities.item")
+			local at = Items.attendant
+			attendant = Item.new(at.id, at.name, at.description, at.spriteId, at.canPickup)
 			table.insert(currentNode.items, attendant)
 		end
+		attendant.x = 262
+		attendant.y = 185
+		attendant.w = 160
+		attendant.h = 150
+
 		return true, "CRASH! The robber trips and hits you for 15 damage. The police take him away."
 	end,
 	["dumpster_fire"] = function(player, currentNode, flags, selectedItemId)

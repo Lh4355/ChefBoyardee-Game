@@ -6,6 +6,7 @@ local Menu = {}
 local background_image
 local title_font
 local text_font
+local music_font
 
 function Menu.enter()
 	-- Load Background Image
@@ -13,6 +14,7 @@ function Menu.enter()
 	-- Load the Hobbit-style fonts
 	title_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 60)
 	text_font = love.graphics.newFont("src/data/fonts/RINGM___.TTF", 20)
+	music_font = love.graphics.newFont("src/data/fonts/friz-quadrata-regular.ttf", 15)
 
 	VolumeWidget.init()
 	-- Anchor on top area, right side like cream bar
@@ -72,6 +74,15 @@ function Menu.draw()
 
 	love.graphics.setColor(1, 1, 1) -- White
 	love.graphics.print(text, (windowWidth - textWidth) / 2, 350)
+
+	-- Add this after the title drawing code (around line 60)
+
+	--  Music Credit
+	local music_credit = "Song: Un p'tit air by Tetes Raides"
+
+	love.graphics.setFont(music_font) -- Use the smaller font
+	love.graphics.setColor(1, 0.8, 0.2) -- gold
+	love.graphics.print(music_credit, 10, 580)
 
 	-- FIXME: where should i put this to reset font for small text later?
 	love.graphics.setFont(love.graphics.newFont(12)) -- Uncomment to reset font for small text

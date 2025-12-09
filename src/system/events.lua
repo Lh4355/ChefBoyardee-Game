@@ -1,5 +1,6 @@
 -- src/events.lua
 local Items = require("src.data.items")
+local Item = require("src.entities.item")
 
 local Events = {}
 
@@ -86,21 +87,23 @@ Events.nodes = {
 			if success then
 				node.image = img
 			end
-			-- Add a robber NPC if not already present
-			local hasRobber = false
+			-- Add a robber NPC if not already present; update position/size if it is
+			local robber
 			for _, it in ipairs(node.items or {}) do
 				if it.id == "robber" then
-					hasRobber = true
+					robber = it
 					break
 				end
 			end
-			if not hasRobber then
-				local robber = Items.robber
-				robber.x = 320
-				robber.y = 220
-				robber.w = 120
+			if not robber then
+				local rt = Items.robber
+				robber = Item.new(rt.id, rt.name, rt.description, rt.spriteId, rt.canPickup)
 				table.insert(node.items, robber)
 			end
+			robber.x = 0
+			robber.y = 115
+			robber.w = 290
+			robber.h = 500
 			return true, "A robbery is happening at the jewelry store!"
 		end
 
@@ -115,20 +118,22 @@ Events.nodes = {
 			end
 			-- If the attendant (woman) hasn't given the player the gold skin yet, ensure she's present
 			if not flags.has_gold_skin then
-				local hasAttendant = false
+				local attendant
 				for _, it in ipairs(node.items or {}) do
 					if it.id == "attendant" then
-						hasAttendant = true
+						attendant = it
 						break
 					end
 				end
-				if not hasAttendant then
-					local attendant = Items.attendant
-					attendant.x = 300
-					attendant.y = 350
-					attendant.w = 150
+				if not attendant then
+					local at = Items.attendant
+					attendant = Item.new(at.id, at.name, at.description, at.spriteId, at.canPickup)
 					table.insert(node.items, attendant)
 				end
+				attendant.x = 262
+				attendant.y = 185
+				attendant.w = 160
+				attendant.h = 150
 			end
 			return true, "The Jewelry Store is peaceful now."
 		end
