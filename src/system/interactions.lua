@@ -102,6 +102,8 @@ Interactions.items = {
 		-- Add a key item to the dumpster (use centralized definition)
 		local Items = require("src.data.items")
 		local key = Items.dumpster_key
+		key.x = 340 -- Your desired X position
+		key.y = 240
 		key.w = 50
 		key.h = 50
 		table.insert(currentNode.items, key)
@@ -141,7 +143,6 @@ Interactions.items = {
 	["recycling_bin"] = function(player, currentNode, flags, selectedItemId)
 		return false, "There is a blue bin overflowing with tin cans, their skins removed. You feel sad."
 	end,
-
 }
 
 function Interactions.tryInteract(itemId, player, currentNode, flags, selectedItemId)

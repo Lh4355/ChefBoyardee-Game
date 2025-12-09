@@ -1,13 +1,13 @@
 To-Do
 
 Prettification Needed
-- Make dumpster, dumpster key, front door objects
 - add descriptions to nodes (make sure they dont overlap/repeat)
 - make sprite image show up in inventory bar
+- when the robbery event is happening i dont want the description box at the top to show, only after the robber is dealt with will it show up
 
 Bugs
 - Fix warning in audio_manager.lua
-- when the robbery event is happening i dont want the description box at the top to show, only after the robber is dealt with will it show up
+
 
 FINAL TO-DO
 - decide whether or not to get rid of commented nodes/make a new file for them or leave them as is

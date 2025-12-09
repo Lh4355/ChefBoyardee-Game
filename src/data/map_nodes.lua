@@ -506,7 +506,8 @@ return {
 			sketchy_alley = 12,
 		},
 		items = {
-			"dumpster_fire",
+			{ id = "dumpster_fire", x = 130, y = -1, w = 400, h = 500 },
+			
 		},
 		arrows = {
 			sketchy_alley = { x = 50, y = 450, rotation = math.pi / 2, scale = 1 },
