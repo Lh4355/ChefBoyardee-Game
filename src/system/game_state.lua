@@ -1,7 +1,18 @@
--- src/system/game_state.lua
--- Encapsulates game flags and state management
+--[[
+	File: src/system/game_state.lua
+	Description: Manages game state flags and handles state transitions.
+--]]
+
 local GameState = {}
 GameState.__index = GameState
+
+-- Node constants
+local NODE_JEWELRY_STORE = 17
+local NODE_SKETCHY_ALLEY = 12
+local NODE_START = 1
+
+-- Utility module
+local Utils = require("src.utils")
 
 -- Initialize all game flags
 function GameState.new()
@@ -33,38 +44,37 @@ function GameState:handleMissedJewelryRobbery(nodes, player)
 	end
 
 	-- If player hasn't visited jewelry store yet, they missed the robbery
-	if not player:hasVisited(17) then
+	if not player:hasVisited(NODE_JEWELRY_STORE) then
 		self:setFlag("jewelry_store_missed", true)
 		self:setFlag("jewelry_robbery_done", true)
 		self:setFlag("jewelry_robbery_pending", false)
 
 		-- Update jewelry store node
-		if nodes[17] then
-			local Utils = require("src.utils")
-			Utils.updateNodeImage(nodes[17], "src/data/images/locations/jewelry_store_empty.png")
-			Utils.removeNodeItems(nodes[17], { "robber", "attendant" })
+		if nodes[NODE_JEWELRY_STORE] then
+			Utils.updateNodeImage(nodes[NODE_JEWELRY_STORE], "src/data/images/locations/jewelry_store_empty.png")
+			Utils.removeNodeItems(nodes[NODE_JEWELRY_STORE], { "robber", "attendant" })
 		end
 	end
 end
 
 -- Handle sketchy alley fire extinguishment
 function GameState:handleSketchyAlleyUpdate(nodes)
-	if self.sketchy_alley_needs_update and nodes[12] then
-		local Utils = require("src.utils")
-		Utils.updateNodeDescription(nodes[12], "This alley looks like bad news. And its suddenly nightime. At least it isn't as smokey.")
+	if self.sketchy_alley_needs_update and nodes[NODE_SKETCHY_ALLEY] then
+		Utils.updateNodeDescription(
+		nodes[NODE_SKETCHY_ALLEY],
+			"This alley looks like bad news. And it's suddenly nighttime. At least it isn't as smokey."
+		)
 		self:setFlag("sketchy_alley_needs_update", false)
 	end
 end
 
 -- Reset all game state for a fresh playthrough
 function GameState:reset(player, nodes)
-	-- Reset all flags
-	self.jewelry_robbery_done = false
-	self.has_gold_skin = false
-	self.jewelry_robbery_pending = false
-	self.jewelry_store_missed = false
-	self.sketchy_alley_needs_update = false
-	self.front_door_unlocked = false
+	-- Reset all flags to defaults
+	local defaultState = GameState.new()
+	for key, value in pairs(defaultState) do
+		self[key] = value
+	end
 
 	-- Reset player
 	player.health = 100
@@ -82,12 +92,11 @@ end
 
 -- State switching function
 function GameState.switchState(currentState, newState, player, nodes)
-	currentState = newState
 	-- Pass shared data (player, nodes) to the state if it needs it
-	if currentState.enter then
-		currentState.enter(player, nodes, nodes[3]) -- pass starting node index
+	if newState.enter then
+		newState.enter(player, nodes, nodes[NODE_START])
 	end
-	return currentState
+	return newState
 end
 
 return GameState

@@ -1,5 +1,7 @@
--- src/system/initialization.lua
--- Handles all game initialization logic
+--[[
+	File: src/system/initialization.lua
+	Description: Initializes game nodes, player, and audio systems.
+--]]
 
 local Node = require("src.entities.node")
 local Item = require("src.entities.item")

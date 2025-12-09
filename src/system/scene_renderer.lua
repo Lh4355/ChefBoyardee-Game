@@ -1,5 +1,5 @@
 --[[
-	File: scene_renderer.lua
+	File: src/system/scene_renderer.lua
 	Description: Renders the scene including background, items, navigation arrows, tooltips, and sprite management.
 --]]
 

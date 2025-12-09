@@ -1,5 +1,5 @@
 --[[
-	File: hud.lua
+	File: src/system/hud.lua
 	Description: Heads-Up Display (HUD) system for the game.
 --]]
 
@@ -79,7 +79,7 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 		HUD.init()
 	end
 
-	-- 1. BOTTOM GREEN PANEL (Inventory)
+	-- BOTTOM GREEN PANEL (Inventory)
 	local panelY = h - gui.inv_panel_height
 	love.graphics.setColor(unpack(gui.COLORS.green_panel))
 	love.graphics.rectangle("fill", 0, panelY, w, gui.inv_panel_height)
@@ -132,7 +132,7 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 			love.graphics.setFont(love.graphics.newFont(10))
 		end
 
-		-- REGISTER CLICK ZONE
+		-- Register Click Area for Slots
 		InputManager.register(bx, by, gui.inv_slot_size, gui.inv_slot_size, "inventory", i)
 	end
 
@@ -237,10 +237,10 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 		love.graphics.circle("fill", sbX + 30, sbY + 30, 15)
 	end
 
-	-- 5. Volume control (draw over top bar)
+	-- Volume control widget (draw over top bar)
 	VolumeWidget.draw()
 
-	-- 6. EVENT MESSAGES
+	-- Display Event messages
 	if eventMessage ~= "" then
 		local msgW = uiFont:getWidth(eventMessage)
 		love.graphics.setColor(0, 0, 0, 0.8)
