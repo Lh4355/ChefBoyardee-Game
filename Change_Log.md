@@ -74,3 +74,6 @@ Day 9 (12/8/2025):
 - Added sprite images in inv slots
 - Finished node descriptions
 - fixed bigs/issues and various backlog tasks
+
+Day 10 (12/9/2025):
+- Cleaned up code files and comments

@@ -13,7 +13,8 @@ FINAL TO-DO
 Prompt:
 find duplicate or redundant code in this file compared to every other file to find lines or code blocks that could be deleted with no consequences
 
-
+Redundancy:
+- the codebase has repetitive font-loading code across multiple files (HUD, Menu, SceneRenderer). 
 
 
 

@@ -1,47 +1,46 @@
--- src/system/audio_manager.lua
--- Handles all audio initialization and management
+--[[
+	File: src/system/audio_manager.lua
+	Description: Manages all audio initialization, playback, and volume control for the game.
+--]]
 
-local AudioManager = {}
+-- Create the AudioManager table
+local AudioManager = {} 
 
 local musicSource
 local currentVolume = 0.5
 
 --- Initialize audio and play background music
 function AudioManager.initializeAudio()
-	-- "stream" tells Love2D to stream it from the disk (good for long music)
+	
+	-- "stream" tells Love2D to stream it from the disk (good for long music) - doesn't load the entire file into memory at once, saving RAM.
 	-- "static" would be used for short sound effects (keeps it in memory)
+
+	-- Load and play background music if not already playing
 	if not musicSource then
 		musicSource = love.audio.newSource("src/data/audio/chef_music.mp3", "stream")
 		musicSource:setLooping(true)
 		musicSource:setVolume(currentVolume)
 		musicSource:play()
 	end
-	-- Keep global audio volume in sync for future SFX
+	-- Set the global volume
 	love.audio.setVolume(currentVolume)
 	return musicSource
 end
 
---- Clamp and apply a new master volume [0, 1]
+--- Apply a new master volume between [0, 1]
 ---@param volume number
 function AudioManager.setVolume(volume)
-	local v = math.max(0, math.min(1, volume or currentVolume))
-	currentVolume = v
+	currentVolume = math.max(0, math.min(1, volume or currentVolume))
 	love.audio.setVolume(currentVolume)
 	if musicSource then
 		musicSource:setVolume(currentVolume)
 	end
 end
 
---- Get the current volume [0, 1]
+--- Get the current volume between [0, 1]
 ---@return number
 function AudioManager.getVolume()
 	return currentVolume
 end
-
---- Retrieve the active music source (may be nil before initialization)
---@return love.Source|nil
--- function AudioManager.getMusicSource()
--- 	return musicSource
--- end
 
 return AudioManager
