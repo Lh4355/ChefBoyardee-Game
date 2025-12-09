@@ -7,7 +7,7 @@ FINAL TO-DO
 - do i hide old map_nodes.lua file? should i make an archive folder?
 - get rid of duplicated or unused code
 - add file headers and detailed comments
-
+- add installation steps (populate readme)
 
 
 
