@@ -109,7 +109,7 @@ Interactions.items = {
 		table.insert(currentNode.items, key)
 
 		return true,
-			"You spray the fire extinguisher on the dumpster and put out the flames. As the smoke clears, you spot a key in the dumpster!"
+			"You put out the flames. The smoke clears, revealing a key in the dumpster!"
 	end,
 
 	["front_door"] = function(player, currentNode, flags, selectedItemId)

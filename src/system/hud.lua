@@ -4,7 +4,7 @@ local InputManager = require("src.system.input_manager")
 local VolumeWidget = require("src.system.volume_widget")
 
 local HUD = {}
-local uiFont, uiFontSmall, skinImages
+local uiFont, uiFontSmall, skinImages, itemSprites
 
 -- Pick the correct can sprite based on skin and health buckets
 local function selectSkinImage(skin, health)
@@ -61,6 +61,18 @@ function HUD.init()
 
 		-- Add more skins below as needed
 	}
+
+	-- Load item sprite images
+	itemSprites = {
+		key_sprite = love.graphics.newImage("src/data/images/sprites/key.png"),
+		fire_extinguisher_sprite = love.graphics.newImage("src/data/images/sprites/fire_extinguisher.png"),
+		attendant_sprite = love.graphics.newImage("src/data/images/sprites/attendant.png"),
+		robber_sprite = love.graphics.newImage("src/data/images/sprites/robber.png"),
+		recycling_bin_sprite = love.graphics.newImage("src/data/images/sprites/recycling_bin.png"),
+		dumpster_fire_sprite = love.graphics.newImage("src/data/images/sprites/dumpster_fire.png"),
+		lock_sprite = love.graphics.newImage("src/data/images/sprites/lock.png"),
+		-- Add more item sprites as needed
+	}
 end
 
 function HUD.draw(player, currentNode, eventMessage, selectedSlot)
@@ -100,11 +112,29 @@ function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 		love.graphics.setColor(1, 1, 1, 0.5)
 		love.graphics.print(tostring(i), bx + 2, by + 2)
 
-		-- Draw Item Name
+		-- Draw Item Sprite and Name
 		if player.inventory[i] then
+			local item = player.inventory[i]
+
+			-- Draw item sprite if available
+			if item.spriteId and itemSprites and itemSprites[item.spriteId] then
+				local sprite = itemSprites[item.spriteId]
+				love.graphics.setColor(1, 1, 1)
+
+				-- Calculate scale to fit sprite in slot (with some padding)
+				local maxSize = gui.inv_slot_size - 20
+				local spriteW, spriteH = sprite:getDimensions()
+				local scale = math.min(maxSize / spriteW, maxSize / spriteH)
+
+				-- Center the sprite in the slot
+				local spriteX = bx + gui.inv_slot_size / 2
+				local spriteY = by + gui.inv_slot_size / 2 - 5 -- Offset up slightly for name
+				love.graphics.draw(sprite, spriteX, spriteY, 0, scale, scale, spriteW / 2, spriteH / 2)
+			end
+
+			-- Draw item name below sprite
 			love.graphics.setColor(1, 1, 1)
 			love.graphics.setFont(love.graphics.newFont(10))
-			love.graphics.printf(player.inventory[i].name, bx, by + 15, gui.inv_slot_size, "center")
 		end
 
 		-- REGISTER CLICK ZONE

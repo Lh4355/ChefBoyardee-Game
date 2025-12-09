@@ -5,7 +5,7 @@ local Items = {}
 
 Items.attendant = Item.new("attendant", "Shop Attendant", "She looks grateful.", "attendant_sprite")
 Items.dumpster_key =
-	Item.new("dumpster_key", "Dumpster Key", "A key found in the dumpster. It might open something.", "key_sprite")
+	Item.new("dumpster_key", "Dumpster Key", "A grimy dumpster key. What does it unlock?", "key_sprite")
 
 -- Additional centralized items used across the game
 Items.robber = Item.new("robber", "Robber", "A masked robber. Click to intervene!", "robber_sprite")
@@ -13,7 +13,7 @@ Items.robber = Item.new("robber", "Robber", "A masked robber. Click to intervene
 Items.fire_extinguisher = Item.new(
 	"fire_extinguisher",
 	"Fire Extinguisher",
-	"A red fire extinguisher. You can use it to put out fires.",
+	"A red fire extinguisher. Could be useful.",
 	"fire_extinguisher_sprite",
 	true -- Can be picked up
 )

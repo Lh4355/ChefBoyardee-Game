@@ -1,10 +1,7 @@
 To-Do
 
 Prettification Needed
-- make sprite image show up in inventory bar
-
-Bugs
-- Fix warning in audio_manager.lua
+- i dont want intersection to always show the event message that the intersection is quiet. I want it to only have a message when the robbery event is available
 
 FINAL TO-DO
 - do i hide old map_nodes.lua file? should i make an archive folder?
