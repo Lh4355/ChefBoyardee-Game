@@ -1,4 +1,8 @@
--- src/system/hud.lua
+--[[
+	File: hud.lua
+	Description: Heads-Up Display (HUD) system for the game.
+--]]
+
 local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
 local Utils = require("src.utils")
@@ -7,7 +11,7 @@ local VolumeWidget = require("src.system.volume_widget")
 local HUD = {}
 local uiFont, uiFontSmall, skinImages, itemSprites
 
--- Pick the correct can sprite based on skin and health buckets
+-- Returns the appropriate can sprite image based on skin type and current health level (includes damage variants)
 local function selectSkinImage(skin, health)
 	local h = math.max(0, math.floor(health or 0))
 	local variant
@@ -28,6 +32,7 @@ local function selectSkinImage(skin, health)
 	return (skinImages and skinImages[key]) or (skinImages and skinImages[skin])
 end
 
+-- Loads all fonts, can skins (with damage variants), and item sprites for HUD rendering
 function HUD.init()
 	-- Load fonts safely
 	uiFont = Utils.loadFont("src/data/fonts/friz-quadrata-regular.ttf", 24)
@@ -61,10 +66,10 @@ function HUD.init()
 		recycling_bin_sprite = love.graphics.newImage("src/data/images/sprites/recycling_bin.png"),
 		dumpster_fire_sprite = love.graphics.newImage("src/data/images/sprites/dumpster_fire.png"),
 		lock_sprite = love.graphics.newImage("src/data/images/sprites/lock.png"),
-		-- Add more item sprites as needed
 	}
 end
 
+-- Renders the complete HUD including inventory panel, health display, player sprite, and event messages
 function HUD.draw(player, currentNode, eventMessage, selectedSlot)
 	local w, h = love.graphics.getDimensions()
 	local gui = Constants.GUI

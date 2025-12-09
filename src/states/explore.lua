@@ -39,6 +39,7 @@ function Explore.enter(pPlayer, pNodes, pStartNode)
 	Explore.loadNodeMinigame()
 end
 
+-- Loads the minigame for the current node if one is defined
 function Explore.loadNodeMinigame()
 	currentMinigame = nil
 	if currentNode.minigame then
@@ -48,11 +49,12 @@ function Explore.loadNodeMinigame()
 	end
 end
 
--- Reset game state for a fresh playthrough
+-- Resets all game state, player stats, and reinitializes nodes for a fresh playthrough
 function Explore.resetGameState()
 	gameFlags:reset(player, nodes)
 end
 
+-- Updates game state each frame: handles minigame updates, checks win condition, and returns state transition signals
 function Explore.update(dt)
 	VolumeWidget.update(dt)
 
@@ -75,6 +77,7 @@ function Explore.update(dt)
 	end
 end
 
+-- Renders the explore state: background, minigame or interactive elements, and HUD
 function Explore.draw()
 	-- 1. Reset Input Zones for this frame
 	InputManager.clear()
@@ -128,6 +131,7 @@ function Explore.mousepressed(x, y, button)
 	end
 end
 
+-- Attempts to transition to a target node, checking entry conditions and triggering node events
 function Explore.enterNode(targetId)
 	local prevNode = currentNode
 	local targetNode = nodes[targetId]
@@ -154,6 +158,7 @@ function Explore.enterNode(targetId)
 	Explore.loadNodeMinigame()
 end
 
+-- Handles item interaction and pickup logic, including item-use interactions and inventory management
 function Explore.pickUp(itemId)
 	-- Get selected item ID from inventory slot if one is selected
 	local selectedItemId = nil

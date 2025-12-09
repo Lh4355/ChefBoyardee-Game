@@ -13,7 +13,7 @@ local Menu = require("src.states.menu")
 
 local Initialization = {}
 
---- Initialize all nodes with their data, images, items, and minigames
+-- Creates and initializes all game nodes with their data, images, items, and minigames from node definitions
 function Initialization.initializeNodes()
 	local nodes = {}
 
@@ -87,7 +87,7 @@ function Initialization.initializeNodes()
 	return nodes
 end
 
---- Initialize the player
+-- Creates a new player instance with default starting stats and empty inventory
 function Initialization.initializePlayer()
 	return Player.new("Chef Can", 400, 300)
 end

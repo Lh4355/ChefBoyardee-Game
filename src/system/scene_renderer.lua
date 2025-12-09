@@ -1,4 +1,8 @@
--- src/system/scene_renderer.lua
+--[[
+	File: scene_renderer.lua
+	Description: Renders the scene including background, items, navigation arrows, tooltips, and sprite management.
+--]]
+
 local Constants = require("src.constants")
 local InputManager = require("src.system.input_manager")
 local Utils = require("src.utils")
@@ -8,7 +12,7 @@ local uiFontSmall
 local arrowImage
 local itemSprites = {}
 
--- Decide whether a navigation arrow should be visible for the current node.
+-- Determines if a navigation arrow should be visible based on node state and game flags
 local function isPathVisible(currentNode, pathName, flags)
 	if currentNode and currentNode.id == 23 and pathName == "living_room" then
 		return flags and flags.front_door_unlocked
@@ -43,6 +47,7 @@ function SceneRenderer.init()
 	end
 end
 
+-- Renders the current node's background image, scaled to fill the screen
 function SceneRenderer.drawBackground(currentNode)
 	if currentNode.image then
 		local w, h = love.graphics.getDimensions()
@@ -55,13 +60,14 @@ function SceneRenderer.drawBackground(currentNode)
 	end
 end
 
+-- Renders interactive scene elements: items, navigation arrows, and navigation tooltips
 function SceneRenderer.drawElements(currentNode, gameFlags)
 	if not uiFontSmall then
 		SceneRenderer.init()
 	end
 	local gui = Constants.GUI
 
-	-- 1. Draw Items
+	-- Draw Items
 	for i, item in ipairs(currentNode.items) do
 		local ix, iy = item.x or (100 + i * 60), item.y or 400
 		local iw, ih = item.w or gui.item_scene_size, item.h or gui.item_scene_size
@@ -89,7 +95,7 @@ function SceneRenderer.drawElements(currentNode, gameFlags)
 		InputManager.register(ix, iy, iw, ih, "item", item.id)
 	end
 
-	-- 2. Draw Navigation Arrows
+	-- Draw Navigation Arrows
 	local arrowSize = 48
 	local arrowPadding = 60
 	local defaultArrowY = 150
