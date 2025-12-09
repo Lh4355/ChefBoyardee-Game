@@ -1,8 +1,9 @@
 To-Do
 
 Prettification Needed
-- Make dumpster, dumpster key, front door objects, and fire extinguisher, recycling bin
+- Make dumpster, dumpster key, front door objects
 - add descriptions to nodes (make sure they dont overlap/repeat)
+- make sprite image show up in inventory bar
 
 Bugs
 - Fix warning in audio_manager.lua

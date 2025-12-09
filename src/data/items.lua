@@ -33,9 +33,9 @@ Items.dumpster_fire = Item.new(
 )
 Items.front_door = Item.new(
 	"front_door",
-	"Front Door",
+	"Lock",
 	"A locked front door.",
-	"front_door_sprite",
+	"lock_sprite",
 	false -- Cannot be picked up (interaction only)
 )
 

@@ -191,9 +191,10 @@ return {
 			-- movers_house = 32,
 			outside_house = 21,
 		},
+
 		items = {
-			"fire_extinguisher",
-			"recycling_bin",
+			{ id = "fire_extinguisher", x = 55, y = 205, w = 30, h = 60 },
+			{ id = "recycling_bin", x = 220, y = 380, w = 80, h = 80 },
 		},
 		arrows = {
 			steep_hill = { x = 50, y = 480, rotation = math.pi / 2, scale = 1 },
@@ -377,7 +378,6 @@ return {
 	-- },
 
 	-- NODE 23: Front Porch
-	-- FIXME: Make it so that if the player has a key (FIXME: idk from where yet) and a pogo stick (accquired from movers_house) they can get in
 	[23] = {
 		id = 23,
 		name = "front_porch",
@@ -386,7 +386,6 @@ return {
 		paths = {
 			outside_house = 21,
 			living_room = 26,
-			-- front_door = 2, -- FIXME: idk if i want to add this rn
 		},
 		items = {
 			"front_door",
@@ -549,15 +548,4 @@ return {
 	-- 	},
 	-- },
 
-	-- NODE 35: Dumpster (after the fire is put out)
-	-- FIXME: Add functionality so that the player can put out the fire if they have an extinguisher and get a reward
-	[35] = {
-		id = 35,
-		name = "dumpster",
-		description = "The dumpster is burnt.",
-		imagePath = "src/data/images/locations/dumpster.png",
-		paths = {
-			sketchy_alley = 12,
-		},
-	},
 }

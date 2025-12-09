@@ -36,7 +36,7 @@ function SceneRenderer.init()
 		fire_extinguisher_sprite = "src/data/images/sprites/fire_extinguisher.png",
 		recycling_bin_sprite = "src/data/images/sprites/recycling_bin.png",
 		dumpster_fire_sprite = "src/data/images/sprites/dumpster_fire.png",
-		front_door_sprite = "src/data/images/sprites/front_door.png",
+		lock_sprite = "src/data/images/sprites/lock.png",
 		-- Add more spriteIds and paths here as you add images
 	}
 	for id, path in pairs(spriteList) do
