@@ -1,7 +1,12 @@
--- src/player.lua
+--[[
+	File: /src/entities/player.lua
+	Description: Player entity (class) definition and methods
+--]]
+
 local Player = {}
 Player.__index = Player
 
+-- Function to create a new Player instance
 function Player.new(name, x, y)
 	local instance = setmetatable({}, Player)
 	instance.name = name
@@ -14,7 +19,7 @@ function Player.new(name, x, y)
 	return instance
 end
 
--- Check if player has a specific item by ID
+-- Check if player has an item by ID
 function Player:hasItem(itemId)
 	for _, item in ipairs(self.inventory) do
 		if item.id == itemId then
@@ -34,19 +39,16 @@ function Player:addItem(item)
 	return false
 end
 
--- Handle taking damage (Day 4 & "Dented" Mechanic)
+-- Handle taking damage
 function Player:takeDamage(amount)
 	self.health = self.health - amount
 	if self.health < 0 then
 		self.health = 0
 	end
 	print("Player took " .. amount .. " damage! Health is now: " .. self.health)
-
-	-- FUTURE TODO: Add code here to change sprite based on health
-	-- e.g., if self.health < 50 then self.sprite = dented_sprite end
 end
 
--- Handle healing (For "Polish" or "Tape" items)
+-- Handle healing
 function Player:heal(amount)
 	self.health = self.health + amount
 	if self.health > 100 then
@@ -65,11 +67,13 @@ function Player:hasVisited(nodeId)
 	return false
 end
 
--- Mark a node as visited (avoid duplicates)
+-- Mark a node as visited
 function Player:visitNode(nodeId)
+	-- check that nodeID exists
 	if not nodeId then
 		return
 	end
+	-- if not already visited, add to visitedNodes
 	if not self:hasVisited(nodeId) then
 		table.insert(self.visitedNodes, nodeId)
 	end
