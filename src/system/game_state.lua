@@ -42,7 +42,6 @@ function GameState:handleMissedJewelryRobbery(nodes, player)
 		if nodes[17] then
 			local Utils = require("src.utils")
 			Utils.updateNodeImage(nodes[17], "src/data/images/locations/jewelry_store_empty.png")
-			Utils.updateNodeDescription(nodes[17], "The jewelry shop is empty.")
 			Utils.removeNodeItems(nodes[17], { "robber", "attendant" })
 		end
 	end
@@ -86,7 +85,7 @@ function GameState.switchState(currentState, newState, player, nodes)
 	currentState = newState
 	-- Pass shared data (player, nodes) to the state if it needs it
 	if currentState.enter then
-		currentState.enter(player, nodes, nodes[1]) -- pass starting node index
+		currentState.enter(player, nodes, nodes[3]) -- pass starting node index
 	end
 	return currentState
 end

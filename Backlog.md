@@ -1,13 +1,14 @@
 To-Do
 
 Prettification Needed
-- i dont want intersection to always show the event message that the intersection is quiet. I want it to only have a message when the robbery event is available
+- i dont want intersection to always show the event message that the intersection is quiet. I want it to only have a message when the robbery event is available, same for if the shop is empty if you miss the robbery
 
 FINAL TO-DO
 - get rid of duplicated or unused code
 - add file headers and detailed comments
 - add installation steps (populate readme)
 - do i hide old map_nodes.lua file? should i make an archive folder?
+- make sure game node starts at 1
 
 
 Prompt:

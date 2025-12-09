@@ -1,6 +1,7 @@
 -- src/interactions.lua
 local Interactions = {}
 
+local Utils = require("src.utils")
 Interactions.items = {
 	-- The Shop Attendant
 	["attendant"] = function(player, currentNode, flags, selectedItemId)
@@ -34,11 +35,7 @@ Interactions.items = {
 		-- Change the store image and description to resolved state
 		currentNode.imagePath = "src/data/images/locations/jewelry_store.png"
 		currentNode.description = "The robbers have been arrested and the woman is safe now."
-		-- Reload the image from the new path
-		local success, img = pcall(love.graphics.newImage, currentNode.imagePath)
-		if success then
-			currentNode.image = img
-		end
+		currentNode.image = Utils.loadImage(currentNode.imagePath)
 		-- Add/update the attendant NPC immediately so sizing/position apply without re-entering node
 		local attendant
 		for _, it in ipairs(currentNode.items or {}) do
@@ -49,15 +46,13 @@ Interactions.items = {
 		end
 		if not attendant then
 			local Items = require("src.data.items")
-			local Item = require("src.entities.item")
-			local at = Items.attendant
-			attendant = Item.new(at.id, at.name, at.description, at.spriteId, at.canPickup)
-			table.insert(currentNode.items, attendant)
+			attendant = Utils.addItemToNode(currentNode, Items.attendant, { x = 262, y = 185, w = 160, h = 150 })
+		else
+			attendant.x = 262
+			attendant.y = 185
+			attendant.w = 160
+			attendant.h = 150
 		end
-		attendant.x = 262
-		attendant.y = 185
-		attendant.w = 160
-		attendant.h = 150
 
 		return true, "CRASH! The robber trips and hits you for 15 damage. The police take him away."
 	end,
@@ -75,10 +70,7 @@ Interactions.items = {
 		currentNode.description = "The dumpster is burnt."
 
 		-- Reload the image from the new path
-		local success, img = pcall(love.graphics.newImage, currentNode.imagePath)
-		if success then
-			currentNode.image = img
-		end
+		currentNode.image = Utils.loadImage(currentNode.imagePath)
 
 		-- Update sketchy_alley description (node 12)
 		flags.sketchy_alley_needs_update = true
@@ -101,15 +93,9 @@ Interactions.items = {
 
 		-- Add a key item to the dumpster (use centralized definition)
 		local Items = require("src.data.items")
-		local key = Items.dumpster_key
-		key.x = 340 -- Your desired X position
-		key.y = 240
-		key.w = 50
-		key.h = 50
-		table.insert(currentNode.items, key)
+		Utils.addItemToNode(currentNode, Items.dumpster_key, { x = 340, y = 240, w = 50, h = 50 })
 
-		return true,
-			"You put out the flames. The smoke clears, revealing a key in the dumpster!"
+		return true, "You put out the flames. The smoke clears, revealing a key in the dumpster!"
 	end,
 
 	["front_door"] = function(player, currentNode, flags, selectedItemId)

@@ -41,6 +41,27 @@ function Utils.updateNodeDescription(node, description)
 	node.description = description
 end
 
+-- Add an item to a node from a template, with optional property overrides
+-- Usage: Utils.addItemToNode(node, Items.robber, {x=0, y=115, w=290, h=500})
+function Utils.addItemToNode(node, itemTemplate, props)
+	local Item = require("src.entities.item")
+	local item = Item.new(
+		itemTemplate.id,
+		itemTemplate.name,
+		itemTemplate.description,
+		itemTemplate.spriteId,
+		itemTemplate.canPickup
+	)
+	if props then
+		for k, v in pairs(props) do
+			item[k] = v
+		end
+	end
+	node.items = node.items or {}
+	table.insert(node.items, item)
+	return item
+end
+
 -- Remove items from node by itemIds table
 function Utils.removeNodeItems(node, itemIds)
 	if not node.items then
