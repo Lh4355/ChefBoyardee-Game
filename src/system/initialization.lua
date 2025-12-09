@@ -4,8 +4,7 @@
 local Node = require("src.entities.node")
 local Item = require("src.entities.item")
 local Player = require("src.entities.player")
-local map_nodes_data = require("src.data.map_nodes")
-local Constants = require("src.constants")
+local map_nodes_data = require("src.data.nodes")
 local Items = require("src.data.items")
 local AudioManager = require("src.system.audio_manager")
 

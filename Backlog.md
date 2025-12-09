@@ -1,16 +1,13 @@
 To-Do
 
 Prettification Needed
-- add descriptions to nodes (make sure they dont overlap/repeat)
 - make sprite image show up in inventory bar
-- when the robbery event is happening i dont want the description box at the top to show, only after the robber is dealt with will it show up
 
 Bugs
 - Fix warning in audio_manager.lua
 
-
 FINAL TO-DO
-- decide whether or not to get rid of commented nodes/make a new file for them or leave them as is
+- do i hide old map_nodes.lua file? should i make an archive folder?
 - get rid of duplicated or unused code
 - add file headers and detailed comments
 
@@ -30,6 +27,10 @@ General
 - Have a map
 - save menu
 - Can rolls from location to location? (or minigame with rolling for the highway)
+- backyard will have a hose to polish your can? (but if pond hurts can then would hose?)
+- add counterfiet soup seller --> should this be an event/encounter instead of a location and event/encounter
+- sewer shortcuts
+- add person coming to look at can event to the start
 
 Additions
 - the movers have a toolkit that can be used to fix your can to 100% health
